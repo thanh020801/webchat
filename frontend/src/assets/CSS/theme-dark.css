@@ -1,0 +1,20 @@
+.logo,.menu-layout{
+	background-color: #36404a;
+}
+
+.taskbar-layout,.search-taskbar,.search-taskbar-input, .search-taskbar-submit,.search-taskbar-input:focus{
+	background-color: #303841;
+}
+.frame-layout,.header{
+	background-color: #262e35;
+}
+
+.content-send-message{
+	background-color: #7269ef;
+}
+.content-receive-message{
+	background-color: #36404a;
+}
+.testing,.testing-input,.testing-submit{
+	background-color: #36404a;
+}
