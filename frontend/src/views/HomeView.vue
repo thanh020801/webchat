@@ -14,10 +14,13 @@ export default{
 
 <template>
     <main>
-        <div class="row main-template">
-            <div class="col-sm-1 menu-layout"><Menu /></div>
-            <div class="col-sm-3 taskbar-layout"><Taskbar/></div>
-            <div class="col frame-layout">
+        <div class=" main-template">
+            <div class="menu-layout"><Menu /></div>
+            <div class="taskbar-layout">
+                <!-- <Taskbar/> -->
+                <router-view/>
+            </div>
+            <div class="frame-layout">
                 <Header/>
                 <div class="Contents" >
                     <div class="Content" v-for='i in 15 '>
@@ -31,15 +34,16 @@ export default{
             </div>
             
         </div>
-
     </main>
 </template>
 <style type="text/css">
     .main-template{
         height: 100vh;
+        grid-template-columns: 10% 30% auto;
+        display: grid;
     }
     .menu-layout{
-        width: 60px;
+        width: 100%;
         padding: 0px;
         
     }
@@ -68,7 +72,7 @@ export default{
      
     /* Handle */
     .Contents::-webkit-scrollbar-thumb {
-      background: #2e053873; 
+      background: #36404a; 
       border-radius: 10px;
     }
 

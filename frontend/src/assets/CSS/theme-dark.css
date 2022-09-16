@@ -1,20 +1,40 @@
+/*màu cho cột menu*/
 .logo,.menu-layout{
 	background-color: #36404a;
 }
-
+/*Màu cho cột taskbar*/
 .taskbar-layout,.search-taskbar,.search-taskbar-input, .search-taskbar-submit,.search-taskbar-input:focus{
 	background-color: #303841;
 }
+/*Màu cho cột frame và header*/
 .frame-layout,.header{
 	background-color: #262e35;
 }
-
+/*Màu tin nhắn người gửi*/
 .content-send-message{
 	background-color: #7269ef;
 }
+/*Màu tin nhắn người nhận*/
 .content-receive-message{
 	background-color: #36404a;
 }
+/*Màu nhập tin nhắn*/
 .testing,.testing-input,.testing-submit{
 	background-color: #36404a;
+}
+/*Màu icon, màu chữ*/
+.name-taskbar, .name-header, .option-header, .item-menu, .bi, .testing-input{
+	color: #dedede;
+}
+/*màu thời gian gửi*/
+.time-send,{
+	color: #393939;
+}
+/*màu thời gian nhận*/
+.time-receive{
+	color: #dedede;
+}
+/*Màu tên người gửi*/
+.name-send{
+	color: #720000;
 }

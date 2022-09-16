@@ -6,8 +6,15 @@ const router = createRouter({
   routes: [
     {
       path: '/',
-      name: 'home',
-      component: HomeView
+      name: 'chats',
+      redirect: '/chats',
+      component: HomeView,
+      children:[
+        {path: '/chats' ,component: () => import('../components/taskbars/Chats.cpn.vue')},
+        {path: '/groups',component: () => import('../components/taskbars/Groups.cpn.vue')},
+        {path: '/contacts', component: () => import('../components/taskbars/Contacts.cpn.vue')},
+        {path: '/profile' , component: () => import('../components/taskbars/Profile.cpn.vue')}
+      ]
     },
     {
       path: '/login',
@@ -19,11 +26,7 @@ const router = createRouter({
       name: 'register',
       component: () => import('../views/RegisterView.vue')
     },
-    // {
-    //   path: '/login',
-    //   name: 'login',
-    //   component: () => import('../views/AboutView.vue')
-    // },
+
   ]
 })
 

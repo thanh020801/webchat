@@ -1,8 +1,8 @@
 <template>
-	<div class="row header">
-		<div class="avt-header col-lg-2" ><img class="avartar-header" src="../assets/images/spider3.jpg"></div>
-		<div class="name col-lg-8"><h4>Nguyen Dang Khoa</h4></div>
-		<div class="option col-lg-2">option</div>
+	<div class="header">
+		<div class="avt-header" ><img class="avartar-header" src="../assets/images/spider3.jpg"></div>
+		<div class="name-header"><h4>Nguyen Dang Khoa</h4></div>
+		<div class="option-header"><i class="bi bi-three-dots-vertical"></i></div>
 	</div>
 
 
@@ -18,8 +18,10 @@
 		align-items: center;
 		margin: 0px;
 		padding: 0 0.5rem;
-		border-bottom: 1px solid wheat;
+		border-bottom: 1px solid #36404a;
 		/*background-color: blue;*/
+		grid-template-columns: 13% auto 5%;
+		display: grid;
 	}
 	.avartar-header{
 		width: 40px;

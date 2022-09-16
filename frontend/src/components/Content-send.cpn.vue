@@ -5,7 +5,7 @@
 		</div>
 		<div class="content-send-message">
 			<div class="name-send">thanh</div>
-			<div class="message-send-content">Hello thanh</div>
+			<div class="message-send-content">Hello thanh  </div>
 			<div class="time-send">6:50</div>
 		</div>
 	</div>
@@ -30,17 +30,17 @@
 .content-send-message{
 	padding: 0.3rem 1rem;
 	max-width: fit-content;
-	border:  1px solid black;
+	/*border:  1px solid black;*/
 	/*background-color: brown;*/
 	border-radius: 10px;
 }
 .name-send{
 	font-size: 14px;
-	color: red;
+	/*color: red;*/
 }
 .time-send{
 	font-size: 11px;
-	color: #8d8484;
+	/*color: #8d8484;*/
 }
 .message-send-content{
 	font-size: 16px;

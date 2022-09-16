@@ -1,19 +1,16 @@
 <template>
-	<!-- <h2 class="title" >Home</h2> -->
-	<!-- <div class="taskbar"> -->
-		<div class="search-taskbar">
+<!-- 		<div class="search-taskbar">
       <div class="d-flex">
         <input class="search-taskbar-input  me-1" type="text" placeholder="Search ..." aria-label="Search">
         <button class="search-taskbar-submit" type="submit"><i class="bi bi-search"></i></button>
       </div>
     </div>
-  <!-- </div> -->
 
 	
 	<div class="croll-taskbar">
 		<div class="taskbar " v-for="user in users">
 			<div class="avartar-taskbar">
-				<img class="avarta-taskbar" src="../assets/images/spider3.jpg">
+				<img class="avarta-taskbar" src="../../assets/images/spider3.jpg">
 				<div class="user-online-taskbar"></div>
 			</div>
 			<div class="name-taskbar">
@@ -22,30 +19,12 @@
 			</div>
 			<div class="timeOnline">{{user.user.time}}</div>
 		</div>
-	</div>
+	</div> -->
+	<h2>Profile</h2>
 </template>
 <script>
 	export default{
-		data(){
-			return {users: 
-			[
-			{user: {avarta: '../assets/images/spider3.jpg', name: 'Nguyen Tuan Thanh', time:'5:30',message: "Hello Thanh"}},
-			{user: {avarta: '../assets/images/spider3.jpg', name: 'Mai Nam', time:'5:30',message: "Hello Thanh"}},
-			{user: {avarta: '../assets/images/spider3.jpg', name: 'Ngoc Thi', time:'5:30',message: "Hello Thanh"}},
-			{user: {avarta: '../assets/images/spider3.jpg', name: 'Hoang Anh', time:'5:30',message: "Hello Thanh"}},
-			{user: {avarta: '../assets/images/spider3.jpg', name: 'Nguyen Tuan Thanh', time:'5:30',message: "Hello Thanh"}},
-			{user: {avarta: '../assets/images/spider3.jpg', name: 'Mai Nam', time:'5:30' ,message: ""}},
-			{user: {avarta: '../assets/images/spider3.jpg', name: 'Ngoc Thi', time:'5:30' ,message: ""}},
-			{user: {avarta: '../assets/images/spider3.jpg', name: 'Hoang Anh', time:'5:30' ,message: ""}},
-			{user: {avarta: '../assets/images/spider3.jpg', name: 'Nguyen Tuan Thanh', time:'5:30' ,message: ""}},
-			{user: {avarta: '../assets/images/spider3.jpg', name: 'Mai Nam', time:'5:30' ,message: ""}},
-			{user: {avarta: '../assets/images/spider3.jpg', name: 'Ngoc Thi', time:'5:30',message: ""}},
-			{user: {avarta: '../assets/images/spider3.jpg', name: 'Hoang Anh', time:'5:30',message: ""}},
-			{user: {avarta: '../assets/images/spider3.jpg', name: 'Nguyen Tuan Thanh', time:'5:30',message: ""}},
 
-			]
-			}
-		},
 	}
 </script>
 <style type="text/css">
