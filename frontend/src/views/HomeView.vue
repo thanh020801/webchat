@@ -2,12 +2,11 @@
 import Menu from '../components/Menu.cpn.vue'
 import ContentSend from '../components/Content-send.cpn.vue'
 import ContentReceive from '../components/Content-receive.cpn.vue'
-import Taskbar from '../components/Taskbar.cpn.vue'
 import Header from '../components/Header.cpn.vue'
 import Testing from '../components/Testing.cpn.vue'
 export default{
   components:{
-    Menu,ContentSend,ContentReceive,Taskbar,Header,Testing,
+    Menu,ContentSend,ContentReceive,Header,Testing,
   }
 }
 </script>
@@ -23,11 +22,12 @@ export default{
             <div class="frame-layout">
                 <Header/>
                 <div class="Contents" >
-                    <div class="Content" v-for='i in 15 '>
-                        <ContentSend/>
-                        <ContentSend/>
-                       
+                    <div class="Content" v-for='i in 3 '>
                         <ContentReceive />
+                        <ContentSend/>
+                        <!-- <ContentSend/> -->
+                       
+                        
                     </div>
                 </div>
                 <Testing/>

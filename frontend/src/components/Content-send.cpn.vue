@@ -5,7 +5,7 @@
 		</div>
 		<div class="content-send-message">
 			<div class="name-send">thanh</div>
-			<div class="message-send-content">Hello thanh  </div>
+			<div class="message-send-content">Hi Eric, I'm fine</div>
 			<div class="time-send">6:50</div>
 		</div>
 	</div>

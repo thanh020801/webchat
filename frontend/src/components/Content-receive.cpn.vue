@@ -1,7 +1,7 @@
 <template>
 	<div class="message-receive" >
 		<div class="content-receive-message">
-			<div class="message-receive-content">thanh Hello thanh Hello thanh</div>
+			<div class="message-receive-content">Hello Mega, How are you</div>
 			<div class="time-receive">6:50</div>
 		</div>
 	</div>

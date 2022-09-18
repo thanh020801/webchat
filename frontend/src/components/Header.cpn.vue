@@ -1,7 +1,7 @@
 <template>
 	<div class="header">
 		<div class="avt-header" ><img class="avartar-header" src="../assets/images/spider3.jpg"></div>
-		<div class="name-header"><h4>Nguyen Dang Khoa</h4></div>
+		<div class="name-header"><h4>Mega</h4></div>
 		<div class="option-header"><i class="bi bi-three-dots-vertical"></i></div>
 	</div>
 
