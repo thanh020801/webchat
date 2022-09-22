@@ -1,48 +1,58 @@
-/*theme Dark*/
+/*Theme bright*/
+
 /*màu cho cột menu*/
-.theme-dark .header ,.theme-dark .taskbar:hover, .theme-dark .logo,.theme-dark .menu-layout,.theme-dark .search-taskbar,.theme-dark .search-taskbar-input, .theme-dark .search-taskbar-submit,.theme-dark .search-taskbar-input:focus{
-	background-color: #36404a;
+.theme-bright .logo,.theme-bright .menu-layout,.theme-bright .search-taskbar,.theme-bright .search-taskbar-input, .theme-bright .search-taskbar-submit,.theme-bright .search-taskbar-input:focus, .theme-bright .testing,.theme-bright .testing-input,.theme-bright .testing-submit{
+	background-color: #b4d3f1;
 }
 /*Màu cho cột taskbar*/
-.theme-dark .taskbar-layout{
-	background-color: #303841;
+.theme-bright .taskbar-layout{
+	background-color: #c6d8e9;
 }
-/*Màu cho cột frame và header*/
-.theme-dark .frame-layout{
-	background-color: #262e35;
+/*Màu cho cột frame và header  #d0fbff*/
+/*.frame-layout,{
+	background-color: #d6e5f3;
+}*/
+.theme-bright .header{
+	background-color: #b4d3f1;
+}
+.theme-bright .frame-layout{
+	background-color:#d6e5f3;
 }
 /*Màu tin nhắn người gửi*/
-.theme-dark .content-send-message{
-	background-color: #7269ef;
+.theme-bright .content-send-message{
+	background-color: #fff;
 }
 /*Màu tin nhắn người nhận*/
-.theme-dark .content-receive-message{
-	background-color: #36404a;
+.theme-bright .content-receive-message{
+	background-color: #3b728b;
 }
 /*Màu nhập tin nhắn*/
-.theme-dark .testing,.theme-dark .testing-input,.theme-dark .testing-submit{
-	background-color: #36404a;
-}
+
 /*Màu icon, màu chữ*/
-.theme-dark .taskbar-contact-keys,.theme-dark .info-profile,.theme-dark .name-taskbar, .theme-dark .name-header, .theme-dark .option-header, .theme-dark .item-menu, .theme-dark .bi, .theme-dark .testing-input, .theme-dark .search-taskbar-input, .theme-dark .title-name{
-	color: #dedede;
+.theme-bright .timeOnline ,.theme-bright .name-taskbar, .theme-bright .name-header, .theme-bright .option-header, .theme-bright .item-menu, .theme-bright .bi, .theme-bright .testing-input, .theme-bright .search-taskbar-input, .theme-bright .title-name, .theme-bright .info-profile{
+	color: #101854;
+}
+.theme-bright .message-send-content{
+	font-size: 16px;
+	color: black;
 }
 /*màu thời gian gửi*/
-.theme-dark .time-send,{
+.theme-bright .time-send,{
 	color: #393939;
 }
 /*màu thời gian nhận*/
-.theme-dark .time-receive{
+.theme-bright .time-receive{
 	color: #dedede;
 }
 /*Màu tên người gửi*/
-.theme-dark .name-send{
+.theme-bright .name-send{
 	color: #720000;
 }
 
-.theme-dark .bi{
+.theme-bright .bi{
 	cursor: pointer;
 }
+
 
 /*Taskbar page*/
 .title{
@@ -55,15 +65,16 @@
 
 .taskbar{
 	padding:0px 1.5rem;
-	width: 100%;
-	margin: 0px;
+	width: 98%;
+	margin: 0px auto;
 	height: 60px;
 	align-items: center;
 	grid-template-columns: 15% auto 10%;
 	display: grid;
-	color: #dedede;
+	/*color: #dedede;*/
 }
 .taskbar:hover{
+	background-color: #b4d3f1;
 	cursor: pointer;
 }
 
@@ -120,12 +131,11 @@
 
 .timeOnline{
 	text-align: right;
-	color: white;
 	font-size: 13px;
 }
 .name-taskbar{
-	color: #dedede;
-	font-size: 15px;
+/*	color: #dedede;
+*/	font-size: 15px;
 	line-height: 10px;
 }
 .message-taskbar{
@@ -135,7 +145,7 @@
 }
 .croll-taskbar{
     width: 100%;
-    height: 100vh;
+    height: 70vh;
     overflow-y: scroll;
 }
 /* width */

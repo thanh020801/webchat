@@ -22,7 +22,7 @@ export default{
             <div class="frame-layout">
                 <Header/>
                 <div class="Contents" >
-                    <div class="Content" v-for='i in 3 '>
+                    <div class="Content" v-for='i in 5'>
                         <ContentReceive />
                         <ContentSend/>
                         <!-- <ContentSend/> -->
@@ -30,7 +30,9 @@ export default{
                         
                     </div>
                 </div>
-                <Testing/>
+                <div class="testing">
+                    <Testing/>
+                </div>
             </div>
             
         </div>
@@ -38,7 +40,7 @@ export default{
 </template>
 <style type="text/css">
     .main-template{
-        height: 100vh;
+        height: 100%;
         grid-template-columns: 10% 30% auto;
         display: grid;
     }
@@ -48,7 +50,10 @@ export default{
         
     }
     .taskbar-layout{
+        height: 100vh;
         padding: 0px;
+        /*margin-bottom: 3rem;*/
+        /*padding-bottom: 3rem;*/
     }
     .frame-layout{
         padding: 0px;
@@ -56,7 +61,7 @@ export default{
     }
     .Contents{
         width: 100%;
-        height: 79.6vh;
+        height: 77vh;
         overflow-y: scroll;
     }
     /* width */

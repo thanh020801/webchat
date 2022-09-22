@@ -37,27 +37,54 @@
 				<div style="font-size: 13px; line-height: 5px;">Profile</div>
 			</div>
 		</router-link>
-	
+		<div v-if='cTheme'>
+			<div class="item-menu" @click='changeTheme()'>
+				<i class="bi bi-sun-fill"></i>
+				<div style="font-size: 13px; line-height: 5px;">Light</div>
+			</div>
+		</div>
+		<div v-else>
+			<div class="item-menu" @click='changeTheme()'>
+				<i class="bi bi-moon-fill"></i>
+				<div style="font-size: 13px; line-height: 5px;">Dark</div>
+			</div>
+		</div>
 	</div>
 		
 </template>
 <script>
+import {userConfig} from '@/stores/userConfig.js'
 	export default{
 		data(){
 			return {
+				cTheme: true,
+				
 			}
+		},
+		setup(){
+			const configUser = userConfig()
+			return {configUser}
 		},
 		methods:{
 			selectorActive(activeE){
 				if(this.$router.currentRoute._value.path === activeE){
 					return {
-						backgroundColor: '#303841',
+						backgroundColor: '#3b728b',
 						borderRadius: '20px',
 					}
 				}
+			},
+			changeTheme(){
+				// console.log(this.configUser.userTheme)
+				this.cTheme = !this.cTheme
+				if(this.configUser.userTheme === 'theme-bright'){
+					this.configUser.userTheme = 'theme-dark'
+				}else{
+					this.configUser.userTheme = 'theme-bright'
+				}
+			}			
+		},
 
-			}
-		}
 	}
 </script>
 <style type="text/css">
@@ -79,14 +106,15 @@
 		font-size: 20px;
 	}
 	.item-menu{
-		width: 80%;
-		height: 90px;
+		width: 70%;
+		height: 80px;
 		align-items: center;
 		margin: 0 auto;
 		text-align: center;
 		justify-content: center;
 		padding-top: 12px;
 		font-size: 25px;
+		cursor: pointer;
 	}
 
 </style>

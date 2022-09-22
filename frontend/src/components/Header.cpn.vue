@@ -14,11 +14,12 @@
 </script>
 <style type="text/css">
 	.header{
-		height: 50px;
+		height: 60px;
 		align-items: center;
 		margin: 0px;
 		padding: 0 0.5rem;
-		border-bottom: 1px solid #36404a;
+		/*border-bottom: 1px solid #36404a;*/
+		box-shadow: 2px 2px 5px 0px black;
 		/*background-color: blue;*/
 		grid-template-columns: 13% auto 5%;
 		display: grid;

@@ -42,8 +42,8 @@
 	font-size: 11px;
 	/*color: #8d8484;*/
 }
-.message-send-content{
+/*.message-send-content{
 	font-size: 16px;
 	color: white;
-}
+}*/
 </style>

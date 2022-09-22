@@ -12,17 +12,17 @@
 
 	<div class="croll-taskbar" >
 		<div v-for='char in keyWord'>
-			<h4 class="taskbar">{{char}}</h4>
-			<div  v-for="user in users" >
-				<div v-if='user.name.charAt(0) === char'>
+			<h4 class="taskbar-contact-keys">{{char}}</h4>
+			<div  v-for="item in test.friend_listfriendID" >
+				<div v-if='item.name.charAt(0) === char'>
 					<div class="taskbar " >
 							<div class="avartar-taskbar">
 								<img class="avarta-taskbar" src="../../assets/images/spider3.jpg">
 								<!-- <div class="user-online-taskbar"></div> -->
 							</div>
 							<div class="name-taskbar">
-								<div class="name-taskbar">{{user.name}}</div>
-								<div class="message-taskbar">{{user.message}}</div>
+								<div class="name-taskbar">{{item.name}}</div>
+								<!-- <div class="message-taskbar">{{item.message}}</div> -->
 							</div>
 							<div class="timeOnline"><i class="bi bi-three-dots-vertical"></i></div>
 					</div>
@@ -32,30 +32,15 @@
 	</div>
 </template>
 <script>
+	import {TestStore} from '@/stores/test.js'
 	export default{
+		setup(){
+			const test = TestStore().friend_EX
+			return {test}
+		},
 		data(){
 			return {
 			keyWord: [],
-			users: 
-			[
-
-			{avarta: '', name: 'Mai Nam'},
-			{avarta: '', name: 'Ngọc Thi'},
-			{avarta: '', name: 'Hoàng Anh'},
-			{avarta: '', name: 'Trần Tuấn Thanh'},
-			{avarta: '', name: 'Cao Văn Nam'},
-			{avarta: '', name: 'Kim Ánh'},
-			{avarta: '', name: 'Lưu Hoàng Khiêm'},
-			{avarta: '', name: 'Nguyễn Bình An'},
-			{avarta: '', name: 'Xuân Nhã'},
-			{avarta: '', name: 'Bích Châu'},
-			{avarta: '', name: 'Việt Hoàng'},
-			{avarta: '', name: 'Lê Hoa'},
-			{avarta: '', name: 'Mega'},
-			{avarta: '', name: 'David'},
-			{avarta: '', name: 'Jukisan'},
-			{avarta: '', name: 'Erik'},
-			]
 			}
 		},
 		methods:{
@@ -72,19 +57,25 @@
 			}
 		},
 		created(){
-			console.log(this.users[3].name)
-			for (var i = 0; i < this.users.length; i++) {
-				let char = this.users[i].name.charAt(0);
+			// console.log(this.test.friend_listfriendID[2])
+			// console.log(this.users[3].name)
+			for (var i = 0; i < this.test.friend_listfriendID.length; i++) {
+				var name = this.test.friend_listfriendID[i].name
+				this.test.friend_listfriendID[i].name = 
+					name.charAt(0).toUpperCase()+ name.slice(1)
+				let char = name.charAt(0).toUpperCase();
 				console.log(char)
 				if(!this.keyWord.includes(char)){
-					console.log('chua co')
+					// console.log('chua co')
 					this.keyWord.push(char)
 				}
 			}
-			console.log(this.keyWord.sort())
+			this.keyWord.sort()
 		}
 	}
 </script>
 <style type="text/css">
-
+.taskbar-contact-keys{
+	padding: 0.5rem 1.5rem;
+}
 </style>
