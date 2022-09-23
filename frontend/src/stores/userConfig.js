@@ -3,6 +3,7 @@ import { defineStore } from 'pinia'
 
 export const userConfig = defineStore('userConfig', () => {
   const userTheme = 'theme-bright' // if theme is true then using bright theme
+  const userChosen = 'sdf'
   const userProfile = {
     _id: "",
     userName: "",

@@ -1,6 +1,6 @@
 /*theme Dark*/
 /*màu cho cột menu*/
-.theme-dark .header ,.theme-dark .taskbar:hover, .theme-dark .logo,.theme-dark .menu-layout,.theme-dark .search-taskbar,.theme-dark .search-taskbar-input, .theme-dark .search-taskbar-submit,.theme-dark .search-taskbar-input:focus{
+.theme-dark .active,.theme-dark .header ,.theme-dark .taskbar:hover, .theme-dark .logo,.theme-dark .menu-layout,.theme-dark .search-taskbar,.theme-dark .search-taskbar-input, .theme-dark .search-taskbar-submit,.theme-dark .search-taskbar-input:focus{
 	background-color: #36404a;
 }
 /*Màu cho cột taskbar*/
@@ -113,9 +113,7 @@
 }
 .search-taskbar-input:focus{
 	outline: none;
-	/*background-color: green;*/
 	border: none;
-	outline: none;
 }
 
 .timeOnline{

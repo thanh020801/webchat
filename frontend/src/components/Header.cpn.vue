@@ -1,15 +1,21 @@
 <template>
-	<div class="header">
+	<div class="header" v-if='configUser.userChosen'>
 		<div class="avt-header" ><img class="avartar-header" src="../assets/images/spider3.jpg"></div>
-		<div class="name-header"><h4>Mega</h4></div>
+		<div class="name-header"><h4>{{configUser.userChosen.name}}</h4></div>
 		<div class="option-header"><i class="bi bi-three-dots-vertical"></i></div>
 	</div>
 
 
 </template>
 <script>
+	import {userConfig} from '@/stores/userConfig.js'
 	export default{
-		
+		setup(){
+			const configUser = userConfig()
+			// console.log(configUser.userChosen)
+			// console.log(userConfig())
+			return {configUser}
+		}
 	}
 </script>
 <style type="text/css">

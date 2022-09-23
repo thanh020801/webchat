@@ -15,7 +15,10 @@
 			<h4 class="taskbar-contact-keys">{{char}}</h4>
 			<div  v-for="item in test.friend_listfriendID" >
 				<div v-if='item.name.charAt(0) === char'>
-					<div class="taskbar " >
+					<div class="taskbar taskbar-Contacts " 
+								:id='"active" + item.id'
+								@click='activeChosen(item,$event)' 
+								>
 							<div class="avartar-taskbar">
 								<img class="avarta-taskbar" src="../../assets/images/spider3.jpg">
 								<!-- <div class="user-online-taskbar"></div> -->
@@ -33,17 +36,30 @@
 </template>
 <script>
 	import {TestStore} from '@/stores/test.js'
+	import {userConfig} from '@/stores/userConfig.js'
 	export default{
 		setup(){
 			const test = TestStore().friend_EX
-			return {test}
+			const configUser = userConfig()
+			return {test, configUser}
 		},
 		data(){
 			return {
 			keyWord: [],
+			isChosen: false,
+			styleChosen: {backgroundColor: "black"}
 			}
 		},
 		methods:{
+			activeChosen(item,el){
+				console.log(item.id)
+				this.configUser.userChosen = item
+				var taskbar = document.querySelectorAll(".taskbar-Contacts");
+				taskbar.forEach(function(el) {
+		      el.classList.remove("active");	   
+		    });
+				document.querySelector("#active" + item.id).classList.add("active")
+			},
 			alertDisplay(){
         this.$swal.fire({title:'Create Group', 
         						input: 'text',
@@ -57,16 +73,13 @@
 			}
 		},
 		created(){
-			// console.log(this.test.friend_listfriendID[2])
-			// console.log(this.users[3].name)
 			for (var i = 0; i < this.test.friend_listfriendID.length; i++) {
 				var name = this.test.friend_listfriendID[i].name
 				this.test.friend_listfriendID[i].name = 
 					name.charAt(0).toUpperCase()+ name.slice(1)
 				let char = name.charAt(0).toUpperCase();
-				console.log(char)
+				// console.log(char)
 				if(!this.keyWord.includes(char)){
-					// console.log('chua co')
 					this.keyWord.push(char)
 				}
 			}
@@ -78,4 +91,11 @@
 .taskbar-contact-keys{
 	padding: 0.5rem 1.5rem;
 }
+/*.chosen{
+	background-color: black;
+}*/
+/*#chosenID[chosenActive= 'value']{
+	background-color: black;
+}*/
+
 </style>

@@ -1,6 +1,5 @@
 <template>
-    <div class=" d-flex">
-      <!-- <div class="d-flex"> -->
+    <div class=" d-flex ">
         <input class="testing-input  " type="text" placeholder="Gửi tin nhắn tới ..." aria-label="Search">
         <button class="testing-submit " type="submit">
         	<input class="input-submit-file" type="file" id="input-submit-file">
@@ -9,7 +8,6 @@
         <button class="testing-submit " type="submit">
         	<i class="bi bi-send-fill"></i>
         </button>
-      <!-- </div> -->
     </div>
 	
 </template>

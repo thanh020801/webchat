@@ -1,7 +1,7 @@
 /*Theme bright*/
 
 /*màu cho cột menu*/
-.theme-bright .logo,.theme-bright .menu-layout,.theme-bright .search-taskbar,.theme-bright .search-taskbar-input, .theme-bright .search-taskbar-submit,.theme-bright .search-taskbar-input:focus, .theme-bright .testing,.theme-bright .testing-input,.theme-bright .testing-submit{
+.theme-bright .active,.theme-bright .taskbar:hover,.theme-bright .logo,.theme-bright .menu-layout,.theme-bright .search-taskbar,.theme-bright .search-taskbar-input, .theme-bright .search-taskbar-submit,.theme-bright .search-taskbar-input:focus, .theme-bright .testing,.theme-bright .testing-input,.theme-bright .testing-submit{
 	background-color: #b4d3f1;
 }
 /*Màu cho cột taskbar*/
@@ -74,7 +74,7 @@
 	/*color: #dedede;*/
 }
 .taskbar:hover{
-	background-color: #b4d3f1;
+	/*background-color: #b4d3f1;*/
 	cursor: pointer;
 }
 
