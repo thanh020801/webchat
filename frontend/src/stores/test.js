@@ -6,7 +6,7 @@ export const TestStore = defineStore('TestStore', () => {
 		id: "ppp",
 		friend_username: "thanh@gmail.com", 
 		friend_listfriendID: [
-								{id:'123', name: 'Thanh', idMessage: '111'},
+								// {id:'123', name: 'Thanh', idMessage: '111'},
 								{id:'234',name: "phuong" , idMessage: '222'},
 								{id: '345', name: 'thang' , idMessage: '333'},
 								{id:'456', name: 'An', idMessage: '444'},
@@ -25,15 +25,15 @@ export const TestStore = defineStore('TestStore', () => {
 		friend_invited: ['456'],
 		friend_recieved: [], 
 	}
-	  const message_EX1 = {idMessage: '222', content:[
+	  const message_EX1 = {idMessage: '222', contents:[
   { 
     id: "aaa",
     message_name_send: "123", 
     message_content: "Hello 123", 
     message_name_recieve: "234",
-    message_date: "2/8/2222", 
+    message_date: "1/8/2222", 
     message_room: "123234", 
-    message_count: "1",
+    message_count: 1,
   },
     { 
     id: "aaaa",
@@ -42,39 +42,39 @@ export const TestStore = defineStore('TestStore', () => {
     message_name_recieve: "123",
     message_date: "2/8/2222", 
     message_room: "123234", 
-    message_count: "1",
+    message_count: 2,
   },
     { 
     id: "aaaaa",
     message_name_send: "123", 
     message_content: "How are you", 
     message_name_recieve: "234",
-    message_date: "2/8/2222", 
+    message_date: "3/8/2222", 
     message_room: "123234", 
-    message_count: "1",
+    message_count: 3,
   },
     { 
     id: "aaaaaa",
     message_name_send: "234", 
     message_content: "Fine thank", 
     message_name_recieve: "123",
-    message_date: "2/8/2222", 
+    message_date: "4/8/2222", 
     message_room: "123234", 
-    message_count: "1",
+    message_count: 4,
   },
     { 
     id: "aaaaaaa",
     message_name_send: "123", 
     message_content: "ok", 
     message_name_recieve: "234",
-    message_date: "2/8/2222", 
+    message_date: "5/8/2222", 
     message_room: "123234", 
-    message_count: "1",
+    message_count: 5,
   },
 
     ]}
 
-  const message_EX2 = {idMessage: '11112',content: [
+  const message_EX2 = {idMessage: '11112',contents: [
   { 
     id: "bbb",
     message_name_send: "123", 
@@ -124,8 +124,22 @@ export const TestStore = defineStore('TestStore', () => {
 
   ]}
 
-  const message_EX = [message_EX1, message_EX2]
-
+  // const message_EX = [message_EX1]
+  const message_EX = [
+    message_EX1,
+    {idMessage: '333', contents: []},
+    {idMessage: '444', contents: []},
+    {idMessage: '555', contents: []},
+    {idMessage: '666', contents: []},
+    {idMessage: '777', contents: []},
+    {idMessage: '888', contents: []},
+    {idMessage: '999', contents: []},
+    {idMessage: '101010', contents: []},
+    {idMessage: '111111', contents: []},
+    {idMessage: '121212', contents: []},
+    {idMessage: '131313', contents: []},
+    {idMessage: '141414', contents: []},
+  ]
   const room_EX = [
     { 
       id: "learning",

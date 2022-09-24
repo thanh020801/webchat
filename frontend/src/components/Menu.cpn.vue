@@ -1,7 +1,7 @@
 <template>
 	{{selectorActive()}}
 	<div class="logo">
-		<router-link class='logoM' to='/chats'>MEGA CHAT</router-link>
+		<router-link class='logoM' to='/login'>MEGA CHAT</router-link>
 	</div>
 	<div>
 		<router-link to='/chats'>

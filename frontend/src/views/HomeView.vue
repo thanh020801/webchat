@@ -1,12 +1,13 @@
 <script>
 import Menu from '../components/Menu.cpn.vue'
-import ContentSend from '../components/Content-send.cpn.vue'
-import ContentReceive from '../components/Content-receive.cpn.vue'
+// import ContentSend from '../components/Content-send.cpn.vue'
+// import ContentReceive from '../components/Content-receive.cpn.vue'
 import Header from '../components/Header.cpn.vue'
 import Testing from '../components/Testing.cpn.vue'
+import FrameMS from '../components/FrameMS.cpn.vue'
 export default{
   components:{
-    Menu,ContentSend,ContentReceive,Header,Testing,
+    Menu,FrameMS,Header,Testing,
   }
 }
 </script>
@@ -22,13 +23,9 @@ export default{
             <div class="frame-layout">
                 <Header/>
                 <div class="Contents" >
-                    <div class="Content" v-for='i in 5'>
-                        <ContentReceive />
-                        <ContentSend/>
-                        <!-- <ContentSend/> -->
-                       
-                        
-                    </div>
+                    <!-- <div class="Content"> -->
+                        <FrameMS/>
+                    <!-- </div> -->
                 </div>
                 <div class="testing">
                     <Testing/>

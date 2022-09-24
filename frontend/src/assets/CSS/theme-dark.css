@@ -12,11 +12,11 @@
 	background-color: #262e35;
 }
 /*Màu tin nhắn người gửi*/
-.theme-dark .content-send-message{
-	background-color: #7269ef;
+.theme-dark .content-receive-message{
+	background-color: #3b728b;
 }
 /*Màu tin nhắn người nhận*/
-.theme-dark .content-receive-message{
+.theme-dark .content-send-message{
 	background-color: #36404a;
 }
 /*Màu nhập tin nhắn*/
@@ -24,19 +24,19 @@
 	background-color: #36404a;
 }
 /*Màu icon, màu chữ*/
-.theme-dark .taskbar-contact-keys,.theme-dark .info-profile,.theme-dark .name-taskbar, .theme-dark .name-header, .theme-dark .option-header, .theme-dark .item-menu, .theme-dark .bi, .theme-dark .testing-input, .theme-dark .search-taskbar-input, .theme-dark .title-name{
+.theme-dark .message-receive-content,.theme-dark .taskbar-contact-keys,.theme-dark .info-profile,.theme-dark .name-taskbar, .theme-dark .name-header, .theme-dark .option-header, .theme-dark .item-menu, .theme-dark .bi, .theme-dark .testing-input, .theme-dark .search-taskbar-input, .theme-dark .title-name{
 	color: #dedede;
 }
 /*màu thời gian gửi*/
-.theme-dark .time-send,{
+.theme-dark .time-receive,{
 	color: #393939;
 }
 /*màu thời gian nhận*/
-.theme-dark .time-receive{
+.theme-dark .time-send{
 	color: #dedede;
 }
 /*Màu tên người gửi*/
-.theme-dark .name-send{
+.theme-dark .name-receive{
 	color: #720000;
 }
 

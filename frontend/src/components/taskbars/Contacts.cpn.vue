@@ -47,12 +47,11 @@
 			return {
 			keyWord: [],
 			isChosen: false,
-			styleChosen: {backgroundColor: "black"}
 			}
 		},
 		methods:{
 			activeChosen(item,el){
-				console.log(item.id)
+				// console.log(item.id)
 				this.configUser.userChosen = item
 				var taskbar = document.querySelectorAll(".taskbar-Contacts");
 				taskbar.forEach(function(el) {

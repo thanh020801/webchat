@@ -19,11 +19,11 @@
 	background-color:#d6e5f3;
 }
 /*Màu tin nhắn người gửi*/
-.theme-bright .content-send-message{
+.theme-bright .content-receive-message{
 	background-color: #fff;
 }
 /*Màu tin nhắn người nhận*/
-.theme-bright .content-receive-message{
+.theme-bright .content-send-message{
 	background-color: #3b728b;
 }
 /*Màu nhập tin nhắn*/
@@ -32,20 +32,20 @@
 .theme-bright .timeOnline ,.theme-bright .name-taskbar, .theme-bright .name-header, .theme-bright .option-header, .theme-bright .item-menu, .theme-bright .bi, .theme-bright .testing-input, .theme-bright .search-taskbar-input, .theme-bright .title-name, .theme-bright .info-profile{
 	color: #101854;
 }
-.theme-bright .message-send-content{
+.theme-bright .message-receive-content{
 	font-size: 16px;
 	color: black;
 }
 /*màu thời gian gửi*/
-.theme-bright .time-send,{
+.theme-bright .time-receive,{
 	color: #393939;
 }
 /*màu thời gian nhận*/
-.theme-bright .time-receive{
+.theme-bright .time-send{
 	color: #dedede;
 }
 /*Màu tên người gửi*/
-.theme-bright .name-send{
+.theme-bright .name-receive{
 	color: #720000;
 }
 
