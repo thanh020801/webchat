@@ -4,9 +4,10 @@ import { defineStore } from 'pinia'
 export const userConfig = defineStore('userConfig', () => {
   const userTheme = 'theme-bright' // if theme is true then using bright theme
   const userChosen = {id:'234',name: "phuong" , idMessage: '222'}
+  const isLogin = false
   const userProfile = {
     id: "",
-    userName: "",
+    username: "",
     phone: "",
     birthday: "",
     avarta: "",
@@ -16,7 +17,7 @@ export const userConfig = defineStore('userConfig', () => {
   }
   const userProfile_EX = {
     id: "123",
-    userName: "thanh@gmail.com",
+    username: "thanh@gmail.com",
     name: 'Mega',
     phone: "025468546556",
     birthday: "02/08/2001",

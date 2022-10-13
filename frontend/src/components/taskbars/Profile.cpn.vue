@@ -13,7 +13,7 @@
 					<div>Name: </div><div class="info-profile-value">{{userProfile_EX.name}}</div>
 				</div>
 				<div class="info-profile-name">
-					<div>Username: </div><div class="info-profile-value">{{userProfile_EX.userName}}</div>
+					<div>Username: </div><div class="info-profile-value">{{userProfile_EX.username}}</div>
 				</div>		
 				<div class="info-profile-name">
 					<div>Birthday: </div><div class="info-profile-value">{{userProfile_EX.birthday}}</div>
@@ -25,7 +25,7 @@
 					<div>Friends: </div><div class="info-profile-value">{{friend_EX.friend_listfriendID.length}} people</div>
 				</div>
 				<div class="info-profile-name">
-					<div>Rooms: </div><div class="info-profile-value">{{userProfile_EX.roomID.length}} room</div>
+					<div>Rooms: </div><div class="info-profile-value">{{userProfile_EX.room}} room</div>
 				</div>
 
 			</div>
@@ -79,8 +79,8 @@
 			}
 		},
 		setup(){
-			const {userProfile_EX,friend_EX} = TestStore()
-			return {userProfile_EX,friend_EX}
+			const {userProfile_EX,friend_EX,room_EX} = TestStore()
+			return {userProfile_EX,friend_EX,room_EX}
 		},
 		methods:{
 			updateProfile(){

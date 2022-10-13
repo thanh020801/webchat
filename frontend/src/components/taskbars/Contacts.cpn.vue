@@ -13,7 +13,7 @@
 	<div class="croll-taskbar" >
 		<div v-for='char in keyWord'>
 			<h4 class="taskbar-contact-keys">{{char}}</h4>
-			<div  v-for="item in test.friend_listfriendID" >
+			<div  v-for="item in friend_EX.friend_listfriendID" >
 				<div v-if='item.name.charAt(0) === char'>
 					<div class="taskbar taskbar-Contacts " 
 								:id='"active" + item.id'
@@ -21,11 +21,10 @@
 								>
 							<div class="avartar-taskbar">
 								<img class="avarta-taskbar" src="../../assets/images/spider3.jpg">
-								<!-- <div class="user-online-taskbar"></div> -->
 							</div>
 							<div class="name-taskbar">
 								<div class="name-taskbar">{{item.name}}</div>
-								<!-- <div class="message-taskbar">{{item.message}}</div> -->
+								<div class="message-taskbar">{{item.username}}</div>
 							</div>
 							<div class="timeOnline"><i class="bi bi-three-dots-vertical"></i></div>
 					</div>
@@ -39,14 +38,13 @@
 	import {userConfig} from '@/stores/userConfig.js'
 	export default{
 		setup(){
-			const test = TestStore().friend_EX
+			const {friend_EX, user_EX,message_EX} = TestStore()
 			const configUser = userConfig()
-			return {test, configUser}
+			return {friend_EX, configUser, user_EX,message_EX}
 		},
 		data(){
 			return {
-			keyWord: [],
-			isChosen: false,
+				keyWord: [],
 			}
 		},
 		methods:{
@@ -60,21 +58,52 @@
 				document.querySelector("#active" + item.id).classList.add("active")
 			},
 			alertDisplay(){
-        this.$swal.fire({title:'Create Group', 
+        this.$swal.fire({title:'Add Friend', 
         						input: 'text',
-        						inputLabel: 'Group name',
-        						inputPlaceholder: 'Enter your group name here',
+        						inputLabel: 'Name',
+        						inputPlaceholder: 'Enter your name here',
         						background:'#272c3b', 
         						color: '#dedede',
         					}).then((res)=>{
-        	console.log(res.value)
+        							if(res.value){
+        								for (var i = 0; i < this.user_EX.length; i++) {
+        									// console.log(res.value)
+        									// console.log(this.user_EX[i])
+        									if(this.user_EX[i].username == res.value){
+        										// console.log(this.user_EX[i])
+        										this.$swal.fire({
+					        						title: this.user_EX[i].username, 
+					        						background:'#272c3b', 
+					        						color: '#dedede',
+					        					}).then((res)=>{
+					        						// console.log(res.isConfirmed)
+					        						if(res.isConfirmed){
+					        							var randomIdMessage = Math.floor(Math.random()*100000+1)
+					        							console.log(randomIdMessage)
+					        							this.user_EX[i].idMessage = String(randomIdMessage)
+					        							console.log(this.user_EX[i])
+					        							this.friend_EX.friend_listfriendID.push(this.user_EX[i])
+					        							this.message_EX.push({idMessage: this.user_EX[i].idMessage, contents: []})
+					        						}
+					        					})
+					        					return
+        									}
+        								}
+        								this.$swal.fire({
+			        						title:'Không tìm thấy !!!', 
+			        						background:'#272c3b', 
+			        						color: '#dedede',
+			        					})
+			        					return
+        							}
         });
+        // console.log(this.$swal)
 			}
 		},
 		created(){
-			for (var i = 0; i < this.test.friend_listfriendID.length; i++) {
-				var name = this.test.friend_listfriendID[i].name
-				this.test.friend_listfriendID[i].name = 
+			for (var i = 0; i < this.friend_EX.friend_listfriendID.length; i++) {
+				var name = this.friend_EX.friend_listfriendID[i].name
+				this.friend_EX.friend_listfriendID[i].name = 
 					name.charAt(0).toUpperCase()+ name.slice(1)
 				let char = name.charAt(0).toUpperCase();
 				// console.log(char)
@@ -90,11 +119,4 @@
 .taskbar-contact-keys{
 	padding: 0.5rem 1.5rem;
 }
-/*.chosen{
-	background-color: black;
-}*/
-/*#chosenID[chosenActive= 'value']{
-	background-color: black;
-}*/
-
 </style>

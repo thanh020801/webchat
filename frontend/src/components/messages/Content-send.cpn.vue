@@ -5,10 +5,12 @@
 			<div class="time-receive">{{item.message_date}}</div>
 		</div>
 	</div> -->
-	<div class="message-send">
+	<div class="message-send" :id="`num-${item.message_count}`" >
 		<div class="content-send-message">
 			<div class="message-send-content">{{item.message_content}}</div>
 			<div class="time-send">{{item.message_date}}</div>
+			<div class="time-send">{{item.message_time}}</div>
+
 		</div>
 	</div>
 </template>
@@ -19,7 +21,10 @@
 
 			}
 		},
-		props: ['item']
+		props: ['item'],
+		methods:{
+	
+		}
 	}
 </script>
 <style type="text/css">
@@ -27,13 +32,17 @@
 	margin: 0.5rem;
 	display: flex;
 	justify-content: flex-end;
+/*	position: relative;
+	bottom: 50%;*/
+	/*right: -30%;*/
+
 }
 
 .content-send-message{
 	/*padding-left: 1rem;
 	padding-right: 1rem;
 */	padding: 0.5rem 1rem;
-	max-width: 550px;
+	max-width: fit-content;
 	/*border:  1px solid black;*/
 	/*background-color: darkblue;*/
 	border-radius: 10px;

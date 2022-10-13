@@ -12,12 +12,13 @@
 
 				<!-- v-if='item.id === test_message[index][test_message[1].length-1].message_name_recieve || item.id === test_message[1][test_message[1].length-1].message_name_send' -->
 				<!-- {{test_message.length}} -->
-				{{getData()}}
+				<!-- {{getData()}} -->
 	<div class="croll-taskbar">
 		<div class="taskbar-chats-recent">Recent</div>
-		<div v-for="(item, index) in test_friend.friend_listfriendID">
-			<div class="taskbar "
-				 
+		<div v-for="(item, index) in test.friend_listfriendID">
+			<div class="taskbar taskbar-chats"
+				 	:id='"active" + item.id' 
+					@click='activeChosen(item,$event)' 
 				>
 				<div class="avartar-taskbar">
 					<img class="avarta-taskbar" src="../../assets/images/spider3.jpg">
@@ -37,11 +38,12 @@
 </template>
 <script>
 	import {TestStore} from '@/stores/test.js'
+	import {userConfig} from '@/stores/userConfig.js'
 	export default{
 		setup(){
-			const test_friend = TestStore().friend_EX
-			const test_message = TestStore().message_EX
-			return {test_friend,test_message}
+			const test = TestStore().friend_EX
+			const configUser = userConfig()
+			return {test, configUser}
 		},
 		data(){
 			 return {
@@ -49,19 +51,31 @@
 			}
 		},
 		methods:{
+			activeChosen(item,el){
+				console.log(item.id)
+				
+				this.configUser.userChosen = item
+				console.log(this.configUser.userChosen)
+				var taskbar = document.querySelectorAll(".taskbar-chats");
+				taskbar.forEach(function(el) {
+		      el.classList.remove("active");	   
+		    });
+				document.querySelector("#active" + item.id).classList.add("active")
+			},
+
 			findMessage(friendIdMessage, idMessage){
 				return friendIdMessage === idMessage
 			},
-			getData(){
-				var friend_temp = this.test_friend.friend_listfriendID
-				for (var i = 0; i < this.test_message.length; i++) {
-					for (var j = 0; j < friend_temp.length; j++) {
-						if(friend_temp[j].idMessage === this.test_message[i].idMessage){
-							console.log(this.test_message[i].content)
-						}
-					}
-				}
-			},
+			// getData(){
+			// 	var friend_temp = this.test.friend_listfriendID
+			// 	for (var i = 0; i < this.test_message.length; i++) {
+			// 		for (var j = 0; j < friend_temp.length; j++) {
+			// 			if(friend_temp[j].idMessage === this.test_message[i].idMessage){
+			// 				// console.log(this.test_message[i].content)
+			// 			}
+			// 		}
+			// 	}
+			// },
 
 			alertDisplay(){
         // this.$swal({

@@ -5,10 +5,19 @@ import Menu from '../components/Menu.cpn.vue'
 import Header from '../components/Header.cpn.vue'
 import Testing from '../components/Testing.cpn.vue'
 import FrameMS from '../components/FrameMS.cpn.vue'
+import {scrollIntoView} from '@/services/untils.js'
 export default{
   components:{
     Menu,FrameMS,Header,Testing,
-  }
+  },
+    methods:{
+        scrollIntoView(){
+            scrollIntoView(this.$refs.container)
+        }
+    },
+    mounted(){
+        scrollIntoView(this.$refs.container)
+    },
 }
 </script>
 
@@ -22,7 +31,8 @@ export default{
             </div>
             <div class="frame-layout">
                 <Header/>
-                <div class="Contents" >
+                    <!-- <div @click="scrollIntoView()" class="scroll-to-view"><i class="bi bi-chevron-down"></i></div> -->
+                <div class="Contents " ref='container'>
                     <!-- <div class="Content"> -->
                         <FrameMS/>
                     <!-- </div> -->
@@ -33,7 +43,9 @@ export default{
             </div>
             
         </div>
-    </main>
+    </main><!-- 
+    i-wish-this-would-scroll" 
+                VueStickyScroll='scrollToBottom()' -->
 </template>
 <style type="text/css">
     .main-template{
@@ -54,12 +66,27 @@ export default{
     }
     .frame-layout{
         padding: 0px;
+        position: relative;
         /*background-color: gold;*/
     }
+/*    .scroll-to-view{
+        width: 30px;
+        height: 30px;
+        position: absolute;
+        bottom: 100px;
+        right: 50px;
+        background-color: red;
+        border-radius: 100%;
+        font-weight: bold;
+        font-size: 30px;
+        line-height: -100px;
+    }*/
     .Contents{
         width: 100%;
         height: 77vh;
         overflow-y: scroll;
+        /*position: relative;*/
+        /*display: block;*/
     }
     /* width */
     .Contents::-webkit-scrollbar {
