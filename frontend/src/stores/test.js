@@ -260,6 +260,48 @@ const user_EX4 = {
     avarta: "",
     isOnline: true,
 }
+
+const user1 =  {
+    name: 'nguyen tuan thanh',
+    username: 'thanh',
+    password: '123',
+}
+const user2 =  {
+    name: 'nguyen binh an',
+    username: 'an',
+    password: '123',
+}
+const user3 =  {
+    name: 'tran ngoc thi',
+    username: 'thi',
+    password: '123',
+}
+const user4 =  {
+    name: 'Mai kim yen',
+    username: 'yen',
+    password: '123',
+}
+const user5 =  {
+    name: 'nguyen huu tai',
+    username: 'tai',
+    password: '123',
+}
+const user6 =  {
+    name: 'le truc hoa',
+    username: 'hoa',
+    password: '123',
+}
+const user7 =  {
+    name: 'luu tien dao',
+    username: 'dao',
+    password: '123',
+}
+const user8 =  {
+    name: 'Nguyen hoang anh',
+    username: 'anh',
+    password: '123',
+}
+const createUser = [user1,user2,user3,user4,user5,user6,user7,user8]
 const user_EX = [user_EX1, user_EX2, user_EX3, user_EX4]
-  return { message_EX, friend_EX, room_EX,userProfile_EX,room_EX_Search ,user_EX}
+  return { message_EX, friend_EX, room_EX,userProfile_EX,room_EX_Search ,user_EX,createUser}
 })

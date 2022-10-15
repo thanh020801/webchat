@@ -3,7 +3,6 @@
 		<p class="">Hãy cùng nhau chia sẽ những kỹ niệm thú vị đi nào</p>
 	</div>
 	<div v-for='item in messages'> 
-		<!-- {{item}} -->
 		<div class="" v-if='this.configUser.userChosen.id === item.message_name_send'>
 			<ContentReceive :item='item'/>
 		</div>

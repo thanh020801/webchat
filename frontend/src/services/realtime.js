@@ -1,5 +1,5 @@
 import io from "socket.io-client"
-const socketInstant =  io('http://localhost:5000')
+const socketInstant =  io('127.0.0.1:5000')
 
 
 function realtime(){

@@ -10,13 +10,13 @@ import App from './App.vue';
 import router from './router';
 import './assets/main.css';
 import realtime from '@/services/realtime.js'
-import {testStore} from '@/stores/testStore.js'
+import {store} from '@/stores/store.js'
 const app = createApp(App)
 app.config.globalProperties.$socketInstant = realtime()
 app.use(VueSweetalert2)
 // app.use(vueStickyScroll)
 app.use(createPinia())
 app.use(router)
-app.config.globalProperties.$testStore = testStore()
+app.config.globalProperties.$store = store()
 
 app.mount('#app')

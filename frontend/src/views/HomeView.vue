@@ -7,17 +7,25 @@ import Testing from '../components/Testing.cpn.vue'
 import FrameMS from '../components/FrameMS.cpn.vue'
 import {scrollIntoView} from '@/services/untils.js'
 export default{
-  components:{
-    Menu,FrameMS,Header,Testing,
-  },
+    components:{
+        Menu,FrameMS,Header,Testing,
+    },
     methods:{
         scrollIntoView(){
             scrollIntoView(this.$refs.container)
-        }
+        },
+
     },
     mounted(){
         scrollIntoView(this.$refs.container)
     },
+    created(){
+        if(this.$store.isLogin){
+            this.$router.push('/')
+        }else{
+            this.$router.push('/login')        
+        }
+    }
 }
 </script>
 
@@ -26,16 +34,12 @@ export default{
         <div class=" main-template">
             <div class="menu-layout"><Menu /></div>
             <div class="taskbar-layout">
-                <!-- <Taskbar/> -->
                 <router-view/>
             </div>
             <div class="frame-layout">
                 <Header/>
-                    <!-- <div @click="scrollIntoView()" class="scroll-to-view"><i class="bi bi-chevron-down"></i></div> -->
                 <div class="Contents " ref='container'>
-                    <!-- <div class="Content"> -->
-                        <FrameMS/>
-                    <!-- </div> -->
+                        <FrameMS/>                        
                 </div>
                 <div class="testing">
                     <Testing/>

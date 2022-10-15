@@ -49,11 +49,18 @@
 				<div style="font-size: 13px; line-height: 5px;">Dark</div>
 			</div>
 		</div>
+
+		<router-link to='/login'>
+			<div class="item-menu"  @click='removeAccount()'>
+				<i class="bi bi-power"></i>
+				<br>
+				<div style="font-size: 13px; line-height: 5px;">Logout</div>
+			</div>
+		</router-link>
 	</div>
 		
 </template>
 <script>
-import {userConfig} from '@/stores/userConfig.js'
 	export default{
 		data(){
 			return {
@@ -61,11 +68,11 @@ import {userConfig} from '@/stores/userConfig.js'
 				
 			}
 		},
-		setup(){
-			const configUser = userConfig()
-			return {configUser}
-		},
 		methods:{
+			removeAccount(){
+				this.$store.removeAccount()
+				this.$socketInstant.disconnect()
+			},
 			selectorActive(activeE){
 				if(this.$router.currentRoute._value.path === activeE){
 					return {
@@ -77,10 +84,10 @@ import {userConfig} from '@/stores/userConfig.js'
 			changeTheme(){
 				// console.log(this.configUser.userTheme)
 				this.cTheme = !this.cTheme
-				if(this.configUser.userTheme === 'theme-bright'){
-					this.configUser.userTheme = 'theme-dark'
+				if(this.$store.$state.theme === 'theme-bright'){
+					this.$store.$state.theme = 'theme-dark'
 				}else{
-					this.configUser.userTheme = 'theme-bright'
+					this.$store.$state.theme = 'theme-bright'
 				}
 			}			
 		},
@@ -106,13 +113,13 @@ import {userConfig} from '@/stores/userConfig.js'
 		font-size: 20px;
 	}
 	.item-menu{
-		width: 70%;
-		height: 80px;
+		width: 65%;
+		height: 65px;
 		align-items: center;
 		margin: 0 auto;
 		text-align: center;
 		justify-content: center;
-		padding-top: 12px;
+		padding-top: 5px;
 		font-size: 25px;
 		cursor: pointer;
 	}

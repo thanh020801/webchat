@@ -86,13 +86,21 @@
 .user-online-taskbar{
 	width: 8px;
 	height: 8px;
+	background-color: green;
+	border-radius: 100%;
+	position: relative;
+	left: 22px;
+	bottom: 6px;
+}
+.user-offline-taskbar{
+	width: 8px;
+	height: 8px;
 	background-color: red;
 	border-radius: 100%;
 	position: relative;
 	left: 22px;
 	bottom: 6px;
 }
-
 .search-taskbar,.search-taskbar-input, .search-taskbar-submit{
 	border: none;
 	outline: none;

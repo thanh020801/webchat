@@ -7,7 +7,7 @@ const router = createRouter({
     {
       path: '/',
       name: 'chats',
-      redirect: '/chats',
+      redirect: '/contacts',
       component: HomeView,
       children:[
         {path: '/chats' ,component: () => import('../components/taskbars/Chats.cpn.vue')},

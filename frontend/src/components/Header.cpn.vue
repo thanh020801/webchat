@@ -1,7 +1,13 @@
 <template>
-	<div class="header" v-if='configUser.userChosen'>
-		<div class="avt-header" ><img class="avartar-header" src="../assets/images/spider3.jpg"></div>
-		<div class="name-header"><h4>{{configUser.userChosen.name}}</h4></div>
+	<div class="header" v-if='$store.isLogin'>
+		<div class="avt-header" >
+			<img class="avartar-header" src="../assets/images/spider3.jpg">
+		</div>
+		<div class="name-header" v-if='$store.userChosen.friend'>
+			<h4>{{$store.userChosen.friend.name}}</h4>
+			<div v-if='$store.userChosen.isOnline'>online</div>
+			<div v-else>offline</div>
+		</div>
 		<div class="option-header"><i class="bi bi-three-dots-vertical"></i></div>
 	</div>
 

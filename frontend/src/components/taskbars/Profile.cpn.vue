@@ -10,22 +10,22 @@
 			</div>
 			<div class="info-profile">
 				<div class="info-profile-name">
-					<div>Name: </div><div class="info-profile-value">{{userProfile_EX.name}}</div>
+					<div>Name: </div><div class="info-profile-value">{{userProfile.name}}</div>
 				</div>
 				<div class="info-profile-name">
-					<div>Username: </div><div class="info-profile-value">{{userProfile_EX.username}}</div>
+					<div>Username: </div><div class="info-profile-value">{{userProfile.username}}</div>
 				</div>		
 				<div class="info-profile-name">
-					<div>Birthday: </div><div class="info-profile-value">{{userProfile_EX.birthday}}</div>
+					<div>Birthday: </div><div class="info-profile-value">{{userProfile.birthday}}</div>
 				</div>			
 				<div class="info-profile-name">
-					<div>Phone: </div><div class="info-profile-value">{{userProfile_EX.phone}}</div>
+					<div>Phone: </div><div class="info-profile-value">{{userProfile.phone}}</div>
 				</div>
 				<div class="info-profile-name">
-					<div>Friends: </div><div class="info-profile-value">{{friend_EX.friend_listfriendID.length}} people</div>
+					<div>Friends: </div><div class="info-profile-value">{{friendNumber}} people</div>
 				</div>
 				<div class="info-profile-name">
-					<div>Rooms: </div><div class="info-profile-value">{{userProfile_EX.room}} room</div>
+					<div>Rooms: </div><div class="info-profile-value">{{roomNumber}} room</div>
 				</div>
 
 			</div>
@@ -70,43 +70,47 @@
 
 </template>
 <script>
-	import {TestStore} from '@/stores/test.js'
 	export default{
 		data(){
 			return {
 				convertProfile : false,
 				dataChange: "",
+				userProfile: this.$store.$state.userProfile,
+				friendNumber: this.$store.$state.friends.length,
+				roomNumber: 0,
+				// roomNumber: this.$store.$state.friends.list_room.length | 0,
 			}
-		},
-		setup(){
-			const {userProfile_EX,friend_EX,room_EX} = TestStore()
-			return {userProfile_EX,friend_EX,room_EX}
 		},
 		methods:{
 			updateProfile(){
 				if(!this.convertProfile){
+
 					this.convertProfile = true
-					this.dataChange = this.userProfile_EX
+					this.dataChange = this.userProfile
 					// console.log(this.dataChange)
 				}else{
 					this.convertProfile = false
-					this.userProfile_EX = this.dataChange
+					this.$socketInstant.emit('UPDATE-PROFILE',
+						{username: this.userProfile.username, payload: this.dataChange})
+					this.$socketInstant.on('UPDATE-PROFILE-STATUS', async(res)=>{
+						// console.log(res.data)
+						this.$store.$state.userProfile = res.data.user
+						// console.log(this.$store.$state.userProfile)
+					})
 				}
-				
-				// console.log(this.dataChange.name)
 			},
-			alertDisplay(){
-		        this.$swal.fire({title:'Create Group', 
-		        						input: 'text',
-		        						inputLabel: 'Group name',
-		        						inputPlaceholder: 'Enter your group name here',
-		        						background:'#272c3b', 
-		        						color: '#dedede',
-		        					}).then((res)=>{
-		        	console.log(res.value)
-		        });
+			// alertDisplay(){
+		 //        this.$swal.fire({title:'Create Group', 
+		 //        						input: 'text',
+		 //        						inputLabel: 'Group name',
+		 //        						inputPlaceholder: 'Enter your group name here',
+		 //        						background:'#272c3b', 
+		 //        						color: '#dedede',
+		 //        					}).then((res)=>{
+		 //        	console.log(res.value)
+		 //        });
 		        // console.log(this.$swal)
-			}
+			// }
 		}
 	}
 </script>

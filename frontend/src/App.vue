@@ -1,19 +1,13 @@
 <script >
 import { RouterLink, RouterView } from 'vue-router'
-import {userConfig} from '@/stores/userConfig.js'
-export default{
-  setup(){
-    const configUser = userConfig()
-    return {configUser}
-  }
-}
 </script>
 
 <template>
 
-  <div  :class='configUser.userTheme'
+  <div  :class='$store.theme'
         class=" container-fluid" 
        >
+
     <RouterView />
   </div>
 </template>

@@ -29,7 +29,7 @@
         if(this.user.username !=="" && this.user.password !==''){
           this.$socketInstant.emit('REGISTER', {user:this.user})
           this.$socketInstant.on('REGISTER-STATUS', async (res)=>{
-            if(res.user){
+            if(res.status === 200){
               this.$swal.fire({
                     title:'Register successfully', 
                     background:'#272c3b', 
@@ -38,7 +38,7 @@
               this.$router.push('/login')
             }else{
               this.$swal.fire({
-                    title: res, 
+                    title: res.data.response, 
                     background:'#272c3b', 
                     color: '#dedede',
                   })
@@ -49,7 +49,7 @@
         }
       },
       test(){
-        console.log(this.$testStore.$state.hello)
+        console.log(this.$store.$state)
       }
     }
   }
