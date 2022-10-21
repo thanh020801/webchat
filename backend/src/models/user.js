@@ -20,7 +20,7 @@ const user = mongoose.Schema({
 	birthday: {
 		type: String,
 	},	
-	avarta:{
+	avatar:{
 		type: String,
 	},
 	is_login:{

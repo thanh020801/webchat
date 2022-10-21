@@ -9,8 +9,8 @@ import "bootstrap";
 import App from './App.vue';
 import router from './router';
 import './assets/main.css';
-import realtime from '@/services/realtime.js'
-import {store} from '@/stores/store.js'
+import {realtime} from '@/services/realtime.js';
+import {store} from '@/stores/store.js';
 const app = createApp(App)
 app.config.globalProperties.$socketInstant = realtime()
 app.use(VueSweetalert2)

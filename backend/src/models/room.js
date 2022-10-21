@@ -11,9 +11,9 @@ const room = mongoose.Schema({
 	room_name: {
 		type: String,
 	},
-	room_avartar: {
+	room_avatar: {
 		type: String,
-	}
+	},
 	
 },{timestamps: true})
 

@@ -5,7 +5,7 @@
         	<input class="input-submit-file" type="file" id="input-submit-file">
         	<label for="input-submit-file"><i class="bi bi-file-earmark-text-fill"></i></label>
         </button>
-        <button class="testing-submit" type="submit"  @click='sendMessage(message.content)'>
+        <button v-if='message.content !== "" ' class="testing-submit" type="submit"  @click='sendMessage(message.content)'>
         	<i class="bi bi-send-fill"></i>
         </button>
     </div>
@@ -21,7 +21,7 @@
 				message:{
 					content : "",
 					time: "",
-				}
+				},
 			}
 		},
 		setup(){

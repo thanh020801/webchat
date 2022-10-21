@@ -1,0 +1,232 @@
+/*Taskbar page*/
+.title{
+	grid-template-columns: 90% auto;
+	display: grid;
+	padding: 1rem 1rem 0rem 1rem;
+	/*align-items: center;*/
+	font-size: 23px;
+}
+
+.taskbar{
+	padding:0px 1.5rem;
+	width: 98%;
+	margin: 0px auto;
+	height: 60px;
+	align-items: center;
+	grid-template-columns: 20% auto 10%;
+	display: grid;
+	/*color: #dedede;*/
+}
+.taskbar:hover{
+	/*background-color: #b4d3f1;*/
+	cursor: pointer;
+}
+
+.avarta-taskbar{
+	width: 35px;
+	height: 35px;
+	border-radius: 100%;
+}
+.user-online-taskbar{
+	width: 8px;
+	height: 8px;
+	background-color: green;
+	border-radius: 100%;
+	position: relative;
+	left: 22px;
+	bottom: 6px;
+}
+.user-offline-taskbar{
+	width: 8px;
+	height: 8px;
+	background-color: red;
+	border-radius: 100%;
+	position: relative;
+	left: 22px;
+	bottom: 6px;
+}
+.search-taskbar,.search-taskbar-input, .search-taskbar-submit{
+	border: none;
+	outline: none;
+}
+.search-taskbar{
+	grid-template-columns: auto 5%;
+	display: grid;
+	width: 90%;
+	padding: 0px;
+	height: 50px;
+	align-items: center;
+	margin: 0rem auto;
+	margin-top: 1rem;
+	margin-bottom: 0.5rem;
+	border-radius: 10px;
+}
+.search-taskbar .d-flex{
+	width: 90%;
+	margin: 0 auto;
+
+}
+.title-name{
+	font-weight: bold;
+}
+.search-taskbar-input{
+	width: 100%;
+	height: 35px;
+/*		margin: 0 auto;
+*/		padding: 0 0.5rem;
+	
+	
+}
+.search-taskbar-input:focus{
+	outline: none;
+	/*background-color: green;*/
+	border: none;
+	outline: none;
+}
+
+.timeOnline{
+	text-align: right;
+	font-size: 13px;
+}
+.name-taskbar{
+/*	color: #dedede;
+*/	font-size: 17px;
+	line-height: 10px;
+}
+.message-taskbar{
+	color: #8aa4bb;
+	font-size: 13px;
+	line-height: 30px;
+}
+.croll-taskbar{
+    width: 100%;
+    height: 70vh;
+    overflow-y: scroll;
+}
+/* width */
+.croll-taskbar::-webkit-scrollbar {
+  width: 5px;
+}
+
+/* Track */
+.croll-taskbar::-webkit-scrollbar-track {
+  /*box-shadow: inset 0 0 5px #2e0538; */
+  border-radius: 10px;
+}
+ 
+/* Handle */
+.croll-taskbar::-webkit-scrollbar-thumb {
+  background: #36404a; 
+  border-radius: 10px;
+}
+
+/* Handle on hover */
+.croll-taskbar::-webkit-scrollbar-thumb:hover {
+  background: #2e0538; 
+}
+
+
+/*login, register*/
+
+
+.container-register{
+  width: 100%;
+  margin: 0px;
+  padding: 1rem;
+  height: 100vh;
+  background-image: linear-gradient(#093f47, #98bff7, #093f47);
+  color: white;
+  align-items: center;
+  align-items: center;
+  justify-items: center;
+  justify-content: center;
+}
+.register{
+  width: 40%;
+  margin: 0 auto;
+  padding: 1rem 2rem;
+  height: fit-content;
+  background-image: linear-gradient(45deg, #0d1443, #2bbfda);/*linear-gradient(#085272,#2e0538);*/
+}
+.container-register .control-group{
+    padding: 0.5rem ;
+}
+.register legend{
+  text-align: center;
+  font-weight: bold;
+}
+.controls p{
+  font-size: 13px;
+  padding-top: 0.5rem;
+}
+.controls p span{
+  color: #6dffd1;
+}
+
+
+/*header option*/
+
+	.showOption{
+		display: block;
+		font-size: 13px;
+		padding: 0.5rem;
+		position: absolute;
+		right: 0px;
+		top: 60px;
+		width: 300px;
+		height: 360px;
+		z-index: 10000000;
+		text-align: center;
+		align-items: center;
+		justify-content: center;
+	}
+	.headerOption {
+	}
+	.headerOption .avartarOption{
+		align-items: center;
+		justify-content: center;
+		align-content: center;
+
+	}
+	.nameOption{
+		font-weight: bold;
+		font-size: 20px;
+		text-align: center;
+	}
+	.addFriendOption{
+		margin-top: 0.5rem;
+
+	}
+	.addFriendOption button{
+		margin: 3px;
+		height: 30px;
+		width: 80%;
+		border-radius: 10px;
+		border: none;
+		line-height: 10px;
+		font-size: 15px;
+	}
+	
+	.addFriendOption .btn-warning{
+		color: #FFF;
+	}
+	.memberOption{
+		width: 80%;
+		margin: 0 auto;
+		text-align: left;
+		font-size: 14px;
+		padding: 0.5rem;
+	}
+	.underline{
+		border-top: 1px solid black;
+		margin-top: 5px;
+		padding: 0px;
+	}
+
+	.height-croll-taskbar{
+		height: 140px;
+	}
+	.memberOption .member i{
+		font-size: 20px;
+		padding-top: 10px;
+	}

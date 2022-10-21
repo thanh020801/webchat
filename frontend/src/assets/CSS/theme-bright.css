@@ -1,23 +1,39 @@
 /*Theme bright*/
 
 /*màu cho cột menu*/
-.theme-bright .active,.theme-bright .taskbar:hover,.theme-bright .logo,.theme-bright .menu-layout,.theme-bright .search-taskbar,.theme-bright .search-taskbar-input, .theme-bright .search-taskbar-submit,.theme-bright .search-taskbar-input:focus, .theme-bright .testing,.theme-bright .testing-input,.theme-bright .testing-submit{
-	background-color: #b4d3f1;
+.theme-bright .header,.theme-bright .menu-layout, .theme-bright .testing,.theme-bright .testing-input,.theme-bright .testing-submit{
+	/*background-color: #b4d3f1;*/
+	background-color: #0091ff;
+}
+.theme-bright .showOption .nameOption, .theme-bright .showOption .numberMember,  .theme-bright .title .title-name, .theme-bright .title div i{
+	color: #0091ff;
+}
+/*mauf cho thanh tim kiem*/
+.theme-bright .frame-layout,.theme-bright .MSText,.theme-bright .memberOption .member:hover,.theme-bright .taskbar:hover,.theme-bright .active,.theme-bright .search-taskbar,.theme-bright .search-taskbar-input, .theme-bright .search-taskbar-submit,.theme-bright .search-taskbar-input:focus{
+	background-color: #EEEFF2;
 }
 /*Màu cho cột taskbar*/
 .theme-bright .taskbar-layout{
-	background-color: #c6d8e9;
+	background-color: #FFF;
+	/*background-color: #c6d8e9;*/
+}
+/*Mauf icon*/
+.theme-bright .memberOption .member i,.theme-bright .timeOnline .bi, .theme-bright .search-taskbar i, .theme-bright .taskbar-layout i{
+	color: black;
+}
+.theme-dark .MSText p,.theme-bright .header .name-header h4, .theme-bright .header .name-header div,.theme-bright .testing-input, .theme-bright .testing-input::placeholder{
+	color: #FFF;
 }
 /*Màu cho cột frame và header  #d0fbff*/
 /*.frame-layout,{
 	background-color: #d6e5f3;
 }*/
-.theme-bright .header{
+/*.theme-bright .header{
 	background-color: #b4d3f1;
-}
-.theme-bright .frame-layout{
+}*/
+/*.theme-bright .frame-layout{
 	background-color:#d6e5f3;
-}
+}*/
 /*Màu tin nhắn người gửi*/
 .theme-bright .content-receive-message{
 	background-color: #fff;
@@ -27,10 +43,16 @@
 	background-color: #3b728b;
 }
 /*Màu nhập tin nhắn*/
-
+.theme-bright .showOption{
+	background-color: #FFF;
+}
 /*Màu icon, màu chữ*/
-.theme-bright .timeOnline ,.theme-bright .name-taskbar, .theme-bright .name-header, .theme-bright .option-header, .theme-bright .item-menu, .theme-bright .bi, .theme-bright .testing-input, .theme-bright .search-taskbar-input, .theme-bright .title-name, .theme-bright .info-profile{
+.theme-bright .name-taskbar,  .theme-bright .option-header,  .theme-bright .search-taskbar-input, .theme-bright .info-profile{
+	/*color: #FFF;*/
 	color: #101854;
+}
+.theme-bright .item-menu, .theme-bright .bi, .theme-bright .logo .logoM{
+	color: #FFF;
 }
 .theme-bright .message-receive-content{
 	font-size: 16px;
@@ -54,126 +76,3 @@
 }
 
 
-/*Taskbar page*/
-.title{
-	grid-template-columns: 90% auto;
-	display: grid;
-	padding: 1rem 1rem 0rem 1rem;
-	/*align-items: center;*/
-	font-size: 23px;
-}
-
-.taskbar{
-	padding:0px 1.5rem;
-	width: 98%;
-	margin: 0px auto;
-	height: 60px;
-	align-items: center;
-	grid-template-columns: 15% auto 10%;
-	display: grid;
-	/*color: #dedede;*/
-}
-.taskbar:hover{
-	/*background-color: #b4d3f1;*/
-	cursor: pointer;
-}
-
-.avarta-taskbar{
-	width: 30px;
-	height: 30px;
-	border-radius: 100%;
-}
-.user-online-taskbar{
-	width: 8px;
-	height: 8px;
-	background-color: green;
-	border-radius: 100%;
-	position: relative;
-	left: 22px;
-	bottom: 6px;
-}
-.user-offline-taskbar{
-	width: 8px;
-	height: 8px;
-	background-color: red;
-	border-radius: 100%;
-	position: relative;
-	left: 22px;
-	bottom: 6px;
-}
-.search-taskbar,.search-taskbar-input, .search-taskbar-submit{
-	border: none;
-	outline: none;
-}
-.search-taskbar{
-	grid-template-columns: auto 5%;
-	display: grid;
-	width: 90%;
-	padding: 0px;
-	height: 50px;
-	align-items: center;
-	margin: 0rem auto;
-	margin-top: 1rem;
-	margin-bottom: 0.5rem;
-	border-radius: 10px;
-}
-.search-taskbar .d-flex{
-	width: 90%;
-	margin: 0 auto;
-
-}
-.search-taskbar-input{
-	width: 100%;
-	height: 35px;
-/*		margin: 0 auto;
-*/		padding: 0 0.5rem;
-	
-	
-}
-.search-taskbar-input:focus{
-	outline: none;
-	/*background-color: green;*/
-	border: none;
-	outline: none;
-}
-
-.timeOnline{
-	text-align: right;
-	font-size: 13px;
-}
-.name-taskbar{
-/*	color: #dedede;
-*/	font-size: 15px;
-	line-height: 10px;
-}
-.message-taskbar{
-	color: #8aa4bb;
-	font-size: 13px;
-	line-height: 30px;
-}
-.croll-taskbar{
-    width: 100%;
-    height: 70vh;
-    overflow-y: scroll;
-}
-/* width */
-.croll-taskbar::-webkit-scrollbar {
-  width: 5px;
-}
-
-/* Track */
-.croll-taskbar::-webkit-scrollbar-track {
-  /*box-shadow: inset 0 0 5px #2e0538; */
-  border-radius: 10px;
-}
- 
-/* Handle */
-.croll-taskbar::-webkit-scrollbar-thumb {
-  background: #36404a; 
-  border-radius: 10px;
-}
-
-/* Handle on hover */
-.croll-taskbar::-webkit-scrollbar-thumb:hover {
-  background: #2e0538; 
-}

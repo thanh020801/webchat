@@ -1,6 +1,6 @@
 <template>
 	<div class="title">
-			<h2 class="title-name" >Profile</h2>
+			<h2 class="title-name" >CÁ NHÂN</h2>
 	</div>
 
 	<!-- <div class="croll-taskbar"> -->
@@ -77,7 +77,7 @@
 				dataChange: "",
 				userProfile: this.$store.$state.userProfile,
 				friendNumber: this.$store.$state.friends.length,
-				roomNumber: 0,
+				roomNumber: this.$store.$state.rooms.length,
 				// roomNumber: this.$store.$state.friends.list_room.length | 0,
 			}
 		},
@@ -157,10 +157,10 @@
 }
 
 .info-profile-value input{
-	background-color: #3b728b;
+	background-color: #EEEFF2;
 	border: none;
 	border-radius: 3px;
-	color: wheat;
+	color: black;
 	padding: 0.3rem 0.5rem;
 }
  .info-profile-value input:focus{

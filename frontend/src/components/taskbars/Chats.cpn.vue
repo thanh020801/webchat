@@ -1,6 +1,6 @@
 <template>
 	<div class="title">
-		<div><h2 class="title-name" >Chats</h2></div>
+		<div><h2 class="title-name" >CHATS</h2></div>
 		<div v-on:click="alertDisplay"><i class="bi bi-person-plus-fill"></i></div>
 	</div>
 		<div class="search-taskbar">
@@ -88,8 +88,8 @@
         						input: 'text',
         						inputLabel: 'Name',
         						inputPlaceholder: 'Enter your name here',
-        						background:'#272c3b', 
-        						color: '#dedede',
+        						background:'#EEEFF2', 
+        						color: 'black',
         					}).then((res)=>{
         	console.log(res.value)
         });
@@ -102,4 +102,5 @@
 .taskbar-chats-recent{
 	padding: 0.5rem 1.5rem;
 }
+
 </style>

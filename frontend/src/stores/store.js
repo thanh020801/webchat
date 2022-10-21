@@ -5,7 +5,7 @@ export const store = defineStore('store', {
 	
 	state:() =>{
 		return {
-			userChosen: {id:'234',name: "tuan" , idMessage: '222'},
+			userChosen: "",
 			theme: 'theme-bright',
 			isLogin: false,
 			friends: [],

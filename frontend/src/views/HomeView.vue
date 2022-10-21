@@ -2,13 +2,14 @@
 import Menu from '../components/Menu.cpn.vue'
 // import ContentSend from '../components/Content-send.cpn.vue'
 // import ContentReceive from '../components/Content-receive.cpn.vue'
-import Header from '../components/Header.cpn.vue'
+import Header from '../components/header/Header.cpn.vue'
 import Testing from '../components/Testing.cpn.vue'
-import FrameMS from '../components/FrameMS.cpn.vue'
+import FrameMS from '../components/frames/FrameMS.cpn.vue'
+import FrameMSText from '../components/frames/FrameMSText.cpn.vue'
 import {scrollIntoView} from '@/services/untils.js'
 export default{
     components:{
-        Menu,FrameMS,Header,Testing,
+        Menu,FrameMS,Header,Testing,FrameMSText,
     },
     methods:{
         scrollIntoView(){
@@ -19,13 +20,6 @@ export default{
     mounted(){
         scrollIntoView(this.$refs.container)
     },
-    created(){
-        if(this.$store.isLogin){
-            this.$router.push('/')
-        }else{
-            this.$router.push('/login')        
-        }
-    }
 }
 </script>
 
@@ -36,7 +30,11 @@ export default{
             <div class="taskbar-layout">
                 <router-view/>
             </div>
-            <div class="frame-layout">
+            <!-- {{$store.userChosen}} -->
+            <div v-if='!$store.userChosen'>
+                <FrameMSText/>  
+            </div>
+            <div class="frame-layout"  v-else>
                 <Header/>
                 <div class="Contents " ref='container'>
                         <FrameMS/>                        
@@ -45,6 +43,7 @@ export default{
                     <Testing/>
                 </div>
             </div>
+            
             
         </div>
     </main><!-- 

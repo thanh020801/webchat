@@ -1,6 +1,6 @@
 <template>
 	<div class="title">
-		<div><h2 class="title-name" >Contacts</h2></div>
+		<div><h2 class="title-name" >LIÊN HỆ</h2></div>
 		<div v-on:click="alertDisplay"><i class="bi bi-person-plus-fill"></i></div>
 	</div>
 		<div class="search-taskbar">
@@ -13,7 +13,7 @@
 	<div class="croll-taskbar" >
 		<div v-for='char in keyWord'>
 			<h4 class="taskbar-contact-keys">{{char}}</h4>
-			<div  v-for="item in $store.$state.friends" >
+			<div  v-for="item in friends" >
 				<div v-if='item.friend.name.charAt(0).toUpperCase() === char'>
 					<div class="taskbar taskbar-Contacts" 
 								:id='"active" + item.friend.friend_id'
@@ -36,27 +36,16 @@
 	</div>
 </template>
 <script>
-	import {TestStore} from '@/stores/test.js'
-	import {userConfig} from '@/stores/userConfig.js'
 	export default{
-		setup(){
-			const {friend_EX, user_EX,message_EX} = TestStore()
-			const configUser = userConfig()
-			return {friend_EX, user_EX,message_EX}
-		},
 		data(){
 			return {
 				keyWord: [],
 				key: 0,
-				update: false
+				update: false,
+				friends: this.$store.friends,
 			}
 		},
 		methods:{
-		  updateOnline(){
-            this.$socketInstant.on('HAS_PEOPLE_ONLINE',async(data)=>{
-                console.log('data of has online',data)
-            })
-       },
 			activeChosen(item,el){
 				// console.log(item.friend.friend_id)
 				this.$store.$state.userChosen = item
@@ -92,22 +81,31 @@
 					        						background:'#272c3b', 
 					        						color: '#dedede',
 					        					}).then((res)=>{
-					        						// console.log(res.value)
+					        						
 					        						this.$socketInstant.emit('COMMIT-ADD-FRIEND',{	
-					        								user1: this.$store.userProfile.friend_id, 
-					        								user2: friend.friend_id
-					        							})
+					        								user1: {username: this.$store.userProfile.username},
+					        								user2: {username:friend.username}
+					        						})
+					        						// console.log(res.value)
         											this.$socketInstant.on('COMMIT-ADD-FRIEND-STATUS',
-        											 async (data)=>{
-        											 	// console.log(data.F)
-        											 	this.$store.$state.friends.push(data.F)
-        											 	// this.render()
-        											 	// this.key++
-        											 	// this.$forceUpdate()
-        											 	// console.log(this.$store.$state.friends)
+        											(data)=>{
+        												if(data.status === 200){
+	        												var temp = this.$store.friends.find(element => 
+	        														element.friend.username === data.F.friend.username)
+	        												if(!temp){
+	        													this.$store.$state.friends.push(data.F)
+	        												}
+        												}
+	        											else{
+	        													this.$swal.fire({
+	        														title: data.data.response, 
+									        						background:'#272c3b', 
+									        						color: '#dedede',
+									        					})
+	        											}
+
         											})
 					        					})
-					        					return
         									}
         								})
         							}
@@ -115,7 +113,7 @@
         				});
 			},
 			render(){
-					const {friends} = this.$store.$state
+					const friends = this.friends
 					// console.log(friends)
 					for (var i = 0; i < friends.length; i++) {
 						var name = friends[i].friend.name
@@ -142,6 +140,7 @@
 
 		},
 		mounted(){
+			// this.render()
 			// Cập nhật bạn bè online
 			this.$socketInstant.on('HAS_PEOPLE_ONLINE',async(res)=>{
           // console.log('data of has online',res.data.username)
