@@ -5,11 +5,15 @@ export const store = defineStore('store', {
 	
 	state:() =>{
 		return {
+			timeStandard: 'Sun Oct 23 2022 16:00:00 GMT+0700 (Giờ Đông Dương)',
 			userChosen: "",
 			theme: 'theme-bright',
 			isLogin: false,
 			friends: [],
-			messages: [],
+			messages: {
+				id_message: "",
+				contents: [],
+			},
 			rooms: [],
 			userProfile: {},
 		}

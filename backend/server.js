@@ -8,7 +8,9 @@ const cors = require('cors')
 const Realtime = require('./src/controllers/realtime.js')
 const config = require('./src/config')
 // const Routers = require('./src/routers')
-
+// 
+const Message = require('./src/models/message.js')
+// 
 const app = express();
 const server = http.createServer(app);
 app.use(cors())
@@ -27,6 +29,19 @@ Realtime(io)
 
 const PORT = config.port
 const URI = config.DB.uri
+
+app.put('/update',async (req,res)=>{
+  var id_message= req.body.id_message
+  var message_count = req.body.message_count
+  var username = req.body.username
+  var update = {helo: 'hellllllo'}
+  const findMessage = await Message.findOneAndUpdate(
+                {id_message, message_count},
+                {message_remove: username, message_time_remove:500000},
+                {new:true}
+            )
+  res.send(findMessage)
+})
 
 mongoose.connect(URI)
   .then(()=>{

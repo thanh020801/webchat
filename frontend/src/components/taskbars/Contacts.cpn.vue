@@ -49,6 +49,9 @@
 			activeChosen(item,el){
 				// console.log(item.friend.friend_id)
 				this.$store.$state.userChosen = item
+				// this.$store.$state.messages = {id_message:item.id_message}
+				this.$socketInstant.emit('GET-MESSAGES-FROM-ID-MESSAGE',{username:this.$store.userProfile.username,id_message:item.id_message})
+				this.$store.messages.id_message = item.id_message
 				var taskbar = document.querySelectorAll(".taskbar-Contacts");
 				taskbar.forEach(function(el) {
 		      el.classList.remove("active");	   
@@ -63,6 +66,16 @@
         						background:'#272c3b', 
         						color: '#dedede',
         					}).then((res)=>{
+        							if(res.value){
+        								if(this.$store.userProfile.username === res.value){
+        									this.$swal.fire({
+        										title:'Không thể tự kết bạn với chính mình', 
+				        						background:'#272c3b', 
+				        						color: '#dedede',
+				        					})
+				        					return
+        								}
+        							}
         							if(res.value){
         								this.$socketInstant.emit('ADD-FRIEND',{search:res.value})
         								this.$socketInstant.on('ADD-FRIEND-STATUS', async (data)=>{
@@ -150,14 +163,20 @@
           	}
           })
           // console.log(this.$store.$state.friends)
-      })
+      });
       this.$socketInstant.on('HAS_PEOPLE_OFFLINE',async(res)=>{
       	this.$store.$state.friends.find(element => {
           	if(element.friend.username === res.data.username){
           		element.isOnline = false
           	}
         })
-        // console.log('hhhhhh')
+      });
+      this.$socketInstant.on('REMOVE-FRIEND-STATUS',async data=>{
+      	console.log(data.friend_username)
+      	var temp = this.$store.friends.findIndex(element=> 
+      		element.friend.username === data.friend_username
+      	)
+      	this.$store.friends.splice(temp,1)
       })
 		}
 	}

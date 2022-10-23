@@ -8,22 +8,26 @@
 	<div class="message-send" :id="`num-${item.message_count}`" >
 		<div class="content-send-message">
 			<div class="message-send-content">{{item.message_content}}</div>
-			<div class="time-send">{{item.message_date}}</div>
-			<div class="time-send">{{item.message_time}}</div>
+			<div class="time-send">{{fomatTime(item.message_date)}}</div>
+			<!-- <div class="time-send">{{item.message_time}}</div> -->
 
 		</div>
 	</div>
 </template>
 <script>
+// import {fomatTime} from '@/services/untils.js'
 	export default{
 		data(){
 			return{
-
+				// time: new Date(this.item.date)
 			}
 		},
 		props: ['item'],
 		methods:{
-	
+			fomatTime(time){
+				var date = new Date(time)
+				return date.getHours()+':'+date.getMinutes() 
+			}
 		}
 	}
 </script>

@@ -16,6 +16,15 @@ const message = mongoose.Schema({
 	id_message:{
 		type: String,
 	},
+	message_category:{
+		type: String,			// 'text', 'img', file 'docx', file 'pdf'
+	},
+	message_remove:{
+		type:String,
+	},
+	message_time_remove:{
+		type:Number
+	}
 
 },{timestamps: true})
 

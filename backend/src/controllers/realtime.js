@@ -78,7 +78,11 @@ realtime = (io)=>{
                                 {status:200, data:{username:user.username}})
                         }
                         
-                        F.push({isOnline: temp ? true:false ,friend})
+                        F.push({
+                            id_message:friends.list_friend[i].id_message,
+                            isOnline: temp ? true:false ,
+                            friend
+                        })
                         
                     }
                     // console.log(friends.list_room.length)
@@ -89,7 +93,7 @@ realtime = (io)=>{
                             const room = await Room.findOne({
                                 room_name: friends.list_room[i].room_name
                             })
-                            R.push({room})
+                            R.push({id_message: friends.list_room[i].id_message ,room})
                             
                         }
                     }
@@ -113,6 +117,58 @@ realtime = (io)=>{
             socket.emit('UPDATE-PROFILE-STATUS',{status:200, data:{user}})
         });
 
+
+        socket.on('SEND-MESSAGE',async data=>{
+            // console.log(data.message)
+            const newMessage = Message(data.message)
+            const message = await newMessage.save(newMessage)
+            // console.log('Message save', message)
+            if(data.friend_name){
+                var temp = config.socket.onlines.find(element=>element.username === data.friend_name)
+                if(temp){
+                    // const {createdAt,updatedAt,...content} = message
+                    // console.log('content',content)
+                    io.to(temp.id).emit('RECIEVE-MESSAGE',{message})
+                    socket.emit('RECIEVE-MESSAGE',{message})
+                }
+            }
+        });
+
+        socket.on('REMOVE-MESSAGE', async data=>{
+            const {id_message,message_count,...rmMessage} = data
+            console.log('data remove message', rmMessage)
+            const findMessage = await Message.findOneAndUpdate(
+                {id_message:data.id_message, message_count: data.message_count},
+                {message_time_remove: data.message_count, message_remove:data.username},
+                {new: true}
+            )
+            console.log(findMessage)
+        })
+
+        socket.on('GET-MESSAGES-FROM-ID-MESSAGE',async data=>{
+            // console.log(data.id_message)
+            var findMessage = await Message.find({
+                id_message:data.id_message, message_remove:data.username})
+                .sort({message_time_remove: -1})
+                .limit(1)
+            console.log('message_remove',findMessage[0].message_time_remove)
+            if(findMessage[0]){
+                var messages = await Message.find({
+                    id_message:data.id_message,
+                    message_count: {'$gt': findMessage[0].message_time_remove}
+                })
+                .sort({message_count:1})
+                console.log('message get 1', messages)
+                socket.emit('GET-MESSAGES-FROM-ID-MESSAGE-STATUS',{status:200,messages})
+            }else{
+                var messages = await Message.find({id_message:data.id_message})
+                .sort({message_count:1})
+                console.log('message get 2', messages)
+                socket.emit('GET-MESSAGES-FROM-ID-MESSAGE-STATUS',{status:200,messages})
+            }
+            
+        })
+        // console.log('message get final', messages)
         socket.on('ADD-FRIEND', async (data)=>{
             const friend = await User.findOne({username: data.search})
             if(!friend){
@@ -121,6 +177,23 @@ realtime = (io)=>{
                 socket.emit('ADD-FRIEND-STATUS', {status:200,data:{friend}})
             }
         });
+        socket.on('REMOVE-FRIEND',async data=>{
+            var removeFriend1 = await Friend.findOneAndUpdate(
+                {friend_username: data.username},
+                {'$pull': {list_friend:{username:data.friendRemoved}}},
+                {new:true}
+            )
+            var removeFriend2 = await Friend.findOneAndUpdate(
+                {friend_username: data.friendRemoved},
+                {'$pull': {list_friend:{username:data.username}}},
+                {new:true}
+            )
+            var temp = config.socket.onlines.find(element=>element.username===data.friendRemoved)
+            if(temp){
+                io.to(temp.id).emit('REMOVE-FRIEND-STATUS',{status:200, friend_username: data.username})
+            }
+            console.log('removeFriend1', removeFriend1, 'removeFriend2',removeFriend2)
+        })
 
         socket.on('COMMIT-ADD-FRIEND', async (data)=>{
             const user1 = await Friend.findOne({friend_username: data.user1.username})
@@ -153,7 +226,7 @@ realtime = (io)=>{
                 //     socket.to(temp.id).emit('COMMIT-ADD-FRIEND-STATUS',
                 //         {status: 200, F: {isOnline,friend:user}}) 
                 // }
-                socket.emit('COMMIT-ADD-FRIEND-STATUS',{status: 200, F: {isOnline,friend}})
+                socket.emit('COMMIT-ADD-FRIEND-STATUS',{status: 200, F: {id_message, isOnline,friend}})
             }else{
                 console.log('false')
                 socket.emit('COMMIT-ADD-FRIEND-STATUS',{status: 201, data:{response:'Đã kết bạn với người này rồi'}})
@@ -178,23 +251,29 @@ realtime = (io)=>{
                     {new:true},
                     // {runValidators: true}
                 )
-                console.log(updateRoom)
-                
+                // console.log(updateRoom)
+                const temp = config.socket.onlines.find(element=>element.username === item.username)
+                console.log('temp1',temp)
+                if(temp){
+                    console.log('temp onl',temp)
+                    io.to(temp.id).emit('CREATE-GROUP-STATUS',{status:200,R:{id_message,room}})
+                }
             }
-            socket.emit('CREATE-GROUP-STATUS',{status:200,R:{room}})
+            
             // const {rooms} = friends
             // console.log()
 
             // console.log(group)
         })
-
+        // Rời nhóm nếu người rơi nhóm là admin thì chuyển quyền admin cho 1 ngkhac
+        // Nếu nhóm chỉ có 1 người mà rời nhóm thì sẽ xóa luôn nhóm
+        // Else rời nhóm thành công cập nhật lại số lượng trong room_member
+        // và Friend.lis_room
         socket.on('EXIT-GROUP', async (data)=>{
             console.log('EXIT-GROUP',data)
             const room = await Room.findOne({room_name:data.room_name})
-            // console.log(room)
             if(room.room_admin === data.username){
                 const checkAdmin = room.room_member.find(element=>element.username !== data.username)
-                // console.log('checkAdmin',checkAdmin)
                 if(checkAdmin){
                     const updateRoom = await Room.findOneAndUpdate(
                         {room_name:data.room_name},
@@ -208,7 +287,6 @@ realtime = (io)=>{
                 }else{
                     const delRoom = await Room.findOneAndDelete({room_name:data.room_name})
                     // console.log('da delete Room', delRoom)
-                   
                 }
             }else{
                 const updateRoom = await Room.findOneAndUpdate(
@@ -236,15 +314,78 @@ realtime = (io)=>{
                 {new:true}
             )
             console.log('updateRoom', updateRoom)
-            socket.emit('CHANGE-ADMIN-IN-GROUP-STATUS',{status:200, R:{room:updateRoom}})
+            var userOnl = config.socket.onlines.find(el => el.username === data.changeUsername)
+            console.log('userOnl', userOnl)
+            if(userOnl){
+                socket.emit('CHANGE-ADMIN-IN-GROUP-STATUS',{status:200, R:{room:updateRoom}})
+                io.to(userOnl.id).emit('CHANGE-ADMIN-IN-GROUP-STATUS',{status:200, R:{room:updateRoom}})
+            }
+            
         });
 
 
+        socket.on('UPDATE-MEMBER_IN_GROUP', async (data)=>{
+            var room = await Room.findOne({room_name:data.room_name})
+            var id_message = room._id.toString()
+            for(var item of data.room_member){
+                // console.log('item',item)
+                var updateMemberRoom = await Room.findOneAndUpdate(
+                    {room_name:data.room_name},
+                    {'$push': {room_member: {name:item.name, username: item.username}}},
+                    {new:true}
+                )
+                var updateListRoom = await Friend.findOneAndUpdate(
+                    {friend_username: item.username},
+                    {'$push': {list_room: {id_message, room_name: data.room_name}}},
+                    {new:true}
+                )
+                console.log('updateMemberRoom',updateMemberRoom,'updateListRoom',updateListRoom)
+            }
+            for(var item of data.room_member){
+                var checkOnl = config.socket.onlines.find(element=>element.username === item.username)
+                if(checkOnl){
+                    var roomAfterUpdate = await Room.findOne({room_name:data.room_name})
+                    console.log('room change member',roomAfterUpdate)
+                    io.to(checkOnl.id).emit('UPDATE-MEMBER_IN_GROUP-STATUS',{
+                        status:200,
+                        R: {room:roomAfterUpdate},
+                    })
+                }
+                console.log('checkOnl', checkOnl)
+            }
+            
+        });
+
+
+        socket.on('REMOVE-GROUP',async (data)=>{
+            // console.log(data.room)
+            for(var element of data.room.room_member){
+                var userOnl = config.socket.onlines.find(el => el.username === element.username)
+                // console.log('tim thay', userOnl)
+                if(userOnl){
+                    console.log('emit tung user ', userOnl.id)
+                    io.to(userOnl.id)
+                        .emit('REMOVE-GROUP-STATUS',
+                            {status:200,room_name:data.room.room_name})
+                }
+                var updateListRoom = await Friend.findOneAndUpdate(
+                    {friend_username: element.username},
+                    {'$pull': {'list_room': {room_name:data.room.room_name}}}
+                )
+               
+                
+            }
+            const delRoom = await Room.findOneAndDelete({room_name:data.room.room_name})
+            console.log('REMOVE-GROUP', delRoom)
+            // for
+            // socket.emit('')
+        })
 
         socket.on('DELETE-ALL-USER', async (data)=>{
             deleteAll = await Friend.remove()
             deleteAllUser = await User.remove()
             deleteAllRooms = await Room.remove()
+            deleteAllMessage = await Message.remove()
             console.log('DELETE SUCCESSFULLY')
         });
 

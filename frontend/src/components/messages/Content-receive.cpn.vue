@@ -14,9 +14,9 @@
 			<img class="avartar-messase-img" src="../../assets/images/spider3.jpg">
 		</div>
 		<div class="content-receive-message">
-			<div class="name-receive">{{configUser.userChosen.name}}</div>
+			<div class="name-receive">{{item.message_name_send}}</div>
 			<div class="message-receive-content">{{item.message_content}}</div>
-			<div class="time-receive">{{item.message_date}}</div>
+			<div class="time-receive">{{fomatTime(item.message_date)}}</div>
 		</div>
 	</div>
 </template>
@@ -36,6 +36,12 @@ import {userConfig} from '@/stores/userConfig.js'
 		created(){
 			// console.log("send")
 			// console.log(this.item)
+		},
+		methods:{
+			fomatTime(time){
+				var date = new Date(time)
+				return date.getHours()+':'+date.getMinutes() 
+			}
 		}
 	}
 </script>

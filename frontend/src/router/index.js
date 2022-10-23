@@ -6,11 +6,11 @@ const router = createRouter({
   routes: [
     {
       path: '/',
-      name: 'chats',
+      name: 'contacts',
       redirect: '/contacts',
       component: HomeView,
       children:[
-        {path: '/chats' ,component: () => import('../components/taskbars/Chats.cpn.vue')},
+        // {path: '/chats' ,component: () => import('../components/taskbars/Chats.cpn.vue')},
         {path: '/groups',component: () => import('../components/taskbars/Groups.cpn.vue')},
         {path: '/contacts', component: () => import('../components/taskbars/Contacts.cpn.vue')},
         {path: '/profile' , component: () => import('../components/taskbars/Profile.cpn.vue')}

@@ -37,7 +37,7 @@
 				<button class="btn btn-warning" @click='removeMessage()' >
 						Xóa tin nhắn
 				</button>
-				<button class="btn btn-danger" @click='exitGroup()'>Xóa kết bạn</button>
+				<button class="btn btn-danger" @click='removeFriend()'>Xóa kết bạn</button>
 			</div>
 			<!-- <div class="footerOption"></div> -->
 		</div>
@@ -45,75 +45,38 @@
 </template>
 <script>
 export default{
-	
+	data(){
+		return{}
+	},
+	methods:{
+		removeFriend(){
+			var username = this.$store.userProfile.username
+			var friendRemoved = this.$store.userChosen.friend.username
+			console.log(this.$store.userChosen.friend)
+			this.$socketInstant.emit('REMOVE-FRIEND',{username,friendRemoved})
+			var temp = this.$store.friends.findIndex(element=> 
+	      		element.friend.username === friendRemoved
+	      	)
+	      	this.$store.friends.splice(temp,1)
+	      	this.$store.userChosen = ''
+		},
+		removeMessage(){
+			var id_message = this.$store.messages.id_message
+			var content = this.$store.messages.contents[this.$store.messages.contents.length-1]
+			console.log('content',content)
+			const removeMS = {
+				id_message,
+				// [`rm-${this.$store.userProfile.username}`]: ((new Date() - new Date(this.$store.timeStandard))/(1000*60)).toFixed(3),
+				message_count: content.message_count,
+				username: this.$store.userProfile.username
+			}
+			this.$socketInstant.emit('REMOVE-MESSAGE',removeMS)
+			console.log('rmMS',removeMS)
+			this.$store.messages.contents = []
+
+		}
+	}
 }
 </script>
 <style type="text/css">
-/*	.showOption{
-		display: block;
-		font-size: 13px;
-		padding: 0.5rem;
-		position: absolute;
-		right: 0px;
-		top: 60px;
-		width: 300px;
-		height: 360px;
-		z-index: 10000000;
-		text-align: center;
-		align-items: center;
-		justify-content: center;
-	}
-	.headerOption {
-	}
-	.headerOption .avartarOption{
-		align-items: center;
-		justify-content: center;
-		align-content: center;
-
-	}
-	.nameOption{
-		font-weight: bold;
-		font-size: 20px;
-		text-align: center;
-	}
-	.addFriendOption{
-		margin-top: 0.5rem;
-
-	}
-	.addFriendOption button{
-		margin: 3px;
-		height: 30px;
-		width: 80%;
-		border-radius: 10px;
-		border: none;
-		line-height: 10px;
-		font-size: 15px;
-	}
-	
-	.addFriendOption .btn-warning{
-		color: #FFF;
-	}
-	.memberOption{
-		width: 80%;
-		margin: 0 auto;
-		text-align: left;
-		font-size: 14px;
-		padding: 0.5rem;
-	}
-	.underline{
-		border-top: 1px solid black;
-		margin-top: 5px;
-		padding: 0px;
-	}
-
-	.height-croll-taskbar{
-		height: 140px;
-	}
-	.memberOption .member i{
-		font-size: 20px;
-		padding-top: 10px;
-	}
-	.memberOption .info{
-		padding: 5px 0;
-	}*/
 </style>

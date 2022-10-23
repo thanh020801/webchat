@@ -7,13 +7,19 @@
 		</router-link>
 	</div>
 	<div>
-		<router-link to='/chats'>
+<!-- 		<router-link to='/chats'>
 			<div class="item-menu" :style='selectorActive("/chats")'>
 				<i class="bi bi-chat-left-text-fill"></i><br>
 				<div style="font-size: 13px; line-height: 5px;">Chats</div>
 			</div>
+		</router-link> -->
+		<router-link to='/contacts'>
+			<div class="item-menu" :style='selectorActive("/contacts")'>
+				<i class="bi bi-person-lines-fill"></i>
+				<br>
+				<div style="font-size: 13px; line-height: 5px;">Liên hệ</div>
+			</div>
 		</router-link>
-
 
 		<router-link to='/groups'>
 			<div class="item-menu" :style='selectorActive("/groups")'>
@@ -24,13 +30,7 @@
 		</router-link>
 
 
-		<router-link to='/contacts'>
-			<div class="item-menu" :style='selectorActive("/contacts")'>
-				<i class="bi bi-person-lines-fill"></i>
-				<br>
-				<div style="font-size: 13px; line-height: 5px;">Liên hệ</div>
-			</div>
-		</router-link>
+		
 
 
 		<router-link to='/profile'>
@@ -118,13 +118,13 @@
 		width: 60px;
 	}
 	.item-menu{
-		width: 65%;
-		height: 65px;
+		width: 75%;
+		height: 80px;
 		align-items: center;
 		margin: 0 auto;
 		text-align: center;
 		justify-content: center;
-		padding-top: 5px;
+		padding-top: 10px;
 		font-size: 25px;
 		cursor: pointer;
 		user-select: none;

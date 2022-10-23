@@ -30,44 +30,75 @@
 			return {friend_EX,room_EX,message_EX,userProfile_EX,configUser}
 		},
 		methods:{
+
 			sendMessage(content){
-				
-				// console.log(this.configUser.userChosen)
-				const {userChosen} = this.configUser
-				// console.log(userChosen)
-				if(userChosen && this.message.content !== ""){					
-					var today = new Date()
-					var time = today.getHours() + ":" + today.getMinutes()
-					var month = today.getMonth() + 1
-					var date = today.getDate() + "/" + month + "/" + 
-							today.getFullYear()
-					console.log(month)
-					var {idMessage} = userChosen
-					for (var i = 0; i < this.message_EX.length; i++) {
-						if(idMessage === this.message_EX[i].idMessage){
-							var  message = { 
-							    id: "aaa",
-							    message_name_send: this.userProfile_EX.id, 
-							    message_content: content, 
-							    message_name_recieve: userChosen.id,
-							    message_date: date,
-							    message_time: time ,
-							    message_count: this.message_EX[i].contents.length+1,
-							}
-							this.message_EX[i].contents.push(message)
-							// console.log(idMessage,this.message_EX[i])
-							this.message.content = ""
-							return
-						}
-					}
-					// scrollIntoView(this.$refs.container)
-					// var contents = []
-					// contents.push(message)
-					// this.message_EX.push({idMessage, contents })
-					// // console.log(userChosen,idMessage)
-					// // console.log(this.message_EX)
-					// this.message.content = ""
-				}	
+				var today = new Date()	
+				var timeStandard = new Date(this.$store.timeStandard)
+				// console.log(test.getHours()+':'+test.getMinutes())			
+				// console.log('store',this.$store.rooms)
+				// console.log('friend',this.$store.friends)
+				var message = {
+					message_name_send: this.$store.userProfile.username,
+					message_content: this.message.content,
+					message_date: new Date(),
+					message_count: ((today - timeStandard)/(1000*60)).toFixed(3),
+					message_category: 'text',
+					id_message: this.$store.userChosen.id_message
+				}
+				console.log(message)
+				var chosen= this.$store.userChosen
+				if(chosen.room){
+					this.$socketInstant.emit('SEND-MESSAGE',
+						{message,room_name: chosen.room.room_name,friend_name: ""})
+				}
+				else if(chosen.friend){
+					this.$socketInstant.emit('SEND-MESSAGE',
+						{message,room_name: "",friend_name: chosen.friend.username})
+				}
+				this.message ={
+					content : "",
+					time: "",
+				}
+				// var chosen = new Date(this.$store.userChosen.room.createdAt)
+
+				// console.log('chosen', today - chosen)
+				// this.$socketInstant.emit('')
+				// if(test < today){
+				// 	console.log('cpm',((today - test)/(1000*60)).toFixed(3))
+				// }else{
+				// 	console.log('cpm',0)
+				// }
+
+				// // console.log(this.configUser.userChosen)
+				// const {userChosen} = this.configUser
+				// // console.log(userChosen)
+				// if(userChosen && this.message.content !== ""){					
+				// 	var today = new Date()
+				// 	var time = today.getHours() + ":" + today.getMinutes()
+				// 	var month = today.getMonth() + 1
+				// 	var date = today.getDate() + "/" + month + "/" + 
+				// 			today.getFullYear()
+				// 	console.log(month)
+				// 	var {idMessage} = userChosen
+				// 	for (var i = 0; i < this.message_EX.length; i++) {
+				// 		if(idMessage === this.message_EX[i].idMessage){
+				// 			var  message = { 
+				// 			    id: "aaa",
+				// 			    message_name_send: this.userProfile_EX.id, 
+				// 			    message_content: content, 
+				// 			    message_name_recieve: userChosen.id,
+				// 			    message_date: date,
+				// 			    message_time: time ,
+				// 			    message_count: this.message_EX[i].contents.length+1,
+				// 			}
+				// 			this.message_EX[i].contents.push(message)
+				// 			// console.log(idMessage,this.message_EX[i])
+				// 			this.message.content = ""
+				// 			return
+				// 		}
+				// 	}
+
+				// }	
 
 				
 			}

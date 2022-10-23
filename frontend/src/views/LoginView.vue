@@ -88,35 +88,44 @@
                 })
         console.log('login')
         if(this.user.username !=="" && this.user.password !==''){
-          console.log(this.$socketInstant.connect())
-          // console.log('loginádasfdasdf')
-          this.$socketInstant.emit('LOGIN',{user:this.user})
-          this.$socketInstant.on('LOGIN-STATUS', async (res)=>{
-            if(res.status !== 200){
-              Toast.fire({
-                  icon: 'error',
-                  title: res.data.response
-              })
-            }else{
-              // console.log(res.data)
-              this.$store.$state.friends = res.data.F
-              this.$store.$state.rooms = res.data.R
-              this.$store.$state.userProfile = res.data.user
-              this.$store.$state.isLogin = true
-              this.$store.userChosen = ""
-              localStorage.setItem("account", JSON.stringify(this.user))
-              this.$router.push('/groups')
+          console.log(this.$socketInstant.connect().connected)
+          if(this.$socketInstant.connect().connected){
+            // console.log('loginádasfdasdf')
+            this.$socketInstant.emit('LOGIN',{user:this.user})
+            this.$socketInstant.on('LOGIN-STATUS', async (res)=>{
+              if(res.status !== 200){
                 Toast.fire({
-                  icon: 'success',
-                  title: 'Đăng nhập thành công'
-              })
-            }
-          })          
+                    icon: 'error',
+                    title: res.data.response
+                })
+                this.$store.isLogin = false
+                this.$router.push('/login')
+              }else{
+                // console.log(res.data)
+                this.$store.$state.friends = res.data.F
+                this.$store.$state.rooms = res.data.R
+                this.$store.$state.userProfile = res.data.user
+                this.$store.$state.isLogin = true
+                this.$store.userChosen = ""
+                localStorage.setItem("account", JSON.stringify(this.user))
+                this.$router.push('/contacts')
+                  Toast.fire({
+                    icon: 'success',
+                    title: 'Đăng nhập thành công'
+                })
+              }
+            }) 
+          }else{
+              this.$router.push('/login')
+              this.$store.isLogin = false
+          }       
         }else{
                 Toast.fire({
                   icon: 'warning',
                   title: 'Vui lòng điền thông tin trước khi đăng nhập'
-              })
+                })
+                this.$store.isLogin = false
+                this.$router.push('/login')
         }
       },
       deleteAllUser(){

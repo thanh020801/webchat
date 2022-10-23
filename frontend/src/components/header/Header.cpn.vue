@@ -57,7 +57,8 @@
 		created(){
 			// this.isShow = false
 			window.addEventListener('click', (e) => {
-				// console.log('e',e)
+				// console.log('header e',this.$el)
+				// console.log(e.target)
 	        if (!this.$el.contains(e.target)){
 	          this.isShow = false
 	          // console.log('ngoai')
