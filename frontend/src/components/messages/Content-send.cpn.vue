@@ -7,6 +7,7 @@
 	</div> -->
 	<div class="message-send" :id="`num-${item.message_count}`" >
 		<div class="content-send-message">
+			<div class="name-send">Bạn</div>
 			<div class="message-send-content">{{item.message_content}}</div>
 			<div class="time-send">{{fomatTime(item.message_date)}}</div>
 			<!-- <div class="time-send">{{item.message_time}}</div> -->
@@ -51,7 +52,10 @@
 	/*background-color: darkblue;*/
 	border-radius: 10px;
 }
-
+.name-send{
+	font-size: 12px;
+	color: white;
+}
 .time-send{
 	font-size: 11px;
 /*	color: #8d8484;

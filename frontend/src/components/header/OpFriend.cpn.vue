@@ -52,12 +52,13 @@ export default{
 		removeFriend(){
 			var username = this.$store.userProfile.username
 			var friendRemoved = this.$store.userChosen.friend.username
-			console.log(this.$store.userChosen.friend)
-			this.$socketInstant.emit('REMOVE-FRIEND',{username,friendRemoved})
+			var id_message = this.$store.userChosen.id_message
+			console.log('this.$store.userChosen.friend',this.$store.userChosen)
+			this.$socketInstant.emit('REMOVE-FRIEND',{username,friendRemoved,id_message})
 			var temp = this.$store.friends.findIndex(element=> 
 	      		element.friend.username === friendRemoved
 	      	)
-	      	this.$store.friends.splice(temp,1)
+	      	// this.$store.friends.splice(temp,1)
 	      	this.$store.userChosen = ''
 		},
 		removeMessage(){

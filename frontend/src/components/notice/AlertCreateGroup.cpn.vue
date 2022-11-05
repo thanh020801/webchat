@@ -64,17 +64,19 @@ export default{
 			}
 			console.log(room)
 			this.$socketInstant.emit('CREATE-GROUP',{room})
+			console.log('CREATE-GROUP kk')
 		 	this.group = {
 				 	room_name: "",
 					room_member: [],
 					room_admin: "",
 					room_avatar: "",
 			}
+			document.getElementById('createGroup').style.display = "none"
 		},
 		updateMemberGroup(){
 			var room_member = []
-			console.log('member', this.group.room_member)
-			console.log('chosen' , this.$store.userChosen.room.room_member)
+			// console.log('member', this.group.room_member)
+			// console.log('chosen' , this.$store.userChosen.room.room_member)
 			for(var item1 of this.group.room_member){
 				console.log('item',item1.username)
 				var flag = false
@@ -85,28 +87,28 @@ export default{
 					}
 				}
 				if(!flag){
-					console.log('push',item1)
+					// console.log('push',item1)
 					room_member.push(item1)
 					var temp = this.$store.$state.rooms.find(obj =>{
 						if(obj.room.room_name === this.groupName){
 							obj.room.room_member.push(item1)
 						}
-					}
-	                                 
-	                            )
+					})
+	                                
+	         		// console.log('room_member',room_member)
+					this.$socketInstant.emit('UPDATE-MEMBER_IN_GROUP',
+						{room_member,room_name: this.groupName})
+    
 
 				}
 			}
-			console.log('room_member',room_member)
-			this.$socketInstant.emit('UPDATE-MEMBER_IN_GROUP',
-				{room_member,room_name: this.groupName})
-
-		 // 	this.group = {
-			// 	 	room_name: "",
-			// 		room_member: [],
-			// 		room_admin: "",
-			// 		room_avatar: "",
-			// }
+			document.getElementById('position-add-friend-in-group').style.display = "none"
+		 	this.group = {
+				 	room_name: "",
+					room_member: [],
+					room_admin: "",
+					room_avatar: "",
+			}
 			// console.log('them thanh vien cho nhom')
 		},
 	},

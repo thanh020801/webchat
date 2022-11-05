@@ -14,7 +14,7 @@
 			</div>
 		</router-link> -->
 		<router-link to='/contacts'>
-			<div class="item-menu" :style='selectorActive("/contacts")'>
+			<div class="item-menu" @click='getAllFriends()' :style='selectorActive("/contacts")'>
 				<i class="bi bi-person-lines-fill"></i>
 				<br>
 				<div style="font-size: 13px; line-height: 5px;">Liên hệ</div>
@@ -22,16 +22,12 @@
 		</router-link>
 
 		<router-link to='/groups'>
-			<div class="item-menu" :style='selectorActive("/groups")'>
+			<div class="item-menu" @click='getAllGroups()' :style='selectorActive("/groups")'>
 				<i class="bi bi-people-fill"></i>
 				<br>
 				<div style="font-size: 13px; line-height: 5px;">Nhóm</div>
 			</div>
 		</router-link>
-
-
-		
-
 
 		<router-link to='/profile'>
 			<div class="item-menu" :style='selectorActive("/profile")'>
@@ -92,8 +88,18 @@
 				}else{
 					this.$store.$state.theme = 'theme-bright'
 				}
-			}			
+			},
+			getAllFriends(){
+				this.$socketInstant.emit('GET-ALL-FRIENDS',{username: this.$store.userProfile.username})
+			},
+			getAllGroups(){
+				this.$socketInstant.emit('GET-ALL-GROUPS',{username: this.$store.userProfile.username})
+			},
 		},
+		mounted(){
+			
+
+		}
 
 	}
 </script>

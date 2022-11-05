@@ -1,5 +1,5 @@
 <template>
-	<div class="header" v-if='$store.isLogin'>
+	<div class="header" v-if='$store.isLogin' >
 			<div class="avt-header" >
 				<img class="avartar-header" src="../../assets/images/spider3.jpg">
 			</div>
@@ -14,24 +14,25 @@
 
 
 			<div class="option-header"
-				 @click='showOption();'
+				  id="isShowOption"
 				>
-				 <i class="bi bi-three-dots-vertical"></i>
-			</div>
-			<div v-if='isShow'>
-				<div v-if='!$store.userChosen.friend'>
-					<OpGroup/>
-				</div>
-				<div v-else>
-					<OpFriend />
-				</div>
+				 <i class="bi bi-three-dots-vertical" ></i>
 			</div>
 			
 			
 	
 	</div>
 
-
+<div id="OpGroupOpFriend">
+	<!-- <div v-if='isShow' > -->
+		<div v-if='!$store.userChosen.friend'>
+			<OpGroup/>
+		</div>
+		<div v-else>
+			<OpFriend />
+		</div>
+	<!-- </div> -->
+</div>
 </template>
 <script>
 	import OpGroup from './OpGroup.cpn.vue'
@@ -42,28 +43,31 @@
 				// isFriend: this.$store.userChosen,
 				// infoF:this.$store.userChosen.friend,
 				// infoG:this.$store.userChosen.room,
-				isShow: false,
+				// isShow: false,
 			}
 		},
 		components:{
 			OpGroup,OpFriend,
 		},
 		methods:{
-			showOption(){
-				this.isShow = !this.isShow
-				// console.log(OpGroup)
-			},
+			showHideAlertCreateGroup(idShow,clickicon){
+				document.addEventListener('click',(e)=>{
+					const myclick = document.getElementById(idShow)
+					const myclickicon = document.getElementById(clickicon)
+					if(myclick && myclickicon){
+						if(myclickicon.contains(e.target)){
+							myclick.style.display = 'block'
+							// console.log('click icon')
+						}
+						else if(!myclick.contains(e.target)){
+							myclick.style.display = 'none'
+						}
+					}
+				})
+			}
 		},
-		created(){
-			// this.isShow = false
-			window.addEventListener('click', (e) => {
-				// console.log('header e',this.$el)
-				// console.log(e.target)
-	        if (!this.$el.contains(e.target)){
-	          this.isShow = false
-	          // console.log('ngoai')
-	        }
-	      })
+		mounted(){
+			this.showHideAlertCreateGroup('OpGroupOpFriend','isShowOption')
 		},
 	}
 </script>

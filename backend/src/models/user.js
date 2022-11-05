@@ -23,17 +23,17 @@ const user = mongoose.Schema({
 	avatar:{
 		type: String,
 	},
-	is_login:{
+	admin: {
 		type: Boolean,
-		default: false,
-	},
-	is_online: {
-		type: Boolean,
-		default: false,
+		default: false
 	},
 	friend_id: {
 		type: String,
 	},
+	lock: {
+		type: Boolean,
+		default: false
+	}
 
 },{timestamps: true})
 

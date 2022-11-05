@@ -6,14 +6,14 @@
 		<div class="search-taskbar">
       <div class="d-flex">
       	<button class="search-taskbar-submit" type="submit"><i class="bi bi-search"></i></button>
-        <input class="search-taskbar-input " type="text" placeholder="Search ..." aria-label="Search">
+        <input v-model='searchFriend' class="search-taskbar-input " type="text" placeholder="Search ..." aria-label="Search">
       </div>
     </div>
 
 	<div class="croll-taskbar" >
 		<div v-for='char in keyWord'>
-			<h4 class="taskbar-contact-keys">{{char}}</h4>
-			<div  v-for="item in friends" >
+ 			<h4 class="taskbar-contact-keys">{{char}}</h4>
+			<div  v-for="item in $store.friends" >
 				<div v-if='item.friend.name.charAt(0).toUpperCase() === char'>
 					<div class="taskbar taskbar-Contacts" 
 								:id='"active" + item.friend.friend_id'
@@ -32,17 +32,16 @@
 					</div>
 				</div>	
 			</div>
-		</div>
+ 		</div>
 	</div>
 </template>
 <script>
 	export default{
 		data(){
 			return {
+				searchFriend: "",
 				keyWord: [],
-				key: 0,
-				update: false,
-				friends: this.$store.friends,
+				// friends: this.$store.friends,
 			}
 		},
 		methods:{
@@ -100,24 +99,7 @@
 					        								user2: {username:friend.username}
 					        						})
 					        						// console.log(res.value)
-        											this.$socketInstant.on('COMMIT-ADD-FRIEND-STATUS',
-        											(data)=>{
-        												if(data.status === 200){
-	        												var temp = this.$store.friends.find(element => 
-	        														element.friend.username === data.F.friend.username)
-	        												if(!temp){
-	        													this.$store.$state.friends.push(data.F)
-	        												}
-        												}
-	        											else{
-	        													this.$swal.fire({
-	        														title: data.data.response, 
-									        						background:'#272c3b', 
-									        						color: '#dedede',
-									        					})
-	        											}
-
-        											})
+        											
 					        					})
         									}
         								})
@@ -126,7 +108,8 @@
         				});
 			},
 			render(){
-					const friends = this.friends
+					this.keyWord = []
+					const {friends} = this.$store
 					// console.log(friends)
 					for (var i = 0; i < friends.length; i++) {
 						var name = friends[i].friend.name
@@ -138,20 +121,31 @@
 						}
 					}
 					this.keyWord.sort()
-			}
+			},
+			// search(){
+   //      if (this.searchFriend) {
+   //          var result = this.$store.friends.filter(item => {
+   //              return this.searchFriend
+   //                  .toLowerCase()
+   //                  .split(" ")
+   //                  .every(v => item.friend.name.toLowerCase().includes(v));
+   //          });
+   //      }
+   //      this.friends = result ? result:this.$store.friends
+   //      this.render()
+			// }
 		},
-		// watch:{
-		// 	'key': function(val, oldVal){
-		// 		console.log('hello')
-		// 		this.render()
-
-		// 	}
-		// },
 		created(){
 			this.render()
 			
 
 		},
+		// watch:{
+		// 	searchFriend(){
+		// 		this.search()
+		// 	}
+		// },
+
 		mounted(){
 			// this.render()
 			// Cập nhật bạn bè online
@@ -172,12 +166,34 @@
         })
       });
       this.$socketInstant.on('REMOVE-FRIEND-STATUS',async data=>{
-      	console.log(data.friend_username)
+      	console.log('REMOVE-FRIEND-STATUS',data.friend_username)
       	var temp = this.$store.friends.findIndex(element=> 
       		element.friend.username === data.friend_username
       	)
+      	console.log('temp REMOVE-FRIEND-STATUS', temp)
       	this.$store.friends.splice(temp,1)
-      })
+      	this.render()
+      });
+      this.$socketInstant.on('COMMIT-ADD-FRIEND-STATUS',(data)=>{
+      	console.log('ADD-FRIEND', data)
+					if(data.status === 200){
+						console.log('ADD-FRIEND', data)
+						var temp = this.$store.friends.find(element => 
+							element.friend.username === data.F.friend.username
+						)
+						console.log('temp ADD-FRIEND-STATUS', temp)
+						if(!temp){
+							console.log('them bạn thành công')
+							this.$store.friends.push(data.F)
+							this.render()
+						}
+					}
+			});
+			this.$socketInstant.on('GET-ALL-FRIENDS-STATUS',async data=>{
+				// console.log(data.friends)
+				this.$store.friends = data.friends
+				this.render()
+			});
 		}
 	}
 </script>

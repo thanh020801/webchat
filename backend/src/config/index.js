@@ -5,7 +5,10 @@ module.exports = {
 	},
 	socket:{
 		onlines: [],
-		listGroup:[],
+		admin:[],
 	},
-	user:{}
+	user:{},
+	dowloadFile: (filename)=>{
+		return 'http://localhost:5000/uploads/' + filename
+	}
 }

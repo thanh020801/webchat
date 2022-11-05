@@ -1,5 +1,4 @@
 import io from "socket.io-client"
-// import {store} from '@/stores/store.js'
 
 const socketInstant =  io('127.0.0.1:5000')
 // const socketInstantLogin =  io('127.0.0.1:5000')

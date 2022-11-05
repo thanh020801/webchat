@@ -1,12 +1,12 @@
 <template>
 
 			
-	<div class="title">
+	<div class="title" >
 		<div><h2 class="title-name" >NHÓM</h2></div>
 		<!-- {{isAddFriendInGroup}} -->
 		<!-- <div @click="alertDisplay" > -->
-		<div @click='showCreateGroup()'>
-			<i class="bi bi-people-fill"></i>
+		<div id='isShow'>
+			<i class="bi bi-people-fill" id=""></i>
 		</div>
 	</div>
 		<div class="search-taskbar">
@@ -33,107 +33,65 @@
 			</div>
 		</div>
 	</div>
-	<div v-if='isAddFriendInGroup'>
-		<AlertCreateGroup groupName=""/>
-	</div>
-	
+	<!-- <div class="fullbg-alert" id='createGroupShowHide'> -->
+		<!-- <div v-if='isAddFriendInGroup1' > -->
+		<div id='createGroup'>
+				<AlertCreateGroup groupName="" />
+		</div>
+	<!-- </div> -->
 </template>
 <script>
 	import AlertCreateGroup from '@/components/notice/AlertCreateGroup.cpn.vue'
+	import {Alert} from 'bootstrap'
 	export default{
 		components:{AlertCreateGroup},
 		data(){
 			return {
 				rooms: this.$store.rooms,
 				search: "",
-				checkFriend: [],
-				isAddFriendInGroup: false,
-				// groupName: "",
-				// group:{
-				// 	room_name: "",
-				// 	room_member: [],
-				// 	room_admin: "",
-				// 	room_avatar: "",
-				// }
 			}
 		},
 
 		methods:{
 			activeChosen(item,el){
-				console.log(item.room._id)
-				
+				// console.log(item.room._id)
+				// console.log(item.friend.friend_id)
 				this.$store.$state.userChosen = item
+				// this.$store.$state.messages = {id_message:item.id_message}
+				this.$socketInstant.emit('GET-MESSAGES-FROM-ID-MESSAGE',{username:this.$store.userProfile.username,id_message:item.id_message})
+				this.$store.messages.id_message = item.id_message
+				console.log('chosen in room',this.$store.messages.id_message)
 				var taskbar = document.querySelectorAll(".taskbar-groups");
 				taskbar.forEach(function(el) {
 		      el.classList.remove("active");	   
 		    });
 				document.querySelector("#active" + item.room._id).classList.add("active")
 			},
-			alertDisplay(){
-        this.$swal.fire({
-        						title:'Create Group', 
-        						input: 'text',
-        						inputLabel: 'Group name',
-        						inputPlaceholder: 'Enter your group name here',
-        						background:'#272c3b', 
-        						color: '#dedede',
-        					}).then((res)=>{
-						        	if(res.value){
-						        		console.log('day la group')
-						        			const room = {
-						        				room_admin: this.$store.userProfile.username,
-						        				room_member: [
-						        							{
-						        								username:this.$store.userProfile.username,
-						        								name: this.$store.userProfile.name
-						        							},
-						        							{
-						        								username:'thi',
-						        								name: 'Tran Ngoc Thi'
-						        							},{
-						        								username:'thanh',
-						        								name: 'Nguyễn Tuấn Thanh'
-						        							},
-						        							{
-						        								username:'tai',
-						        								name: 'Nguyễn Huu Tai'
-						        							},
-						        				],
-						        				room_name: res.value,
-						        				room_avartar: "", 
-						        			}
-												 	this.$socketInstant.emit('CREATE-GROUP',{room})
-												 	this.$socketInstant.on('CREATE-GROUP-STATUS',(data)=>{
-												 		
-												 		this.$store.$state.rooms.push(data.R)
-												 		console.log('create group',data)
-												 		// console.log(this.$store.$state.rooms)
-												 	})
-						        	}
-        					});
-			},
-			showCreateGroup(){
-				this.isAddFriendInGroup = !this.isAddFriendInGroup
-				console.log(this.isAddFriendInGroup)
-				// if(this.isAddFriendInGroup){
-				// 	document.getElementById('show-create-group').style.display = "block"
-				// }
-				// else{
-				// 	document.getElementById('show-create-group').style.display = "none"
-				// }
-			},
-
-			
-		},
-		created(){
+			showHideAlertCreateGroup(idShow,clickicon){
+					document.addEventListener('click',(e)=>{
+						const myclick = document.getElementById(idShow)
+						const myclickicon = document.getElementById(clickicon)
+						if(myclick && myclickicon){
+							if(myclickicon.contains(e.target)){
+								myclick.style.display = 'block'
+								// console.log('click icon')
+							}
+							else if(!myclick.contains(e.target)){
+								myclick.style.display = 'none'
+							}
+						}
+					})
+			}
 		},
 		mounted(){
+			this.showHideAlertCreateGroup('createGroup','isShow')
+
 			this.$socketInstant.on('REMOVE-GROUP-STATUS',async (data)=>{
 					console.log('REMOVE-GROUP-STATUS',data)
 					var temp = this.$store.$state.rooms.findIndex(obj =>
 	                                obj.room.room_name === data.room_name 
 	                            )
-					console.log('temp',temp)
+					console.log('temp REMOVE-GROUP-STATUS',temp)
 					// this.remove = true
 					// console.log(this.remove)
 					if(this.$store.userChosen.room){
@@ -144,19 +102,33 @@
 					this.$store.$state.rooms.splice(temp,1)
 			});
 
-			this.$socketInstant.on('CREATE-GROUP-STATUS',(data)=>{
+			this.$socketInstant.on('CREATE-GROUP-STATUS',async (data)=>{
 				var temp = this.$store.$state.rooms.find(obj =>
 	                                obj.room.room_name === data.R.room.room_name 
 	                            )
-				console.log('create group temp',temp)
+				// console.log('create group temp',temp)
 				if (!temp) {
 			 		this.$store.$state.rooms.push(data.R)
-			 		console.log('create group',data)
-			 		this.isAddFriendInGroup = false
-			 		document.getElementById('create-group-alert').style.display = "none"
-
-			 		// console.log(this.$store.$state.rooms)
+			 		// console.log('create group',data)
+			 			// document.getElementById('createGroup').style.display = "none"
 			 	}
+			});
+
+			this.$socketInstant.on('EXIT-GROUP-MEMBER-STATUS', async data=>{
+				console.log('EXIT-GROUP-MEMBER-STATUS',data)
+				var temp = this.$store.$state.rooms.findIndex(obj =>{
+					if(obj.room.room_name === data.R.room.room_name ){
+						obj.room = data.R.room
+					}
+				})
+			});
+			this.$socketInstant.on('EXIT-GROUP-USER-STATUS', async data=>{
+				console.log('EXIT-GROUP-USER-STATUS',data)
+				var temp = this.$store.$state.rooms.findIndex(obj =>
+	                                obj.room.room_name === data.room_name 
+	                            )
+				this.$store.$state.rooms.splice(temp,1)
+				this.$store.userChosen = ""
 			});
 
 
@@ -169,46 +141,26 @@
 			 		this.$store.$state.rooms.push(data.R)
 			 		console.log('create group',data)
 			 	}
-			})
+			});
+
+			this.$socketInstant.on('GET-ALL-GROUPS-STATUS',async data=>{
+				// console.log(data.rooms)
+				this.$store.rooms = data.rooms
+			});
 
 
 
 
-		   
-		   // 		console.log('isAddFriendInGroup',this.isAddFriendInGroup)
-
-		   // 		var myAlert = document.getElementById('create-group-alert')
-					// window.addEventListener('click', function (e) {
-					// 	console.log(myAlert)
-					// 	console.log('el', myAlert.contains(e.target))
-					// 	// if(this.isAddFriendInGroup){
-					// 		if (!myAlert.contains(e.target)){
-					// 			var displayAlert = document.getElementById('create-group-alert').style.display
-				 //          console.log('ngoai xgbcxv',displayAlert)
-				 //          	document.getElementById('create-group-alert').style.display = 'none'
-				 //          	console.log('ngoai xgbcxv')
-				 //          	this.isAddFriendInGroup = false
-				          
-			  //       }
-			  //     // }
-					// })
-		   }
-
-		
-		
+					},
 	}
 </script>
 <style type="text/css">
-
-/*.AddFriendInGroup{
+.fullbg-alert{
 	width: 100%;
-	height: 500px;
-	background: gray;
-	position: relative;
-	top: 0px;
-	left: 100px;
-}*/
-#show-create-group{
+	height: 100vh;
+	background: green;
+}
+#createGroup{
 	display: none;
 }
 </style>

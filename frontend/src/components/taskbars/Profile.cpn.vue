@@ -1,9 +1,13 @@
 <template>
-	<div class="title">
-			<h2 class="title-name" >CÁ NHÂN</h2>
+	<div class="title" >
+		<div><h2 class="title-name" >CÁ NHÂN</h2></div>
+		<div v-if='$store.userProfile.admin'>
+			<router-link to='/admin'>
+				<i class="bi bi-gear-fill" id=""></i>
+			</router-link>
+		</div>
 	</div>
 
-	<!-- <div class="croll-taskbar"> -->
 		<div class="taskbar-profile" v-if='!convertProfile'>
 			<div class="avartar-profile">
 				<img src="../../assets/images/spider3.jpg"  >
@@ -62,7 +66,7 @@
 			</div>
 			<div class="change-profile">
 				<div class="btn btn-primary" @click='updateProfile()'>
-					<i class="bi bi-pencil-square"></i>Confirm
+					<i class="bi bi-pencil-square"></i>Xác nhận
 				</div>
 			</div>
 		</div>		
@@ -99,18 +103,6 @@
 					})
 				}
 			},
-			// alertDisplay(){
-		 //        this.$swal.fire({title:'Create Group', 
-		 //        						input: 'text',
-		 //        						inputLabel: 'Group name',
-		 //        						inputPlaceholder: 'Enter your group name here',
-		 //        						background:'#272c3b', 
-		 //        						color: '#dedede',
-		 //        					}).then((res)=>{
-		 //        	console.log(res.value)
-		 //        });
-		        // console.log(this.$swal)
-			// }
 		}
 	}
 </script>

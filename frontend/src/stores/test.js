@@ -262,42 +262,58 @@ const user_EX4 = {
 }
 
 const user1 =  {
-    name: 'nguyen tuan thanh',
+    name: 'Nguyễn Tuấn Thanh',
+    phone: "0972221235",
+    birthday: "02/08/2001",
     username: 'thanh',
     password: '123',
 }
 const user2 =  {
-    name: 'nguyen binh an',
+    name: 'Nguyễn Bình An',
+    phone: "0972221235",
+    birthday: "02/08/2001",
     username: 'an',
     password: '123',
 }
 const user3 =  {
-    name: 'tran ngoc thi',
+    name: 'Lưu Thị Ngọc Thi',
+    phone: "0972221235",
+    birthday: "02/08/2001",
     username: 'thi',
     password: '123',
 }
 const user4 =  {
-    name: 'Mai kim yen',
-    username: 'yen',
+    name: 'Hồ Minh Chánh',
+    phone: "0972221235",
+    birthday: "02/08/2001",
+    username: 'chanh',
     password: '123',
 }
 const user5 =  {
-    name: 'nguyen huu tai',
+    name: 'Nguyễn Hữu Tài',
+    phone: "0972221235",
+    birthday: "02/08/2001",
     username: 'tai',
     password: '123',
 }
 const user6 =  {
-    name: 'le truc hoa',
+    name: 'Lê Thị Trúc Hoa',
+    phone: "0972221235",
+    birthday: "02/08/2001",
     username: 'hoa',
     password: '123',
 }
 const user7 =  {
-    name: 'luu tien dao',
-    username: 'dao',
+    name: 'Trần Thị Uyển Nhi',
+    phone: "0972221235",
+    birthday: "02/08/2001",
+    username: 'nhi',
     password: '123',
 }
 const user8 =  {
-    name: 'Nguyen hoang anh',
+    name: 'Nguyễn Hoàng Anh',
+    phone: "0972221235",
+    birthday: "02/08/2001",
     username: 'anh',
     password: '123',
 }

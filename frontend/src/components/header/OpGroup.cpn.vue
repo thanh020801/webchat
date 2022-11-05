@@ -25,7 +25,7 @@
 						</div>
 						<div v-if='$store.userChosen.room.room_admin === $store.userProfile.username'>
 							<div v-if='!isChangeAdmin'>
-								<i  class="bi bi-x-circle-fill" style="color: red;"></i>
+								<i @click='ClickOutOfGroup(friend.username)' class="bi bi-x-circle-fill" style="color: red;"></i>
 							</div>
 							<div v-else>
 								<input type="radio" :id='friend.username' :value="friend.username" v-model='getUsernameChangeAdmin'>
@@ -35,11 +35,15 @@
 						
 					</div>
 				</div>
-				{{getUsernameChangeAdmin}}
-			</div>
+<!-- 				{{getUsernameChangeAdmin}}
+ -->			</div>
 			<!-- <div class="memberOption underline"></div> -->
 			<div class="addFriendOption">
-				<button class="btn btn-success"  @click='addFriendInGroup()'>Thêm thành viên</button>
+				<button id='add-friend-in-group' 
+						class="btn btn-success"  
+						@click='addFriendInGroup()'>
+							Thêm thành viên
+				</button>
 				<button  class="btn btn-warning" @click='changeAdmin()' 
 					v-if='!getUsernameChangeAdmin && $store.userChosen.room.room_admin === $store.userProfile.username'>
 						Chuyển quyền trưởng nhóm
@@ -57,7 +61,7 @@
 			<!-- <div class="footerOption"></div> -->
 		</div>
 
-		<div v-if='isAddFriendInGroup' class="" id="position-add-friend-in-group">
+		<div  class="" id="position-add-friend-in-group">
 			<AlertCreateGroup :groupName='$store.userChosen.room.room_name'/>
 		</div>
 </template>
@@ -70,11 +74,17 @@ export default{
 		return{
 			isChangeAdmin:false,
 			getUsernameChangeAdmin:"",
-			remove :false,
-			isAddFriendInGroup: false,
+			// remove :false,
+			// isAddFriendInGroup: false,
 		}
 	},
 	methods:{
+		ClickOutOfGroup(friendName){
+			console.log(friendName)
+			this.$socketInstant.emit('EXIT-GROUP',{
+				username: friendName,
+				room_name: this.$store.userChosen.room.room_name})
+		},
 		changeAdmin(){
 			this.isChangeAdmin = !this.isChangeAdmin
 			console.log('isChangeAdmin',this.isChangeAdmin)
@@ -91,26 +101,36 @@ export default{
 			}
 			
 		},
-		addFriendInGroup(){
-			this.isAddFriendInGroup = !this.isAddFriendInGroup
-			console.log(this.isAddFriendInGroup)
+		addFriendInGroup(idShow,clickicon){
+			document.addEventListener('click',(e)=>{
+				const myclick = document.getElementById(idShow)
+				const myclickicon = document.getElementById(clickicon)
+				if(myclick && myclickicon){
+					if(myclickicon.contains(e.target)){
+						myclick.style.display = 'block'
+						console.log('click icon')
+					}
+					else if(!myclick.contains(e.target)){
+						myclick.style.display = 'none'
+					}
+				}
+			})
 		},
 		removeGroup(){
 			this.$socketInstant.emit('REMOVE-GROUP', 
 				{room: this.$store.userChosen.room})
-
-
 		},
 		exitGroup(){
 			this.$socketInstant.emit('EXIT-GROUP',{username: this.$store.userProfile.username,room_name: this.$store.userChosen.room.room_name})
-			var temp = this.$store.$state.rooms.findIndex(obj =>
-                                obj.room.room_name === this.$store.userChosen.room.room_name 
-                            )
-			this.$store.userChosen = ""
-			this.$store.$state.rooms.splice(temp,1)
+					// var temp = this.$store.$state.rooms.findIndex(obj =>
+		   //                              obj.room.room_name === this.$store.userChosen.room.room_name 
+		   //                          )
+			// this.$store.userChosen = ""
 		}
 	},
 	mounted(){
+		this.addFriendInGroup('position-add-friend-in-group','add-friend-in-group');
+
 		this.$socketInstant.on('CHANGE-ADMIN-IN-GROUP-STATUS',
 			async (data)=>{
 				console.log('R',data.R.room)
@@ -128,7 +148,7 @@ export default{
 		    	console.log(temp)
 		    	this.isChangeAdmin = false
 				this.getUsernameChangeAdmin = ""
-		})
+		});
 	}
 }
 </script>
@@ -150,6 +170,7 @@ export default{
 	position: absolute;
 	top: 236px;
 	left: 16.7%;
+	/*display: none;*/
 /*	top: 50;
 	left: 50%;*/
 }

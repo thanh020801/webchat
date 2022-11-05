@@ -3,12 +3,26 @@
 		<p class="">Hãy cùng nhau chia sẽ những kỹ niệm thú vị đi nào</p>
 	</div>
 	<!-- {{$store.messages.contents}} -->
-	<div v-for='item in $store.messages.contents'> 
-		<div class="" v-if='$store.userChosen.friend.username === item.message_name_send'>
-			<ContentReceive :item='item'/>
+	<div v-if='chosen.friend'>
+		<div v-for='item in $store.messages.contents' > 
+			<div class="" v-if='chosen.friend.username === item.message_name_send'>
+				<ContentReceive :item='item'/>
+			</div>
+			<div v-else>
+				<ContentSend :item='item'/>
+			</div>
 		</div>
-		<div v-else>
-			<ContentSend :item='item'/>
+	</div>
+	<div v-if='chosen.room'>
+		<div v-for='item in $store.messages.contents' > 
+<!-- 			{{$store.userProfile.username}}<br>
+			{{item.message_name_send}} -->
+			<div class="" v-if='$store.userProfile.username !== item.message_name_send'>
+				<ContentReceive :item='item'/>
+			</div>
+			<div v-else>
+				<ContentSend :item='item'/>
+			</div>
 		</div>
 	</div>
 </template>
@@ -25,6 +39,7 @@ import {userConfig} from '@/stores/userConfig.js'
 		data(){
 			return{
 				messages: [],
+				chosen: this.$store.userChosen,
 			}
 		},
 		setup(){
@@ -33,23 +48,6 @@ import {userConfig} from '@/stores/userConfig.js'
 			return {friend_EX,room_EX,message_EX,userProfile_EX,configUser}
 		},
 		methods:{
-			// Tim tin nhan cua minh voi ng ban duoc chon bang idMessage 
-			// Luu tin nhan lai bang messages
-			setupMessageSendAndReceive(){
-				// console.log('no da thay doi', this.configUser.userChosen)
-				// const {userChosen} = this.configUser
-				// if(userChosen){
-				// 	for (var i = 0; i < this.message_EX.length; i++) {
-				// 		if (userChosen.idMessage === this.message_EX[i].idMessage) {
-				// 			this.messages = this.message_EX[i].contents
-				// 			return
-				// 		}
-				// 	}
-				// 	this.messages = []
-					// console.log(this.messages)
-				// }
-
-			}
 		},
 		mounted(){
 			this.$socketInstant.on('RECIEVE-MESSAGE',async data=>{
@@ -65,14 +63,14 @@ import {userConfig} from '@/stores/userConfig.js'
 				// console.log(data.messages)
 				const {id_message,createdAt,updatedAt,...contents} = data.messages
 				this.$store.messages.contents = Object.values(contents)
-				console.log(this.$store.messages.contents)
+				// console.log(this.$store.messages.contents)
 			});
 			
 			// this.$socketInstant.
 		},
-		created(){
-			this.setupMessageSendAndReceive()
-		},
+		// created(){
+		// 	this.setupMessageSendAndReceive()
+		// },
 
 		// watch:{
 		// 	'configUser.userChosen': function(val, oldVal){

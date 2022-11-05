@@ -1,11 +1,22 @@
 <template>
     <div class=" d-flex ">
+    	<div id="showFile" >
+    	</div>
+    	<div v-if='file'>
+    		<div id="closeFile" v-if='file.type === "image/png" || file.type === "image/jpeg"'>
+	    		<i @click="closeImg"  class="bi bi-x-lg"></i>
+	    	</div>
+	    	<div id="close-file-name" v-else>
+	    		<i @click="closeImg"  class="bi bi-x-lg"></i>
+	    	</div>
+    	</div>
+	    	
         <input class="testing-input" v-model='message.content' type="text" placeholder="Gửi tin nhắn tới ..." aria-label="Search" v-on:keyup.enter='sendMessage(message.content)'>
         <button class="testing-submit " type="submit">
-        	<input class="input-submit-file" type="file" id="input-submit-file">
+        	<input class="input-submit-file" type="file" @change="selectFile" id="input-submit-file">
         	<label for="input-submit-file"><i class="bi bi-file-earmark-text-fill"></i></label>
         </button>
-        <button v-if='message.content !== "" ' class="testing-submit" type="submit"  @click='sendMessage(message.content)'>
+        <button class="testing-submit" type="submit"  @click='sendMessage(message.content)'>
         	<i class="bi bi-send-fill"></i>
         </button>
     </div>
@@ -14,7 +25,6 @@
 <script>
 	import {TestStore} from '@/stores/test.js'
 	import {userConfig} from '@/stores/userConfig.js'
-	// import {scrollIntoView} from '@/services/untils.js'
 	export default{
 		data(){
 			return {
@@ -22,6 +32,7 @@
 					content : "",
 					time: "",
 				},
+				file: "",
 			}
 		},
 		setup(){
@@ -30,13 +41,58 @@
 			return {friend_EX,room_EX,message_EX,userProfile_EX,configUser}
 		},
 		methods:{
+			selectFile(e){
+				console.log('this.file', e.target.files)
+				this.file = e.target.files[0]
+				if(!this.file){
+					return
+				}
+				
+				if(this.file.type === 'image/png' || this.file.type === 'image/jpeg'){
+					var showImg = document.getElementById('showImg')
+					// console.log(showImg)
+					if(showImg){
+						showImg.remove()
+					}
+					var reader  = new FileReader();
+				    reader.onload = function(e)  {
+				        var image = document.createElement("img");
+				        image.src = e.target.result;
+				        image.width = 200
+				        image.height = 200
+				        image.id = 'showImg'
+				        document.getElementById('showFile').appendChild(image);
+				     }
+				     reader.readAsDataURL(this.file);
+				}else{
+					var show_file_name = document.getElementById('show-file-name')
+					if(show_file_name){
+						show_file_name.remove()
+					}
+					var newDivFile = document.createElement("div");
+				    newDivFile.id = 'show-file-name'
+				    var newTextFile = document.createTextNode(this.file.name);
+           			newDivFile.appendChild(newTextFile);
+					document.getElementById('showFile').appendChild(newDivFile);
+				}
+				    
+			},
 
+			closeImg(){
+				if(this.file.type === 'image/png' || this.file.type === 'image/jpeg'){
+					console.log('close file',this.file)
+					document.getElementById('showImg').remove()
+				}else{
+					document.getElementById('show-file-name').remove()
+				}
+				this.file = ""
+			},
 			sendMessage(content){
+				if(!content){
+					return
+				}
 				var today = new Date()	
 				var timeStandard = new Date(this.$store.timeStandard)
-				// console.log(test.getHours()+':'+test.getMinutes())			
-				// console.log('store',this.$store.rooms)
-				// console.log('friend',this.$store.friends)
 				var message = {
 					message_name_send: this.$store.userProfile.username,
 					message_content: this.message.content,
@@ -47,6 +103,7 @@
 				}
 				console.log(message)
 				var chosen= this.$store.userChosen
+				console.log(chosen)
 				if(chosen.room){
 					this.$socketInstant.emit('SEND-MESSAGE',
 						{message,room_name: chosen.room.room_name,friend_name: ""})
@@ -59,53 +116,79 @@
 					content : "",
 					time: "",
 				}
-				// var chosen = new Date(this.$store.userChosen.room.createdAt)
 
-				// console.log('chosen', today - chosen)
-				// this.$socketInstant.emit('')
-				// if(test < today){
-				// 	console.log('cpm',((today - test)/(1000*60)).toFixed(3))
-				// }else{
-				// 	console.log('cpm',0)
-				// }
-
-				// // console.log(this.configUser.userChosen)
-				// const {userChosen} = this.configUser
-				// // console.log(userChosen)
-				// if(userChosen && this.message.content !== ""){					
-				// 	var today = new Date()
-				// 	var time = today.getHours() + ":" + today.getMinutes()
-				// 	var month = today.getMonth() + 1
-				// 	var date = today.getDate() + "/" + month + "/" + 
-				// 			today.getFullYear()
-				// 	console.log(month)
-				// 	var {idMessage} = userChosen
-				// 	for (var i = 0; i < this.message_EX.length; i++) {
-				// 		if(idMessage === this.message_EX[i].idMessage){
-				// 			var  message = { 
-				// 			    id: "aaa",
-				// 			    message_name_send: this.userProfile_EX.id, 
-				// 			    message_content: content, 
-				// 			    message_name_recieve: userChosen.id,
-				// 			    message_date: date,
-				// 			    message_time: time ,
-				// 			    message_count: this.message_EX[i].contents.length+1,
-				// 			}
-				// 			this.message_EX[i].contents.push(message)
-				// 			// console.log(idMessage,this.message_EX[i])
-				// 			this.message.content = ""
-				// 			return
-				// 		}
-				// 	}
-
-				// }	
-
-				
 			}
 		}
 	}
 </script>
 <style type="text/css">
+	#closeFile{
+		width: 150px;
+		height: 150px;
+		position: fixed;
+		right: 13px;
+		bottom: 60px;
+		align-items: center;
+		text-align: center;
+		background-color: #ffffff00;
+		border-radius: 10px;
+	}
+	#closeFile:hover{
+		background-color: #c4c4c4a3;
+	}
+	#closeFile .bi{
+		font-size: 50px;
+		color: #ff000000;
+		padding-top: 50px;
+		text-align: center;
+		line-height: 150px;
+	}
+	#closeFile .bi:hover{
+		color: red;
+	}
+/**/
+	#close-file-name{
+		width: 40px;
+		height: 50px;
+		position: fixed;
+		right: 13px;
+		bottom: 60px;
+		align-items: center;
+		text-align: center;
+		background-color: #dedede;
+		border-radius: 0px 10px 10px 0px;
+	}
+	#close-file-name .bi{
+		font-size: 20px;
+		color: red;
+		text-align: center;
+		line-height: 50px;
+	}
+	#close-file-name .bi:hover{
+		color: red;
+		font-size: 24px;
+	}
+/**/
+	#showFile #showImg{
+		width: 150px;
+		height: 150px;
+		position: fixed;
+		right: 13px;
+		bottom: 60px;
+		box-shadow: -2px 5px 7px  black;
+		border-radius: 10px;
+	}
+	#show-file-name{
+		min-width: 100px;
+		min-height: 50px;
+		line-height: 50px;
+		position: fixed;
+		right: 50px;
+		bottom: 60px;
+		background-color: #dedede;
+		border-radius: 10px 0px 0px 10px;
+		padding: 0 10px;
+	}
 	.testing{
 		width: 97%;
 		margin: 0 auto;

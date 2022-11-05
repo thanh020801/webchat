@@ -24,24 +24,27 @@ const io = new Server(server,{
     }
 });
 
+app.use('/uploads',express.static(__dirname + "/uploads"))
+
+
 Realtime(io)
 // Routers(app)
 
 const PORT = config.port
 const URI = config.DB.uri
 
-app.put('/update',async (req,res)=>{
-  var id_message= req.body.id_message
-  var message_count = req.body.message_count
-  var username = req.body.username
-  var update = {helo: 'hellllllo'}
-  const findMessage = await Message.findOneAndUpdate(
-                {id_message, message_count},
-                {message_remove: username, message_time_remove:500000},
-                {new:true}
-            )
-  res.send(findMessage)
-})
+// app.put('/update',async (req,res)=>{
+//   var id_message= req.body.id_message
+//   var message_count = req.body.message_count
+//   var username = req.body.username
+//   var update = {helo: 'hellllllo'}
+//   const findMessage = await Message.findOneAndUpdate(
+//                 {id_message, message_count},
+//                 {message_remove: username, message_time_remove:500000},
+//                 {new:true}
+//             )
+//   res.send(findMessage)
+// })
 
 mongoose.connect(URI)
   .then(()=>{

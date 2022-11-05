@@ -16,6 +16,10 @@ export const store = defineStore('store', {
 			},
 			rooms: [],
 			userProfile: {},
+			admin: {
+				chosen: "Trang chủ",
+			},
+			// routerUrl: '/' 
 		}
 	},
 	actions:{

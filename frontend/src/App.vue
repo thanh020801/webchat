@@ -25,7 +25,8 @@ export default{
   @import '@/assets/CSS/theme-dark.css';
   @import '@/assets/CSS/theme-bright.css';
   @import '@/assets/CSS/general.css';
-  @import url(https://fonts.googleapis.com/css?family=Raleway);
+  @import url(https://fonts.googleapis.com/css?family=Poppins);
+  /*@import url(https://fonts.googleapis.com/css?family=Ubuntu);*/
   .container-fluid{
     /*height: 100vh;*/
     margin: 0px;

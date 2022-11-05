@@ -19,6 +19,20 @@ export default{
     },
     mounted(){
         scrollIntoView(this.$refs.container)
+        this.$socketInstant.on('ADMIN-LOCKED-ACCOUNT-USER-STATUS', async res=>{
+            this.$swal.fire({
+              title: res.data.response,
+              showClass: {
+                popup: 'animate__animated animate__fadeInDown'
+              },
+              hideClass: {
+                popup: 'animate__animated animate__fadeOutUp'
+              }
+            }).then(()=>{
+                this.$router.push('/login')
+            })
+            
+        })
     },
 }
 </script>

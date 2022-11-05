@@ -108,7 +108,12 @@
                 this.$store.$state.isLogin = true
                 this.$store.userChosen = ""
                 localStorage.setItem("account", JSON.stringify(this.user))
-                this.$router.push('/contacts')
+                if(this.$store.$state.userProfile.admin){
+                  this.$router.push('/admin')
+                }else{
+                  this.$router.push('/')
+                }
+                
                   Toast.fire({
                     icon: 'success',
                     title: 'Đăng nhập thành công'
