@@ -13,14 +13,20 @@
 	<div class="croll-taskbar" >
 		<div v-for='char in keyWord'>
  			<h4 class="taskbar-contact-keys">{{char}}</h4>
+ 			<!-- <div>{{$store.friends}}</div> -->
 			<div  v-for="item in $store.friends" >
+				<!-- {{item}} -->
 				<div v-if='item.friend.name.charAt(0).toUpperCase() === char'>
 					<div class="taskbar taskbar-Contacts" 
 								:id='"active" + item.friend.friend_id'
 								@click='activeChosen(item,$event)' 
 								>
+
+								<!-- <div>{{item.id_message}}</div> -->
+
 							<div class="avartar-taskbar">
-								<img class="avarta-taskbar" src="../../assets/images/spider3.jpg">
+								<img v-if='item.friend.avatar' class="avarta-taskbar" :src="item.friend.avatar">
+								<img v-else class="avarta-taskbar" src="../../assets/images/spider3.jpg">
 								<div class="user-online-taskbar" v-if='item.isOnline === true'></div>
 								<div class="user-offline-taskbar" v-else></div>
 							</div>
@@ -36,6 +42,7 @@
 	</div>
 </template>
 <script>
+	import {scrollIntoViewBottom} from '@/services/untils.js'
 	export default{
 		data(){
 			return {
@@ -48,6 +55,7 @@
 			activeChosen(item,el){
 				// console.log(item.friend.friend_id)
 				this.$store.$state.userChosen = item
+				// console.log(item.id_message)
 				// this.$store.$state.messages = {id_message:item.id_message}
 				this.$socketInstant.emit('GET-MESSAGES-FROM-ID-MESSAGE',{username:this.$store.userProfile.username,id_message:item.id_message})
 				this.$store.messages.id_message = item.id_message
@@ -56,6 +64,7 @@
 		      el.classList.remove("active");	   
 		    });
 				document.querySelector("#active" + item.friend.friend_id).classList.add("active")
+				scrollIntoViewBottom('croll-to-bottom')
 			},
 			alertDisplay(){
         this.$swal.fire({title:'Add Friend', 

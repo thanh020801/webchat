@@ -12,17 +12,29 @@
     	</div>
 	    	
         <input class="testing-input" v-model='message.content' type="text" placeholder="Gửi tin nhắn tới ..." aria-label="Search" v-on:keyup.enter='sendMessage(message.content)'>
-        <button class="testing-submit " type="submit">
-        	<input class="input-submit-file" type="file" @change="selectFile" id="input-submit-file">
-        	<label for="input-submit-file"><i class="bi bi-file-earmark-text-fill"></i></label>
+        <button class="testing-submit" type="submit">
+        	<input class="input-submit-file" 
+        			type="file" 
+        			@change="selectFile" 
+        			id="input-submit-file"
+        	>
+        	<label for="input-submit-file">
+        		<i class="bi bi-file-earmark-text-fill"></i>
+        	</label>
         </button>
-        <button class="testing-submit" type="submit"  @click='sendMessage(message.content)'>
+        <button v-if='file' class="testing-submit" type="submit"  @click='sendFile'>
+        	<i class="bi bi-send-fill"></i>
+        </button>
+        <button v-else class="testing-submit" type="submit"  @click='sendMessage(message.content,"text")'>
         	<i class="bi bi-send-fill"></i>
         </button>
     </div>
 	
 </template>
 <script>
+	import {scrollIntoViewBottom} from '@/services/untils.js'
+	import ss from 'socket.io-stream';
+	ss.forceBase64 = true ; 
 	import {TestStore} from '@/stores/test.js'
 	import {userConfig} from '@/stores/userConfig.js'
 	export default{
@@ -80,14 +92,16 @@
 
 			closeImg(){
 				if(this.file.type === 'image/png' || this.file.type === 'image/jpeg'){
-					console.log('close file',this.file)
+					// console.log('close file',this.file)
 					document.getElementById('showImg').remove()
 				}else{
 					document.getElementById('show-file-name').remove()
 				}
 				this.file = ""
 			},
-			sendMessage(content){
+			sendMessage(content,type){
+				// console.log('content test file', content,type)
+				content.toString()
 				if(!content){
 					return
 				}
@@ -95,15 +109,15 @@
 				var timeStandard = new Date(this.$store.timeStandard)
 				var message = {
 					message_name_send: this.$store.userProfile.username,
-					message_content: this.message.content,
+					message_content: content,
 					message_date: new Date(),
 					message_count: ((today - timeStandard)/(1000*60)).toFixed(3),
-					message_category: 'text',
+					message_category: type || "text",
 					id_message: this.$store.userChosen.id_message
 				}
-				console.log(message)
+				// console.log(message)
 				var chosen= this.$store.userChosen
-				console.log(chosen)
+				// console.log(chosen)
 				if(chosen.room){
 					this.$socketInstant.emit('SEND-MESSAGE',
 						{message,room_name: chosen.room.room_name,friend_name: ""})
@@ -116,8 +130,49 @@
 					content : "",
 					time: "",
 				}
+				// console.log(this.file)
+				this.file = ""
 
-			}
+				scrollIntoViewBottom('croll-to-bottom')
+
+
+
+			},
+			sendFile(){
+				var stream = ss.createStream({
+					highWaterMark: 1024,
+				});
+				console.log("Kiem tra render")
+				ss(this.$socketInstant).emit('UPLOAD-FILE', stream, {
+					name: this.file.name, 
+					type: this.file.type,
+					size: this.file.size,
+					upload: 'message',
+				});
+
+				ss.createBlobReadStream(this.file).pipe(stream);
+				stream.on('data', (data)=>{
+					console.log('stream data', data)
+				})
+				stream.on('end', ()=>{
+					console.log('stream end')
+				})
+				// this.$socketInstant.on('UPLOAD-FILE-STATUS', async data=>{
+				// 	// console.log("UPLOAD-FILE-STATUS",data)
+				// 	console.log('data.url',data.url)
+				// 	await this.sendMessage(data.url.toString(),data.type)
+				// 	return
+					
+				// })
+				this.closeImg()
+			},
+		},
+		mounted(){
+			this.$socketInstant.on('UPLOAD-FILE-STATUS', async data=>{
+				// console.log("UPLOAD-FILE-STATUS",data)
+				console.log('data.url file',data.url)
+				this.sendMessage(data.url.toString(),data.type)				
+			})
 		}
 	}
 </script>

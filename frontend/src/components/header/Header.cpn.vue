@@ -1,7 +1,16 @@
 <template>
 	<div class="header" v-if='$store.isLogin' >
-			<div class="avt-header" >
-				<img class="avartar-header" src="../../assets/images/spider3.jpg">
+			<div class="avt-header" v-if='$store.userChosen.friend'>
+				<img class="avartar-header" 
+					v-if='$store.userChosen.friend.avatar' 
+					:src="$store.userChosen.friend.avatar">
+				<img v-else class="avartar-header" src="../../assets/images/spider3.jpg">
+			</div>
+			<div class="avt-header" v-if='$store.userChosen.room'>
+				<img class="avartar-header" 
+					v-if='$store.userChosen.room.room_avatar' 
+					:src="$store.userChosen.room.room_avatar">
+				<img v-else class="avartar-header" src="../../assets/images/spider3.jpg">
 			</div>
 			<div class="name-header" v-if='$store.userChosen.friend'>
 				<h4>{{$store.userChosen.friend.name}}</h4>
@@ -9,6 +18,7 @@
 				<div v-else>offline</div>
 			</div>
 			<div class="name-header" v-if='$store.userChosen.room'>
+
 				<h4>{{$store.userChosen.room.room_name}}</h4>
 			</div>
 

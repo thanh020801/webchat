@@ -7,6 +7,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Vite App</title>
   </head>
+  <script>
+    window.global = window;
+  </script>
+  <script type="module">
+    import process from "process";
+    import EventEmitter from "events";
+    import {Buffer} from "buffer";
+    window.Buffer = Buffer;
+    window.process = process;
+    window.EventEmitter = EventEmitter;
+  </script>
   <body>
     <div id="app"></div>
     <script type="module" src="/src/main.js"></script>

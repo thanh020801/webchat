@@ -5,7 +5,7 @@
                 <tr>
                     <th style="width: 5%;">Stt</th>
                     <th style="width: 12%;">Người gửi</th>
-                    <th style="width: 25%;">Nội dung</th>
+                    <th style="width: 32%;">Nội dung</th>
                     
                     <th style="width: 15%;">Loại tin nhắn</th>
                     <th style="width: 15%;">Thời gian gửi</th>
@@ -20,10 +20,46 @@
 					<tr class="list-account-content" v-for='(message,index) in messages'>
 						<td  style="width: 5%;">{{index+1}}</td>
 						<td  style="width: 12%;">{{message.message_name_send}}</td>
-						<td  style="width: 25%;">{{message.message_content}}</td>
 						
-					
-						<td  style="width: 15%;">{{message.message_category}}</td>
+
+						<td  style="width: 32%;" 
+							v-if='message.message_category === "text"'>
+							{{message.message_content}}
+							<!-- <img class="admin-message-image" :src="message.message_content"> -->
+							<!-- {{message.message_content.split('/')
+								[message.message_content.split('/').length-1]}} -->
+							
+						</td>
+
+						<td  style="width: 32%;" 
+							v-else-if='fomatFileType(message.message_content) === "Ảnh"'>
+							<!-- {{message.message_content}} -->
+							<img class="admin-message-image" :src="message.message_content">
+							<!-- {{message.message_content.split('/')
+								[message.message_content.split('/').length-1]}} -->
+							
+						</td>
+						<td  style="width: 32%;" 
+							v-else-if='fomatFileType(message.message_content) === "File"'>
+							<!-- {{message.message_content}} -->
+							<!-- <img class="admin-message-image" :src="message.message_content"> -->
+							{{message.message_content.split('/')
+								[message.message_content.split('/').length-1]}}
+							
+						</td>
+						<td  style="width: 32%;" 
+							v-else='fomatFileType(message.message_content) === "File"'>
+							{{message.message_content}}
+							<!-- <img class="admin-message-image" :src="message.message_content"> -->
+							<!-- {{message.message_content.split('/')
+								[message.message_content.split('/').length-1]}} -->
+							
+						</td>
+
+						<td  style="width: 15%;">
+							<!-- {{message.message_category}} -->
+							{{message.message_category === 'text'? "Text": fomatFileType(message.message_content)}}
+						</td>
 						<td  style="width: 15%;">
 							<!-- {{message.message_date}} -->
 							{{fomatTime(message.message_date)}}
@@ -33,7 +69,7 @@
 							{{fomatDate(message.message_date)}}
 						</td>
 						<td style="width: 7%;">
-							<i 	@click='removeMessage(message._id)'
+							<i 	@click='removeMessage(message._id,message.message_category === "text" ? "" : message.message_content)'
 							 	class="bi bi-x-octagon-fill">
 							 </i>
 						</td>
@@ -57,9 +93,21 @@ export default{
 		}
 	},
 	methods:{
-		removeMessage(id){
-			console.log('removeMessage',id)
-			this.$socketInstant.emit('REMOVE-MESSAGE-WITH-ID',id)
+		removeMessage(id,filename){
+			console.log('removeMessage',{id,filename})
+			this.$socketInstant.emit('REMOVE-MESSAGE-WITH-ID',{id,filename})
+		},
+		fomatFileType(fileType){
+			// console.log('fileType',fileType.split('.')[fileType.split('.').length-1])
+			const type = fileType.split('.')[fileType.split('.').length-1]
+			// console.log('fileType',fileType.split('.')[fileType.split('.').length-1])
+			if(type === 'png' || type === 'PNG' ||type === 'jpg' || type === 'jpeg' ){
+				return  "Ảnh"
+			}
+			if(type === 'pdf' || type === 'rar' ||type === 'zip' || type === 'docx' ||
+				type === 'txt' || type === 'pptx'){
+				return  'File'
+			}
 		}
 	},
 	mounted(){
@@ -101,4 +149,8 @@ export default{
 /*#list-account-content-id tbody tr:nth-child(odd) td{
 	background-color: #dde3ee99 ;
 }*/
+.admin-message-image{
+/*	display: block;*/
+	max-width: 40px;
+}
 </style>

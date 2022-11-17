@@ -2,22 +2,26 @@
 	<div class="blank">
 		<p class="">Hãy cùng nhau chia sẽ những kỹ niệm thú vị đi nào</p>
 	</div>
+	<!-- <ContentSend /> -->
 	<!-- {{$store.messages.contents}} -->
-	<div v-if='chosen.friend'>
-		<div v-for='item in $store.messages.contents' > 
-			<div class="" v-if='chosen.friend.username === item.message_name_send'>
-				<ContentReceive :item='item'/>
+	<!-- {{$store.userChosen.friend.username}} -->
+	<div   v-if='$store.userChosen.friend'>
+		<div
+			v-for='item in $store.messages.contents' > 
+			<div  v-if='$store.userProfile.username !== item.message_name_send'>
+				<ContentReceive  :item='item'/>
 			</div>
 			<div v-else>
 				<ContentSend :item='item'/>
 			</div>
 		</div>
 	</div>
-	<div v-if='chosen.room'>
+	<div v-if='$store.userChosen.room'>
 		<div v-for='item in $store.messages.contents' > 
-<!-- 			{{$store.userProfile.username}}<br>
-			{{item.message_name_send}} -->
-			<div class="" v-if='$store.userProfile.username !== item.message_name_send'>
+			<!-- {{$store.userProfile.username}}<br> -->
+			<!-- {{item}} -->
+			<div   class="croll-to-bottom-in-message" 
+				v-if='$store.userProfile.username !== item.message_name_send'>
 				<ContentReceive :item='item'/>
 			</div>
 			<div v-else>
@@ -27,7 +31,7 @@
 	</div>
 </template>
 <script>
-
+import {scrollIntoViewBottom} from '@/services/untils.js'
 import ContentSend from '@/components/messages/Content-send.cpn.vue'
 import ContentReceive from '@/components/messages/Content-receive.cpn.vue'
 import {TestStore} from '@/stores/test.js'
@@ -51,33 +55,29 @@ import {userConfig} from '@/stores/userConfig.js'
 		},
 		mounted(){
 			this.$socketInstant.on('RECIEVE-MESSAGE',async data=>{
-				const {id_message,createdAt,updatedAt,...content} = data.message
-				console.log('message', id_message,createdAt,updatedAt,content)
-				// console.log(id_message)
-				// console.log(content)
-				// this.$store.messages.id_message = id_message
-				console.log(this.$store.messages.contents)
-				this.$store.messages.contents.push(content)
+				// console.log(data.message)
+				const {id_message,createdAt,updatedAt,...content} = await data.message
+
+				// console.log(this.$store.messages.contents)
+				await this.$store.messages.contents.push(content)
+				const myTimeout = setTimeout(()=>{
+					scrollIntoViewBottom('croll-to-bottom')
+				}, 500);
+				scrollIntoViewBottom('croll-to-bottom')
+
 			});
 			this.$socketInstant.on('GET-MESSAGES-FROM-ID-MESSAGE-STATUS', async data=>{
-				// console.log(data.messages)
-				const {id_message,createdAt,updatedAt,...contents} = data.messages
-				this.$store.messages.contents = Object.values(contents)
+				// console.log(this.$store.userChosen)
+				const {id_message,createdAt,updatedAt,...contents} = await data.messages
+
+				this.$store.messages.contents = await Object.values(contents)
 				// console.log(this.$store.messages.contents)
+				const myTimeout = setTimeout(()=>{
+					scrollIntoViewBottom('croll-to-bottom')
+				}, 1000);
+				scrollIntoViewBottom('croll-to-bottom')
 			});
-			
-			// this.$socketInstant.
 		},
-		// created(){
-		// 	this.setupMessageSendAndReceive()
-		// },
-
-		// watch:{
-		// 	'configUser.userChosen': function(val, oldVal){
-		// 		this.setupMessageSendAndReceive()
-
-		// 	}
-		// },
 	}
 </script>
 <style type="text/css">

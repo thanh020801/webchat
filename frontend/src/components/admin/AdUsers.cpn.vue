@@ -4,9 +4,10 @@
             <thead>
                 <tr>
                     <th style="width: 5%;">Stt</th>
+                    <th style="width: 15%;">Ảnh đại diện</th>
                     <th style="width: 18%;">Tên tài khoản</th>
                     <th style="width: 20%;">Tên</th>
-                    <th style="width: 15%;">Số điện thoại</th>
+                    <!-- <th style="width: 15%;">Số điện thoại</th> -->
                    	<th style="width: 10%;">Bạn bè</th>
                     <th style="width: 10%;">Nhóm</th>
                     <th style="width: 15%;">Xem thông tin</th>
@@ -22,9 +23,18 @@
 						<!-- {{user}} -->
 						<!-- {{index}} -->
 						<td style="width: 5%;">{{index+1}}</td>
+						<td style="width: 15%;">
+							<img class="avartar-header" 
+								v-if='user.avatar' 
+								:src="user.avatar">
+							<img v-else 
+								class="avartar-header" 
+								src="../../assets/images/spider3.jpg">
+
+						</td>
 						<td style="width: 18%;">{{user.username}}</td>
 						<td style="width: 20%;">{{user.name}}</td>
-						<td style="width: 15%;">{{user.phone? user.phone:"Không có"}}</td>
+						<!-- <td style="width: 15%;">{{user.phone? user.phone:"Không có"}}</td> -->
 						<td style="width: 10%;">{{user.friend_number}}</td>
 						<td style="width: 10%;">{{user.room_number}}</td>
 						<td style="width: 15%;">
@@ -171,6 +181,6 @@ export default{
 }
 
 .list-account tr:nth-child(even) td{
-	background-color: #b6cade;
+	background-color: #e7e9ee;
 }
 </style>

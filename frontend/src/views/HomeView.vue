@@ -1,24 +1,19 @@
 <script>
 import Menu from '../components/Menu.cpn.vue'
-// import ContentSend from '../components/Content-send.cpn.vue'
-// import ContentReceive from '../components/Content-receive.cpn.vue'
 import Header from '../components/header/Header.cpn.vue'
 import Testing from '../components/Testing.cpn.vue'
 import FrameMS from '../components/frames/FrameMS.cpn.vue'
 import FrameMSText from '../components/frames/FrameMSText.cpn.vue'
-import {scrollIntoView} from '@/services/untils.js'
 export default{
     components:{
         Menu,FrameMS,Header,Testing,FrameMSText,
     },
     methods:{
-        scrollIntoView(){
-            scrollIntoView(this.$refs.container)
-        },
 
     },
     mounted(){
-        scrollIntoView(this.$refs.container)
+        
+
         this.$socketInstant.on('ADMIN-LOCKED-ACCOUNT-USER-STATUS', async res=>{
             this.$swal.fire({
               title: res.data.response,
@@ -50,7 +45,7 @@ export default{
             </div>
             <div class="frame-layout"  v-else>
                 <Header/>
-                <div class="Contents " ref='container'>
+                <div id='croll-to-bottom' class="Contents" ref='container'>
                         <FrameMS/>                        
                 </div>
                 <div class="testing">

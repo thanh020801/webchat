@@ -3,7 +3,11 @@
 				@click=''>
 			<div class="headerOption">
 				<div class="avartarOption">
-					<img class="avartar-header" src="../../assets/images/spider3.jpg">
+					<img class="avartar-header" 
+						v-if='$store.userChosen.friend.avatar' 
+						:src="$store.userChosen.friend.avatar"
+					>
+					<img v-else class="avartar-header" src="../../assets/images/spider3.jpg">
 				</div>
 				<div class="nameOption">
 					<!-- {{$store.userChosen.room}} -->

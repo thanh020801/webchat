@@ -22,7 +22,7 @@
 								</div>
 								<div class="">
 									<input  type="checkbox" :id='item.friend.username' 
-									:value="{name:item.friend.name,username:item.friend.username}" 
+									:value="{name:item.friend.name,username:item.friend.username,avatar:item.friend.avatar}" 
 									v-model='group.room_member'>
 								</div>							
 														
@@ -54,7 +54,8 @@ export default{
 		createGroup(){
 			this.group.room_member.push({
 					username:this.$store.userProfile.username,
-					name: this.$store.userProfile.name
+					name: this.$store.userProfile.name,
+					avatar: this.$store.userProfile.avatar
 				})
 			const room = {
 				room_admin: this.$store.userProfile.username,

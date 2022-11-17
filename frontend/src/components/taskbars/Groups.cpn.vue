@@ -41,6 +41,7 @@
 	<!-- </div> -->
 </template>
 <script>
+	import {scrollIntoViewBottom} from '@/services/untils.js'
 	import AlertCreateGroup from '@/components/notice/AlertCreateGroup.cpn.vue'
 	import {Alert} from 'bootstrap'
 	export default{
@@ -57,6 +58,7 @@
 				// console.log(item.room._id)
 				// console.log(item.friend.friend_id)
 				this.$store.$state.userChosen = item
+				// console.log(item)
 				// this.$store.$state.messages = {id_message:item.id_message}
 				this.$socketInstant.emit('GET-MESSAGES-FROM-ID-MESSAGE',{username:this.$store.userProfile.username,id_message:item.id_message})
 				this.$store.messages.id_message = item.id_message
@@ -66,6 +68,7 @@
 		      el.classList.remove("active");	   
 		    });
 				document.querySelector("#active" + item.room._id).classList.add("active")
+
 			},
 			showHideAlertCreateGroup(idShow,clickicon){
 					document.addEventListener('click',(e)=>{
@@ -108,7 +111,7 @@
 	                            )
 				// console.log('create group temp',temp)
 				if (!temp) {
-			 		this.$store.$state.rooms.push(data.R)
+			 		await this.$store.$state.rooms.push(data.R)
 			 		// console.log('create group',data)
 			 			// document.getElementById('createGroup').style.display = "none"
 			 	}
@@ -138,14 +141,14 @@
 	                                obj.room.room_name === data.R.room.room_name 
 	                            )
 				if (!temp) {
-			 		this.$store.$state.rooms.push(data.R)
+			 		await this.$store.$state.rooms.push(data.R)
 			 		console.log('create group',data)
 			 	}
 			});
 
 			this.$socketInstant.on('GET-ALL-GROUPS-STATUS',async data=>{
 				// console.log(data.rooms)
-				this.$store.rooms = data.rooms
+				this.$store.rooms = await data.rooms
 			});
 
 

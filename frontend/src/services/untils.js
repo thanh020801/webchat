@@ -1,6 +1,8 @@
-export function scrollIntoView(temp){
-	// const container = temp;
- //    container.scrollTop = container.scrollHeight;
+export function scrollIntoViewBottom(idScroll){
+	var element = document.getElementById(idScroll);
+	if(element){
+		element.scrollTop = element.scrollHeight;
+	}
 }
 
 export function fomatTime(time){

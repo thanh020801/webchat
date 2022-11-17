@@ -29,11 +29,4 @@ const message = mongoose.Schema({
 },{timestamps: true})
 
 module.exports = mongoose.model("Message", message)
-  //   { 
-  //   id: "bbbbbbb",
-  //   message_name_send: "234", 
-  //   message_content: "okdsfsdfdfsgdsfgdsg", 
-  //   message_date: "2/8/2222", 
-  //   message_room: "learning", 
-  //   message_count: "1",
-  // },
+

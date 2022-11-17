@@ -1,18 +1,48 @@
 <template>
-<!-- 	<div class="message-receive" >
-		<div class="content-receive-message">
-			<div class="message-receive-content">{{item.message_content}}</div>
-			<div class="time-receive">{{item.message_date}}</div>
-		</div>
-	</div> -->
-	<div class="message-send" :id="`num-${item.message_count}`" >
+<!-- 	<div class="message-send" :id="`num-${item.message_count}`" >
 		<div class="content-send-message">
 			<div class="name-send">Bạn</div>
 			<div class="message-send-content">{{item.message_content}}</div>
 			<div class="time-send">{{fomatTime(item.message_date)}}</div>
-			<!-- <div class="time-send">{{item.message_time}}</div> -->
 
 		</div>
+	</div> -->
+<!-- {{item.message_content}} -->
+	<div class="message-send" :id="`num-${item.message_count}`" >
+		<div class="message-option">
+			 <i class="bi bi-three-dots-vertical" ></i>
+		</div>
+		<div class="content-send-message">
+			<div class="name-send">Bạn</div>
+			
+
+			<div v-if='item.message_category === "text"' 
+			class="message-send-content">{{item.message_content.toString()}}</div>
+
+			<div class="message-receive-content-image" 
+				v-else-if='item.message_category === "image/png" || 
+					item.message_category === "image/jpeg"'	
+			>
+				<!-- {{item.message_content}} -->
+				<img :src="item.message_content">
+				<!-- <img src="http://localhost:5000/uploads/e52e98eaf46e96bf32795b285b1d826e.PNG"> -->
+			</div>
+
+			<div class="message-send-content-file" v-else>
+				<i class="bi bi-file-earmark-text"></i> 
+				<span>
+					<a :href="item.message_content" target="_blank">
+						{{item.message_content.split('/')[item.message_content.split('/').length-1]}}
+					</a>
+				</span>
+				
+			</div>
+
+
+			<div class="time-send">{{fomatTime(item.message_date)}}</div>
+
+		</div>
+
 	</div>
 </template>
 <script>
@@ -33,23 +63,18 @@
 	}
 </script>
 <style type="text/css">
+.message-option .bi{
+	color: black;
+}
 .message-send{
 	margin: 0.5rem;
 	display: flex;
 	justify-content: flex-end;
-/*	position: relative;
-	bottom: 50%;*/
-	/*right: -30%;*/
-
 }
 
 .content-send-message{
-	/*padding-left: 1rem;
-	padding-right: 1rem;
-*/	padding: 0.5rem 1rem;
+	padding: 0.5rem 1rem;
 	max-width: fit-content;
-	/*border:  1px solid black;*/
-	/*background-color: darkblue;*/
 	border-radius: 10px;
 }
 .name-send{
@@ -63,5 +88,26 @@
 .message-send-content{
 	font-size: 16px;
 	color: white;
+}
+
+
+.message-send-content-file{
+	max-width: 400px;
+	min-width: 100px;
+	border-radius: 10px;
+	margin: 3px 0;
+	padding: 5px 10px;
+	background-color: #dedede;
+	line-height: 20px;
+	cursor: pointer;
+	
+}
+.message-send-content-file .bi{
+	color: white;
+	font-size: 20px;
+	margin-right: 5px;
+}
+.message-send-content-file span a{
+	color: black;
 }
 </style>
