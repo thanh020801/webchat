@@ -175,13 +175,15 @@
         })
       });
       this.$socketInstant.on('REMOVE-FRIEND-STATUS',async data=>{
-      	console.log('REMOVE-FRIEND-STATUS',data.friend_username)
-      	var temp = this.$store.friends.findIndex(element=> 
-      		element.friend.username === data.friend_username
-      	)
-      	console.log('temp REMOVE-FRIEND-STATUS', temp)
-      	this.$store.friends.splice(temp,1)
-      	this.render()
+      	// console.log('REMOVE-FRIEND-STATUS',data.friend_username)
+      	// var temp = this.$store.friends.findIndex(element=> 
+      	// 	element.friend.username === data.friend_username
+      	// )
+      	// console.log('temp REMOVE-FRIEND-STATUS', temp)
+      	// this.$store.friends.splice(temp,1)
+      	// this.render()
+      	this.$socketInstant.emit('GET-ALL-FRIENDS',
+      		{username:this.$store.userProfile.username})
       });
       this.$socketInstant.on('COMMIT-ADD-FRIEND-STATUS',(data)=>{
       	console.log('ADD-FRIEND', data)
@@ -202,6 +204,10 @@
 				// console.log(data.friends)
 				this.$store.friends = data.friends
 				this.render()
+			});
+			this.$socketInstant.on('GET-ALL-GROUPS-STATUS',async data=>{
+				console.log(data.rooms)
+				this.$store.rooms = await data.rooms
 			});
 		}
 	}

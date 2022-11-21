@@ -1,4 +1,4 @@
-<template v-if='$store.userProfile.admin'>
+<template v-if='$store.userProfile.admin && $store.isLogin'>
 <!-- 	<h1>T là admin</h1>
  -->	
 <div class="Admin">

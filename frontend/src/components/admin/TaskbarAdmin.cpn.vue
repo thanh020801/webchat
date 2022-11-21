@@ -10,14 +10,14 @@
 			<div class="menu-admin">
 				<ul>
 					
-					<router-link to='/admin/users'>
+<!-- 					<router-link to='/admin/users'>
 						<li class="active-taskbar-admin activeAd" id="activeAd1"
 							@click='activeChosen("activeAd1",$event)'
 						>
 							<i class="bi bi-speedometer2"></i>
 							Trang chủ
 						</li>
-					</router-link>
+					</router-link> -->
 					
 					
 					<router-link to='/admin/users'>

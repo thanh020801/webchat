@@ -4,12 +4,13 @@
             <thead>
                 <tr>
                     <th style="width: 5%;">Stt</th>
-                    <th style="width: 13%;">Ảnh đại diện</th>
-                    <th style="width: 25%;">Tên Nhóm</th>
-                    <th style="width: 20%;">Tên trưởng nhóm</th>
+                    <th style="width: 15%;">Ảnh đại diện</th>
+                    <th style="width: 17%;">Tên Nhóm</th>
+                    <th style="width: 17%;">Tên trưởng nhóm</th>
                     <th style="width: 15%;">Số thành viên</th>
-                    <th style="width: 15%;">Xem tin nhắn</th>
-                    <th style="width: 7%;">Xóa</th>
+                    <th style="width: 13%;">Số tin nhắn</th>
+                    <th style="width: 13%;">Xem tin nhắn</th>
+                    <th style="width: 5%;">Xóa</th>
                 </tr>
             </thead>
         </table>
@@ -18,8 +19,9 @@
         	<table class="list-account" id="list-account-content-id-AdUser">
 	            <tbody >
 					<tr class="list-account-content" v-for='(group,index) in groups'>
+						<!-- {{group}} -->
 						<td style="width: 5%;">{{index+1}}</td>
-						<td style="width: 13%;">
+						<td style="width: 15%;">
 							<img class="avartar-header" 
 								v-if='group.room_avatar' 
 								:src="group.room_avatar">
@@ -28,16 +30,16 @@
 								src="../../assets/images/spider3.jpg">
 
 						</td>
-						<td style="width: 25%;">{{group.room_name}}</td>
-						<td style="width: 20%;">{{group.room_admin}}</td>
+						<td style="width: 17%;">{{group.room_name}}</td>
+						<td style="width: 17%;">{{group.room_admin}}</td>
 						<td style="width: 15%;">{{group.room_member_number}}</td>
-					
-						<td style="width: 15%;">
+						<td style="width: 13%;">{{group.message_number}}</td>
+						<td style="width: 13%;">
 							<router-link :to='"/admin/messages/" + group._id'>
 								<i class="bi bi-envelope-open-fill"></i>
 							</router-link>
 						</td>
-						<td style="width: 7%;">
+						<td style="width: 5%;">
 							<i @click='removeGroup(group)' class="bi bi-x-octagon-fill"></i>
 						</td>
 					</tr>

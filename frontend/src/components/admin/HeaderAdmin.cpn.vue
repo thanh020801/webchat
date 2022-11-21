@@ -14,8 +14,8 @@
 			</div>
 		    </div>
 		</div>
-		<div class="accountAd">
-			acount
+		<div class="accountAd" >
+			<router-link to='/login' @click='removeAccount()' style='color: white;'>Logout</router-link>
 		</div>
 	</div>
 	
@@ -28,6 +28,12 @@ export default {
 		return {
 			searchFriend:""
 		}
+	},
+	methods:{
+		removeAccount(){
+				this.$store.removeAccount()
+				this.$socketInstant.disconnect()
+			},
 	}
 }
 

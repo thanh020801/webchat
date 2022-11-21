@@ -151,8 +151,17 @@ realtime = (io)=>{
             const rooms = []
             for(var item of list_room){
                 const room = await Room.findOne({room_name:item.room_name})
+                for(var temp of room.room_member){
+                    const member = await User.findOne({username: temp.username})
+                    // console.log(temp)
+                    temp.avatar = member.avatar
+                    // room.room_member = temp
+                    // console.log(temp)
+                }
+                // console.log('room',room.room_member)
                 rooms.push({id_message:item.id_message,room})
             }
+            // console.log('rooms',rooms[0].room)
             socket.emit('GET-ALL-GROUPS-STATUS',{rooms})
         });
         socket.on('UPDATE-PROFILE', async (data)=>{
@@ -198,8 +207,10 @@ realtime = (io)=>{
             
             io.to(config.socket.admin.id).emit('GET-BLOCK-ITEMS-STATUS',
                     {blockItemMessage: await Message.find().count()})
-            const messages = await Message.find({id_message: data.message.id_message}).sort({message_count: -1})
-            io.to(config.socket.admin.id).emit('ADMIN-GET-ALL-MESSAGES-STATUS',messages)
+            const messages = await Message.find({id_message: data.message.id_message})
+                .sort({message_count: -1})
+            io.to(config.socket.admin.id).emit('ADMIN-UPDATE-MESSAGES-STATUS',
+                {messages,id_message: data.message.id_message})
         });
 
         socket.on('REMOVE-MESSAGE', async data=>{
@@ -234,6 +245,8 @@ realtime = (io)=>{
                 
 
             io.to(config.socket.admin.id).emit('REMOVE-MESSAGE-WITH-ID-STATUS')
+            io.to(config.socket.admin.id).emit('GET-BLOCK-ITEMS-STATUS',
+                    {blockItemMessage: await Message.find().count()})
         })
 
         socket.on('GET-MESSAGES-FROM-ID-MESSAGE',async data=>{
@@ -442,7 +455,7 @@ realtime = (io)=>{
                 }
 
             }
-            // Neu ng dung la roi nhom la ban 
+            // Neu ng dung da roi nhom la ban 
             // gui tin ve cho ban 
             // neu ng dung ko phai ban ma onl
             // gui tin ve cho ng do
@@ -478,15 +491,16 @@ realtime = (io)=>{
             var userOnl = config.socket.onlines.find(el => el.username === data.changeUsername)
             //console.log('userOnl', userOnl)
             if(userOnl){
-                socket.emit('CHANGE-ADMIN-IN-GROUP-STATUS',{status:200, R:{room:updateRoom}})
                 io.to(userOnl.id).emit('CHANGE-ADMIN-IN-GROUP-STATUS',{status:200, R:{room:updateRoom}})
             }
+            socket.emit('CHANGE-ADMIN-IN-GROUP-STATUS',{status:200, R:{room:updateRoom}})
             
         });
 
 
         socket.on('UPDATE-MEMBER_IN_GROUP', async (data)=>{
             var room = await Room.findOne({room_name:data.room_name})
+            console.log(room, data.room_name)
             var id_message = room._id.toString()
             for(var item of data.room_member){
                 // //console.log('item',item)
@@ -589,7 +603,8 @@ realtime = (io)=>{
                 // const friends = await Friend.findOne({friend_username: user.username})
                 // userInfo.friend_number = friends.list_friend.length
                 groupInfo.room_member_number = groupInfo.room_member.length
-                // //console.log('ADMIN-GET-ALL-USER', userInfo)
+                groupInfo.message_number = await Message.find({id_message: groupInfo._id}).count()
+                // console.log('ADMIN-GET-ALL-GROUP', groupInfo)
                 R.push(groupInfo)
             }
            io.to(config.socket.admin.id).emit('ADMIN-GET-ALL-GROUP-STATUS', R)
@@ -599,7 +614,7 @@ realtime = (io)=>{
             const messages = await Message.find({id_message: data.id_message.toString()}).sort({message_count:-1})
             //console.log('message',messages, data.id_message.id_message)
             // const {createdAt,updatedAt,_v,...payload} = messages._doc
-            io.to(config.socket.admin.id).emit('ADMIN-GET-ALL-MESSAGES-STATUS', messages)
+            io.to(config.socket.admin.id).emit('ADMIN-GET-ALL-MESSAGES-STATUS', {messages})
         })
 
 
@@ -617,6 +632,7 @@ realtime = (io)=>{
                 var {_v,password,admin,createdAt,updatedAt,...payload} = findFriend._doc
                 
                 payload.id_message = friend.id_message
+                payload.message_number = await Message.find({id_message: friend.id_message}).count()
                 friends.push(payload)
             }
             for(let room of findFriends.list_room){
@@ -624,6 +640,7 @@ realtime = (io)=>{
                 var {_v,createdAt,updatedAt,...payload} = findRoom._doc
                 payload.room_member_number = findRoom.room_member.length
                 payload.id_message = room.id_message
+                payload.message_number = await Message.find({id_message: room.id_message}).count()
                 groups.push(payload)
             }
             //console.log('user',user)
@@ -713,14 +730,14 @@ realtime = (io)=>{
 
 
 
-        crypto.randomBytes(16, (err, buf) => {
-            if (err) {
-                //console.log('err',err)
-                return 
-            }
-            const filename = buf.toString('hex') + path.extname(data.name);
-            //console.log('filename',filename)
-        });
+        // crypto.randomBytes(16, (err, buf) => {
+        //     if (err) {
+        //         //console.log('err',err)
+        //         return 
+        //     }
+        //     const filename = buf.toString('hex') + path.extname(data.name);
+        //     //console.log('filename',filename)
+        // });
     })
 // /////////////////////////
 
@@ -729,7 +746,10 @@ realtime = (io)=>{
 
 
 
-
+    // socket.on('GET-AVATAR-MEMBER-IN-GROUP',async data=>{
+    //     console.log(data.room_name)
+    //     room
+    // })
 
 
 

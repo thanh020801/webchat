@@ -25,34 +25,38 @@
 						<td  style="width: 32%;" 
 							v-if='message.message_category === "text"'>
 							{{message.message_content}}
-							<!-- <img class="admin-message-image" :src="message.message_content"> -->
-							<!-- {{message.message_content.split('/')
-								[message.message_content.split('/').length-1]}} -->
-							
 						</td>
 
 						<td  style="width: 32%;" 
 							v-else-if='fomatFileType(message.message_content) === "Ảnh"'>
-							<!-- {{message.message_content}} -->
-							<img class="admin-message-image" :src="message.message_content">
-							<!-- {{message.message_content.split('/')
-								[message.message_content.split('/').length-1]}} -->
+						
+							<div type="button" 
+									class="" 
+									data-bs-toggle="modal" 
+									data-bs-target="#getMessageModal"
+									@click='getMessageModal(message.message_content)'
+							>
+							  		<img class="admin-message-image" :src="message.message_content" >
+							</div>
 							
 						</td>
 						<td  style="width: 32%;" 
 							v-else-if='fomatFileType(message.message_content) === "File"'>
-							<!-- {{message.message_content}} -->
-							<!-- <img class="admin-message-image" :src="message.message_content"> -->
-							{{message.message_content.split('/')
-								[message.message_content.split('/').length-1]}}
-							
+
+							<div type="button" 
+									class="" 
+									data-bs-toggle="modal" 
+									data-bs-target="#getMessageModal"
+									@click='getMessageModal(message.message_content)'
+							>
+							  		{{message.message_content.split('/')
+									[message.message_content.split('/').length-1]}}
+							</div>
+
 						</td>
 						<td  style="width: 32%;" 
 							v-else='fomatFileType(message.message_content) === "File"'>
 							{{message.message_content}}
-							<!-- <img class="admin-message-image" :src="message.message_content"> -->
-							<!-- {{message.message_content.split('/')
-								[message.message_content.split('/').length-1]}} -->
 							
 						</td>
 
@@ -81,18 +85,69 @@
         </div>
 	   
     </div>
+
+<div class="modal fade" id="getMessageModal" 
+								tabindex="-1" aria-labelledby="getMessageModal" 
+								aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" 
+					id="getMessageModal">
+						Tải xuống
+				</h5>
+				<button type="button" 
+						class="btn-close" 
+						data-bs-dismiss="modal" 
+						aria-label="Close">
+				</button>
+			</div>
+			<div class="modal-body" v-if='fomatFileType(messageModalContent) === "Ảnh"'>
+				<img style="width: 100%;" :src="messageModalContent">
+			</div>
+			<div class="modal-body" v-if='fomatFileType(messageModalContent) === "File"'>
+				{{messageModalContent.split('/')
+					[messageModalContent.split('/').length-1]}}
+			</div>
+			<div class="modal-footer">
+				<button type="button" 
+						class="btn btn-secondary" 
+						data-bs-dismiss="modal">
+						Thoát
+				</button>
+				<a target="_blank" 
+					:href="messageModalContent">
+					<button type="button" 
+						class="btn btn-primary" 
+						data-bs-dismiss="modal">
+						Xác nhận
+					</button>
+				</a>
+
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- <AlertShowAndDownload/> -->
 </template>
 <script>
 import {fomatTime,fomatDate} from '@/services/untils.js'
+import AlertShowAndDownload from '@/components/notice/AlertShowAndDownload.cpn.vue'
 export default{
+	components: AlertShowAndDownload,
 	data(){
 		return{
 			messages: [],
 			fomatTime: fomatTime,
-			fomatDate: fomatDate
+			fomatDate: fomatDate,
+			messageModalContent: "",
 		}
 	},
 	methods:{
+		getMessageModal(content){
+			this.messageModalContent = content
+		},
 		removeMessage(id,filename){
 			console.log('removeMessage',{id,filename})
 			this.$socketInstant.emit('REMOVE-MESSAGE-WITH-ID',{id,filename})
@@ -112,8 +167,13 @@ export default{
 	},
 	mounted(){
 		this.$socketInstant.on('ADMIN-GET-ALL-MESSAGES-STATUS', async data=>{
-			this.messages = data
-			// console.log('this.messages', this.messages)
+			this.messages = data.messages
+		});
+		this.$socketInstant.on('ADMIN-UPDATE-MESSAGES-STATUS', async data=>{
+			// console.log(this.$route.params.id_message,",,,",data.id_message)
+			if(this.$route.params.id_message === data.id_message){
+				this.messages = data.messages
+			}
 		});
 		this.$socketInstant.on('REMOVE-MESSAGE-WITH-ID-STATUS',async data=>{
 			this.$socketInstant.emit('ADMIN-GET-ALL-MESSAGES', this.$route.params)

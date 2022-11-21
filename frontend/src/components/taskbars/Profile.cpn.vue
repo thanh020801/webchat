@@ -12,7 +12,7 @@
 			<div class="avatar-profile">
 				<img :src="$store.userProfile.avatar" v-if='$store.userProfile.avatar' id="show-avatar">
 				<img src="../../assets/images/spider3.jpg" v-else id="show-avatar">
-				<i class="bi bi-pencil-square"></i>
+				<!-- <i class="bi bi-pencil-square"></i> -->
 
 				<input 	class="input-submit-avatar" 
 						type="file" 
@@ -20,32 +20,32 @@
 						@change="selectAvatar"
 						id="input-submit-avatar"
 				>
-        		<label for="input-submit-avatar"  >
+        		<label for="input-submit-avatar"  v-if='!avatar'>
         			<i class="bi bi-pencil-square"></i>
         		</label>
-        		<div class="submit-avatar" v-if='avatar'>
+        		<label for="input-submit-avatar" v-if='avatar'>
         			<i class="bi bi-check-lg" @click='submitAvatar'></i>
         			<i class="bi bi-x" @click='dropAvatar'></i>
-        		</div>
+        		</label>
 			</div>
 			<div class="info-profile">
 				<div class="info-profile-name">
-					<div>Name: </div><div class="info-profile-value">{{userProfile.name}}</div>
+					<div>Tên: </div><div class="info-profile-value">{{userProfile.name}}</div>
 				</div>
 				<div class="info-profile-name">
-					<div>Username: </div><div class="info-profile-value">{{userProfile.username}}</div>
+					<div>Tài khoản: </div><div class="info-profile-value">{{userProfile.username}}</div>
 				</div>		
 				<div class="info-profile-name">
-					<div>Birthday: </div><div class="info-profile-value">{{userProfile.birthday}}</div>
+					<div>Ngày sinh: </div><div class="info-profile-value">{{userProfile.birthday}}</div>
 				</div>			
 				<div class="info-profile-name">
-					<div>Phone: </div><div class="info-profile-value">{{userProfile.phone}}</div>
+					<div>Số điện thoại: </div><div class="info-profile-value">{{userProfile.phone}}</div>
 				</div>
 				<div class="info-profile-name">
-					<div>Friends: </div><div class="info-profile-value">{{friendNumber}} people</div>
+					<div>Bạn bè: </div><div class="info-profile-value">{{friendNumber}} bạn bè</div>
 				</div>
 				<div class="info-profile-name">
-					<div>Rooms: </div><div class="info-profile-value">{{roomNumber}} room</div>
+					<div>Nhóm: </div><div class="info-profile-value">{{roomNumber}} nhóm</div>
 				</div>
 
 			</div>
@@ -55,7 +55,7 @@
 		</div>
 
 
-		<div class="taskbar-profile" v-else>
+		<div class="taskbar-profile taskbar-profile-change" v-else>
 			<div class="avatar-profile">
 				<img src="../../assets/images/spider3.jpg"  >
 			</div>
@@ -156,14 +156,14 @@
 				});
 
 				ss.createBlobReadStream(this.avatar).pipe(stream);
-
+				this.avatar = ''
 				return
 			},
 		},
 		mounted(){
 			this.$socketInstant.on('UPDATE-PROFILE-STATUS', async(res)=>{
 				// console.log(res.data)
-				const oldAvatar = this.$store.userProfile.avatar.split('/')
+				const oldAvatar = this.$store.userProfile.avatar?.split('/')
 						[this.$store.userProfile.avatar.split('/').length -1]
 				console.log('oldAvatar',oldAvatar)
 				this.$socketInstant.emit('REMOVE-FILE-WITH-NAME',
@@ -204,19 +204,30 @@
 	margin: 0 auto;
 	margin-bottom: 1rem;
 }
-.avatar-profile .bi-pencil-square{
+.avatar-profile .bi{
 	position: absolute;
 	bottom: 10px;
 }
-/*.info-profile{
-	color: #dedede;
-}*/
+.avatar-profile .bi-x{
+	margin-left: 20px;
+}
+
 .info-profile-name{
-	grid-template-columns: 30% auto;
+	grid-template-columns: auto auto;
   	display: grid;
 	width: 100%;
 	padding: 0.3rem 0;
 }
+.taskbar-profile-change .info-profile-name{
+	grid-template-columns: 30% auto;
+  	display: grid;
+/*	width: 100%;
+	padding: 0.3rem 0;
+*/
+}
+/*.taskbar-profile-change .info-profile-name input{
+	width: 50%;
+}*/
 .info-profile-value{
 	text-align: right;
 }
@@ -237,6 +248,7 @@
 	border-radius: 3px;
 	color: black;
 	padding: 0.3rem 0.5rem;
+	width: 95%;
 }
 .info-profile-value input:focus{
 	border: none;

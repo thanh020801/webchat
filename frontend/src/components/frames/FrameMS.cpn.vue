@@ -57,13 +57,15 @@ import {userConfig} from '@/stores/userConfig.js'
 			this.$socketInstant.on('RECIEVE-MESSAGE',async data=>{
 				// console.log(data.message)
 				const {id_message,createdAt,updatedAt,...content} = await data.message
-
-				// console.log(this.$store.messages.contents)
-				await this.$store.messages.contents.push(content)
-				const myTimeout = setTimeout(()=>{
+				if(id_message === this.$store.userChosen.id_message){
+					await this.$store.messages.contents.push(content)
+					const myTimeout = setTimeout(()=>{
+						scrollIntoViewBottom('croll-to-bottom')
+					}, 500);
 					scrollIntoViewBottom('croll-to-bottom')
-				}, 500);
-				scrollIntoViewBottom('croll-to-bottom')
+				}
+				
+					
 
 			});
 			this.$socketInstant.on('GET-MESSAGES-FROM-ID-MESSAGE-STATUS', async data=>{

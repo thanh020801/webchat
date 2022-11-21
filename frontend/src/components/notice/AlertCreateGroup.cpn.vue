@@ -22,7 +22,7 @@
 								</div>
 								<div class="">
 									<input  type="checkbox" :id='item.friend.username' 
-									:value="{name:item.friend.name,username:item.friend.username,avatar:item.friend.avatar}" 
+									:value="{name:item.friend.name,username:item.friend.username}" 
 									v-model='group.room_member'>
 								</div>							
 														
@@ -55,7 +55,7 @@ export default{
 			this.group.room_member.push({
 					username:this.$store.userProfile.username,
 					name: this.$store.userProfile.name,
-					avatar: this.$store.userProfile.avatar
+					// avatar: this.$store.userProfile.avatar
 				})
 			const room = {
 				room_admin: this.$store.userProfile.username,
@@ -116,40 +116,33 @@ export default{
 }
 </script>
 <style type="text/css">
-#create-group-alert{
+/*#create-group-alert{
 	width: 350px;
 	height: 400px;
 	z-index: 200000;
 	padding: 0px;
-	/*display: none;*/
 	position: relative;
 	background-color: #EEEFF2;
 
-	/*border-radius: 20px;*/
 }
 .create-group{
 	padding: 1rem;
 }
 #create-group-alert .title-create-group{
 	width: 100%;
-	/*height: 40px;*/
 	font-size: 20px;
 	color: white;
-	/*margin-bottom: 20px;*/
 	font-weight: bold;
-	/*border-bottom: 1px solid black;*/
 	background-color: #0091ff;
 	padding: 10px 20px;
 }
 #create-group-alert div{
-	/*text-align: left;*/
 	align-items: center;
 	padding-top: 5px;
 }
 .list-friend-add-in-group{
 	width: 100%;
 	height: 200px;
-	/*display: block;*/
 }
 .create-group-name input{
 	width: 100%;
@@ -166,20 +159,14 @@ export default{
 }
 .list-friend-add-in-group .member{
 	width: 100%;
-	/*padding: 0px;*/
-	/*align-items: center;*/
-	/*text-align: center;*/
-	/*padding: 0px 50px;*/
-	/*background-color: green;*/
 	display: grid;
 	grid-template-columns: 1fr 3fr 0.6fr;
 }
 .list-friend-add-in-group .member div img{
-	/*margin-left: 10px;*/
 }
 .confirm-create-group button{
 	position: absolute;
 	bottom: 10px;
 	right: 20px;
-}
+}*/
 </style>

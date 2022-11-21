@@ -3,6 +3,7 @@
 			<div class="headerOption">
 				<div class="avartarOption">
 					<img class="avartar-header" src="../../assets/images/spider3.jpg">
+
 				</div>
 				<div class="nameOption">
 					{{$store.userChosen.room.room_name}}
@@ -17,9 +18,11 @@
 				<div class="memberOption " v-for='friend in $store.userChosen.room.room_member'>
 					<div class="member">
 						<div>
-							<img class="avarta-taskbar" src="../../assets/images/spider3.jpg">
+							<img v-if='friend.avatar' class="avarta-taskbar" :src="friend.avatar">
+							<img v-else class="avarta-taskbar" src="../../assets/images/spider3.jpg">
 						</div>
 						<div>
+							<!-- {{friend}} -->
 							{{friend.name}}
 						<i class="bi bi-key-fill" v-if='friend.username === $store.userChosen.room.room_admin'></i>
 						</div>
@@ -39,9 +42,12 @@
  -->			</div>
 			<!-- <div class="memberOption underline"></div> -->
 			<div class="addFriendOption">
+				<!-- @click='addFriendInGroup()' -->
 				<button id='add-friend-in-group' 
+						data-bs-toggle="modal" 
+						data-bs-target="#addMemberInGroupModal"
 						class="btn btn-success"  
-						@click='addFriendInGroup()'>
+						>
 							Thêm thành viên
 				</button>
 				<button  class="btn btn-warning" @click='changeAdmin()' 
@@ -61,9 +67,63 @@
 			<!-- <div class="footerOption"></div> -->
 		</div>
 
-		<div  class="" id="position-add-friend-in-group">
-			<AlertCreateGroup :groupName='$store.userChosen.room.room_name'/>
+		<!-- <div  class="" id="position-add-friend-in-group"> -->
+			<!-- <AlertCreateGroup :groupName='$store.userChosen.room.room_name'/> -->
+		<!-- </div> -->
+
+		<div class="modal fade"  id="addMemberInGroupModal" tabindex="-1" aria-labelledby="addMemberInGroupModalLabel" aria-hidden="true">
+		  <div class="modal-dialog" style="width: 350px;">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <h5 class="modal-title" id="addMemberInGroupModalLabel">Cập nhật nhóm</h5>
+		        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+		      </div>
+		      <div class="modal-body" style="font-size: 15px; ">
+		        
+				  <div class="create-group-name">
+				  	Tên nhóm: <h3>{{$store.userChosen.room.room_name}}</h3>
+					<!-- Tên nhóm: <input type="text" v-model='group.room_name'  placeholder="Nhập tên nhóm..." required> -->
+				  </div>
+				  <div>Thêm bạn vào nhóm</div>
+
+				  <div class="list-friend-add-in-group croll-taskbar" style="height: 150px">
+			  		<div class="member" v-for='item in $store.friends'>
+								<div>
+									<img class="avartar-header" 
+										v-if='item.friend.avatar' 
+										:src="item.friend.avatar">
+									<img v-else class="avartar-header" src="../../assets/images/spider3.jpg">
+								</div>
+								<div>
+									{{item.friend.name}}
+								</div>
+								<div class="">
+									<input  type="checkbox" :id='item.friend.username' 
+									:value="{name:item.friend.name,username:item.friend.username}" 
+									v-model='group.room_member'>
+								</div>							
+														
+						</div>
+			  	</div>
+
+		      </div>
+		      <div class="modal-footer">
+		        <button type="button" 
+		        				class="btn btn-secondary" 
+		        				data-bs-dismiss="modal">
+		        					Thoát
+		        </button>
+		        <button type="button" 
+		        				class="btn btn-primary" 
+		        				data-bs-dismiss="modal"
+		        				@click='updateGroup()'>
+		        					Cập nhật
+		        </button>
+		      </div>
+		    </div>
+		  </div>
 		</div>
+
 </template>
 <script>
 import AlertCreateGroup from '@/components/notice/AlertCreateGroup.cpn.vue'
@@ -74,11 +134,61 @@ export default{
 		return{
 			isChangeAdmin:false,
 			getUsernameChangeAdmin:"",
+			group:{
+				room_name: this.$store.userChosen.room.room_name,
+				room_member: [],
+				room_admin: "",
+				room_avatar: "",
+			}
 			// remove :false,
 			// isAddFriendInGroup: false,
 		}
 	},
 	methods:{
+		updateGroup(){
+			var room_member = []
+			// var room_name_old = this.$store.userChosen.room.room_name
+			// console.log('room_member',this.group.room_member)
+     		// console.log('room_name',this.group.room_name)
+     		// console.log('room_name_old',room_name_old)
+			// console.log('member', this.group.room_member)
+			// console.log('chosen' , this.$store.userChosen.room.room_member)
+			for(var item1 of this.group.room_member){
+				// console.log('item',item1.username)
+				var flag = false
+				for(var item2 of this.$store.userChosen.room.room_member){
+					if(item2.username === item1.username){
+						flag = true
+						break
+					}
+				}
+				if(!flag){
+					// console.log('push',item1)
+					room_member.push(item1)
+					// var temp = this.$store.$state.rooms.find(obj =>{
+					// 	if(obj.room.room_name === this.groupName){
+					// 		obj.room.room_member.push(item1)
+					// 	}
+					// })
+	                                
+	         		
+    
+
+				}
+			}
+			console.log('room_member',room_member)
+	         		// console.log('room_name',room_name)
+	         		// console.log('room_name_old',room_name_old)
+			this.$socketInstant.emit('UPDATE-MEMBER_IN_GROUP',
+				{room_member,room_name: this.group.room_name})
+
+		 	this.group = {
+				 	room_name: "",
+					room_member: [],
+					room_admin: "",
+					room_avatar: "",
+			}
+		},
 		ClickOutOfGroup(friendName){
 			console.log(friendName)
 			this.$socketInstant.emit('EXIT-GROUP',{
@@ -130,6 +240,16 @@ export default{
 	},
 	mounted(){
 		this.addFriendInGroup('position-add-friend-in-group','add-friend-in-group');
+		// this.$socketInstant.on('UPDATE-MEMBER_IN_GROUP-STATUS', async data=>{
+		// 		console.log(data)
+		// 		var temp = this.$store.$state.rooms.find(obj =>
+	    //                             obj.room.room_name === data.R.room.room_name 
+	    //                         )
+		// 		if (!temp) {
+		// 	 		await this.$store.$state.rooms.push(data.R)
+		// 	 		console.log('create group',data)
+		// 	 	}
+		// 	});
 
 		this.$socketInstant.on('CHANGE-ADMIN-IN-GROUP-STATUS',
 			async (data)=>{
