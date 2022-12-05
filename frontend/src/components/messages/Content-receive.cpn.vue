@@ -22,8 +22,9 @@
 				:src="item.avatar">
 			<img v-else class="avartar-messase-img" src="../../assets/images/spider3.jpg">
 		</div>
-		<div class="content-receive-option">
-			<div class="content-receive-message">
+		<div class="content-receive-option"> 
+			<div class="content-receive-message content-message" 
+				:id='"check-search" + (item.message_count * 1000)'>
 				<div class="name-receive">{{item.message_name_send}}</div>
 
 				<div v-if='item.message_category === "text"' class="message-receive-content">{{item.message_content.toString()}}</div>
@@ -50,38 +51,69 @@
 				<div class="time-receive">{{fomatTime(item.message_date)}}</div>
 				
 			</div>
-			<div class="message-option">
-				<i class="bi bi-three-dots-vertical" ></i>
+			<div v-if='$store.userChosen.room'>				
+				<div class="message-option" v-if='$store.userChosen.room.room_admin === $store.userProfile.username'>
+					<i class="bi bi-three-dots-vertical" 
+						@click='isOptionInMessage=!isOptionInMessage'>	
+					</i>
+					<div class="alert alert-primary option-in-message-recieve" 
+						v-if='isOptionInMessage' 
+						role="alert" 
+						@click='recallMessage(item)'
+					>
+						Thu hồi
+					</div>
+				</div>
 			</div>
 		</div>
 	</div>
 </template>
 <script>
-import {userConfig} from '@/stores/userConfig.js'
-	export default{
-		data(){
-			return {
+export default{
+	data(){
+		return {
+			isOptionInMessage: false,
+		}
+	},
+	props: ['item'],
+	created(){
+		// console.log("send")
+		// console.log(this.item)
+	},
+	methods:{
+		fomatTime(time){
+			var date = new Date(time)
+			return date.getHours()+':'+date.getMinutes() 
+		},
+		recallMessage(message){
+			this.isOptionInMessage = ! this.isOptionInMessage
+			console.log(message)
 
+			var chosen= this.$store.userChosen
+			// console.log(chosen)
+			if(chosen.room){
+				this.$socketInstant.emit('RECALL-MESSAGE',
+					{message,room_name: chosen.room.room_name,friend_name: ""})
 			}
-		},
-		setup(){
-			const configUser = userConfig()
-			return {configUser}
-		},
-		props: ['item'],
-		created(){
-			// console.log("send")
-			// console.log(this.item)
-		},
-		methods:{
-			fomatTime(time){
-				var date = new Date(time)
-				return date.getHours()+':'+date.getMinutes() 
-			}
+			// this.$socketInstant.emit('RECALL-MESSAGE', message)
 		}
 	}
+}
 </script>
 <style type="text/css">
+.message-option{
+	position: relative;
+	
+}
+.option-in-message-recieve{
+	width: 80px;
+	position: absolute;
+	left: 5px;
+/*	padding: 0px;*/
+	display: block;
+	text-align: center;
+	cursor: pointer;
+}
 .message-receive{
 	margin: 0.7rem;
 	grid-template-columns: 40px auto;

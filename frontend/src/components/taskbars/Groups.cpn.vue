@@ -74,14 +74,14 @@
 		<div class="search-taskbar">
       <div class="d-flex">
       	<button class="search-taskbar-submit" type="submit"><i class="bi bi-search"></i></button>
-        <input class="search-taskbar-input " type="text" placeholder="Search ..." aria-label="Search">
+        <input class="search-taskbar-input " v-model='searchGroup' type="text" placeholder="Search ..." aria-label="Search">
       </div>
     </div>
 <!-- {{$store.rooms}} -->
 	<div class="croll-taskbar">
 		<div 	class="taskbar taskbar-groups" 
 					:id='"active" + item.room._id' 
-					v-for="item in $store.rooms"
+					v-for="item in rooms"
 					@click='activeChosen(item,$event)' 
 		>
 				<!-- {{item.room.room_member}} -->
@@ -111,7 +111,7 @@
 		data(){
 			return {
 				rooms: this.$store.rooms,
-				search: "",
+				searchGroup: "",
 				group:{
 					room_name: "",
 					room_member: [],
@@ -123,13 +123,8 @@
 
 		methods:{
 			activeChosen(item,el){
-				// console.log(item.room._id)
-				// console.log(item.friend.friend_id)
-				// this.$socketInstant.emit('GET-AVATAR-MEMBER-IN-GROUP',
-				// 	{room_name: item.room.room_name})
-				this.$store.$state.userChosen = item
-				// console.log(item)
-				// this.$store.$state.messages = {id_message:item.id_message}
+				this.$store.userChosen = item
+
 				this.$socketInstant.emit('GET-MESSAGES-FROM-ID-MESSAGE',{username:this.$store.userProfile.username,id_message:item.id_message})
 				this.$store.messages.id_message = item.id_message
 				// console.log('chosen in room',this.$store.messages.id_message)
@@ -139,6 +134,21 @@
 		    });
 				document.querySelector("#active" + item.room._id).classList.add("active")
 
+			},
+			search(){
+        if (this.searchGroup) {
+        		// console.log('this.searchFriend',this.searchFriend)
+            var result = this.$store.rooms.filter(item => {
+                return this.searchGroup
+                    .toLowerCase()
+                    .split(" ")
+                    .every(v => item.room.room_name.toLowerCase().includes(v));
+            });
+        }
+        console.log('result',result)
+        // this.rooms = result ? result : this.$store.rooms
+        return result ? result : this.$store.rooms
+        console.log('rooms',this.rooms)
 			},
 			createGroup(){
 				if(this.group.room_name === "") return
@@ -184,7 +194,7 @@
 
 			this.$socketInstant.on('REMOVE-GROUP-STATUS',async (data)=>{
 					console.log('REMOVE-GROUP-STATUS',data)
-					var temp = this.$store.$state.rooms.findIndex(obj =>
+					var temp = this.$store.rooms.findIndex(obj =>
 	                                obj.room.room_name === data.room_name 
 	                            )
 					console.log('temp REMOVE-GROUP-STATUS',temp)
@@ -195,16 +205,16 @@
 							this.$store.userChosen = ""
 						}
 					}
-					this.$store.$state.rooms.splice(temp,1)
+					this.$store.rooms.splice(temp,1)
 			});
 
 			this.$socketInstant.on('CREATE-GROUP-STATUS',async (data)=>{
-				var temp = this.$store.$state.rooms.find(obj =>
+				var temp = this.$store.rooms.find(obj =>
 	                                obj.room.room_name === data.R.room.room_name 
 	                            )
-				// console.log('create group temp',temp)
+				console.log('create group temp',temp)
 				if (!temp) {
-			 		await this.$store.$state.rooms.push(data.R)
+			 		this.$store.rooms.push(data.R)
 			 		// console.log('create group',data)
 			 			// document.getElementById('createGroup').style.display = "none"
 			 	}
@@ -212,49 +222,53 @@
 
 			this.$socketInstant.on('EXIT-GROUP-MEMBER-STATUS', async data=>{
 				console.log('EXIT-GROUP-MEMBER-STATUS',data)
-				var temp = this.$store.$state.rooms.findIndex(obj =>{
+				let flag = false
+				var temp = this.$store.rooms.findIndex(obj =>{
 					if(obj.room.room_name === data.R.room.room_name ){
 						obj.room = data.R.room
+						if(obj.room.room_name === this.$store.userChosen.room?.room_name){
+							this.$store.userChosen = obj
+						}
 					}
 				})
+				this.rooms = this.$store.rooms
 			});
 			this.$socketInstant.on('EXIT-GROUP-USER-STATUS', async data=>{
 				console.log('EXIT-GROUP-USER-STATUS',data)
-				var temp = this.$store.$state.rooms.findIndex(obj =>
+				var temp = this.$store.rooms.findIndex(obj =>
 	                                obj.room.room_name === data.room_name 
 	                            )
-				this.$store.$state.rooms.splice(temp,1)
+				this.$store.rooms.splice(temp,1)
+				this.rooms = this.$store.rooms
 				this.$store.userChosen = ""
 			});
 
-
-			// this.$socketInstant.on('UPDATE-MEMBER_IN_GROUP-STATUS', async data=>{
-			// 	console.log(data)
-			// 	var temp = this.$store.$state.rooms.find(obj =>
-	    //                             obj.room.room_name === data.R.room.room_name 
-	    //                         )
-			// 	if (!temp) {
-			//  		await this.$store.$state.rooms.push(data.R)
-			//  		console.log('create group',data)
-			//  	}
-			// });
-
 			this.$socketInstant.on('UPDATE-MEMBER_IN_GROUP-STATUS', async data=>{
 				console.log(data)
-				var temp = this.$store.$state.rooms.find(obj =>{
+				let flag = false
+				var temp = this.$store.rooms.find(obj =>{
 					if(obj.room.room_name === data.R.room.room_name){
-						
+						flag = true
 						obj.room = data.R.room
-						console.log(obj)
+						// obj.id_message = data.R.id_message
+						console.log('obj', obj)
+						if(obj.room.room_name === this.$store.userChosen.room?.room_name){
+							this.$store.userChosen = obj
+						}
 					}
 				})
+				if(!flag){
+					console.log('push')
+					this.$store.rooms.push(data.R)
+					this.rooms = this.$store.rooms
+				}
 			});
 
 
 
 			this.$socketInstant.on('GET-ALL-GROUPS-STATUS',async data=>{
-				// console.log(data.rooms)
-				this.$store.rooms = await data.rooms
+				console.log(data.rooms)
+				this.$store.rooms =  data.rooms
 			});
 
 
@@ -262,11 +276,15 @@
 
 		},
 		created(){
-			// this.$socketInstant.on('GET-ALL-GROUPS-STATUS',async data=>{
-			// 	console.log(data.rooms)
-			// 	this.$store.rooms = await data.rooms
-			// });
-		}
+		},
+		watch:{
+			'$store.rooms'(){
+				this.rooms = this.$store.rooms
+			},
+			searchGroup(){
+				this.rooms= this.search()
+			}
+		},
 	}
 </script>
 <style type="text/css">

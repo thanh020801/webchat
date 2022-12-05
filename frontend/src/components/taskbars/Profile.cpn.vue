@@ -3,7 +3,7 @@
 		<div><h2 class="title-name" >CÁ NHÂN</h2></div>
 		<div v-if='$store.userProfile.admin'>
 			<router-link to='/admin'>
-				<i class="bi bi-gear-fill" id=""></i>
+				<i class="bi bi-speedometer"></i>
 			</router-link>
 		</div>
 	</div>

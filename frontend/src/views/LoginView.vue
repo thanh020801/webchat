@@ -40,8 +40,8 @@
             </div>
           </fieldset>
         </div>
-        <button class="btn btn-danger" @click='deleteAllUser()'>Xoa het</button>
-        <button class="btn btn-success" @click='create4User()'>Tao moi</button>
+<!--         <button class="btn btn-danger" @click='deleteAllUser()'>Xoa het</button>
+        <button class="btn btn-success" @click='create4User()'>Tao moi</button> -->
 </div>
 </template>
 <script>

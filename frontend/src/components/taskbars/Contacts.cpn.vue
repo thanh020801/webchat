@@ -48,7 +48,7 @@
 			return {
 				searchFriend: "",
 				keyWord: [],
-				// friends: this.$store.friends,
+				friends: this.$store.friends,
 			}
 		},
 		methods:{
@@ -67,19 +67,19 @@
 				scrollIntoViewBottom('croll-to-bottom')
 			},
 			alertDisplay(){
-        this.$swal.fire({title:'Add Friend', 
+        this.$swal.fire({title:'Kết bạn', 
         						input: 'text',
-        						inputLabel: 'Name',
-        						inputPlaceholder: 'Enter your name here',
-        						background:'#272c3b', 
-        						color: '#dedede',
+        						inputLabel: 'Tài khoản cần tìm',
+        						inputPlaceholder: 'Nhập tên cần tìm',
+        						background:'#fff', 
+        						color: '#000',
         					}).then((res)=>{
         							if(res.value){
         								if(this.$store.userProfile.username === res.value){
         									this.$swal.fire({
         										title:'Không thể tự kết bạn với chính mình', 
-				        						background:'#272c3b', 
-				        						color: '#dedede',
+				        						background:'#fff', 
+				        						color: '#000',
 				        					})
 				        					return
         								}
@@ -91,16 +91,16 @@
         									if(data.status !== 200){
         										this.$swal.fire({
 					        						title: data.data.response, 
-					        						background:'#272c3b', 
-					        						color: '#dedede',
+					        						background:'#fff', 
+				        							color: '#000',
 					        					})
 					        					return
         									}else{
         										const {friend} = data.data
         										this.$swal.fire({
 					        						title: friend.name, 
-					        						background:'#272c3b', 
-					        						color: '#dedede',
+					        						background:'#fff', 
+				        							color: '#000',
 					        					}).then((res)=>{
 					        						
 					        						this.$socketInstant.emit('COMMIT-ADD-FRIEND',{	
@@ -118,7 +118,8 @@
 			},
 			render(){
 					this.keyWord = []
-					const {friends} = this.$store
+					// const {friends} = this.$store
+					const {friends} = this
 					// console.log(friends)
 					for (var i = 0; i < friends.length; i++) {
 						var name = friends[i].friend.name
@@ -131,29 +132,27 @@
 					}
 					this.keyWord.sort()
 			},
-			// search(){
-   //      if (this.searchFriend) {
-   //          var result = this.$store.friends.filter(item => {
-   //              return this.searchFriend
-   //                  .toLowerCase()
-   //                  .split(" ")
-   //                  .every(v => item.friend.name.toLowerCase().includes(v));
-   //          });
-   //      }
-   //      this.friends = result ? result:this.$store.friends
-   //      this.render()
-			// }
+			search(){
+
+        if (this.searchFriend) {
+        		// console.log('this.searchFriend',this.searchFriend)
+            var result = this.$store.friends.filter(item => {
+                return this.searchFriend
+                    .toLowerCase()
+                    .split(" ")
+                    .every(v => item.friend.name.toLowerCase().includes(v));
+            });
+        }
+        // console.log('result',result)
+        this.friends = result ? result:this.$store.friends
+        this.render()
+			},
 		},
 		created(){
-			this.render()
-			
-
+			// this.render()
+			this.$socketInstant.emit('GET-ALL-FRIENDS',
+      							{username:this.$store.userProfile.username})
 		},
-		// watch:{
-		// 	searchFriend(){
-		// 		this.search()
-		// 	}
-		// },
 
 		mounted(){
 			// this.render()
@@ -175,13 +174,6 @@
         })
       });
       this.$socketInstant.on('REMOVE-FRIEND-STATUS',async data=>{
-      	// console.log('REMOVE-FRIEND-STATUS',data.friend_username)
-      	// var temp = this.$store.friends.findIndex(element=> 
-      	// 	element.friend.username === data.friend_username
-      	// )
-      	// console.log('temp REMOVE-FRIEND-STATUS', temp)
-      	// this.$store.friends.splice(temp,1)
-      	// this.render()
       	this.$socketInstant.emit('GET-ALL-FRIENDS',
       		{username:this.$store.userProfile.username})
       });
@@ -195,21 +187,24 @@
 						console.log('temp ADD-FRIEND-STATUS', temp)
 						if(!temp){
 							console.log('them bạn thành công')
-							this.$store.friends.push(data.F)
-							this.render()
+							this.$socketInstant.emit('GET-ALL-FRIENDS',
+      							{username:this.$store.userProfile.username})
 						}
 					}
 			});
 			this.$socketInstant.on('GET-ALL-FRIENDS-STATUS',async data=>{
-				// console.log(data.friends)
 				this.$store.friends = data.friends
+			});
+		},
+		watch:{
+			'$store.friends'(){
+				this.friends = this.$store.friends
 				this.render()
-			});
-			this.$socketInstant.on('GET-ALL-GROUPS-STATUS',async data=>{
-				console.log(data.rooms)
-				this.$store.rooms = await data.rooms
-			});
-		}
+			},
+			searchFriend(){
+				this.search()
+			}
+		},
 	}
 </script>
 <style type="text/css">

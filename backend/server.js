@@ -26,7 +26,7 @@ const io = new Server(server,{
 
 app.use('/uploads',express.static(__dirname + "/uploads"))
 
-
+// app.get('/', (req,res)=>res.send('HelloWorld'))
 Realtime(io)
 // Routers(app)
 

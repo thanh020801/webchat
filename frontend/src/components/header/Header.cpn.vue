@@ -22,6 +22,13 @@
 				<h4>{{$store.userChosen.room.room_name}}</h4>
 			</div>
 
+			
+
+			<div class="option-header" 
+				@click='checkSearch = !checkSearch'
+				>
+				<i class="bi bi-search"></i>
+			</div>
 
 			<div class="option-header"
 				  id="isShowOption"
@@ -32,7 +39,18 @@
 			
 	
 	</div>
-
+<div class="alert alert-primary" v-if='checkSearch' role="alert">
+	<div class="drop-search-message" @click='dropSearch'>
+  		<i class="bi bi-arrow-left" style="color: #0091ff;"></i>
+  	</div>
+  	<div class="input-search-message">
+  		<input type="text" v-model='searchKey' placeholder="Tìm tin nhắn">
+  	</div>
+  	<div><span v-if='searchKey'>Tìm thấy {{lengthSearch}}</span></div>
+  	<div class="drop-search-message" @click='dropSearch'>
+  		<i class="bi bi-x-octagon-fill" style="color: red;"></i>
+  	</div>
+</div>
 <div id="OpGroupOpFriend">
 	<!-- <div v-if='isShow' > -->
 		<div v-if='!$store.userChosen.friend'>
@@ -50,16 +68,38 @@
 	export default{
 		data(){
 			return{
-				// isFriend: this.$store.userChosen,
-				// infoF:this.$store.userChosen.friend,
-				// infoG:this.$store.userChosen.room,
-				// isShow: false,
+					checkSearch: false,
+					searchKey: "",
+					lengthSearch: 0,
 			}
 		},
 		components:{
 			OpGroup,OpFriend,
 		},
 		methods:{
+			search(){
+		        if (this.searchKey) {
+		        		// console.log('this.searchFriend',this.searchFriend)
+		            var result = this.$store.messages.contents.filter(item => {
+		                return this.searchKey
+		                    .toLowerCase()
+		                    .split(" ")
+		                    .every(v => item.message_content.toLowerCase().includes(v));
+		            });
+		            this.$store.messages.searchMS = result ? result:
+		        					this.$store.messages.contents
+		        	this.lengthSearch = this.$store.messages.searchMS.length
+		        }else{
+		        	this.$store.messages.searchMS = []
+		        	this.lengthSearch = this.$store.messages.searchMS.length
+		        }
+			},
+			dropSearch(){
+				this.$store.messages.searchMS = []
+				this.checkSearch = false
+				this.searchKey = ""
+				this.lengthSearch = 0
+			},
 			showHideAlertCreateGroup(idShow,clickicon){
 				document.addEventListener('click',(e)=>{
 					const myclick = document.getElementById(idShow)
@@ -79,6 +119,11 @@
 		mounted(){
 			this.showHideAlertCreateGroup('OpGroupOpFriend','isShowOption')
 		},
+		watch:{
+			searchKey(){
+				this.search()
+			}
+		},
 	}
 </script>
 <style type="text/css">
@@ -88,10 +133,8 @@
 		align-items: center;
 		margin: 0px;
 		padding: 0 0.5rem;
-		/*border-bottom: 1px solid #36404a;*/
-		/*box-shadow: 2px 2px 5px 0px black;*/
-		/*background-color: blue;*/
-		grid-template-columns: 13% auto 5%;
+
+		grid-template-columns: 13% auto 5% 5%;
 		display: grid;
 	}
 	.avartar-header{
@@ -101,5 +144,28 @@
 	}
 	.avt-header{
 		height: 40px;
+	}
+	.name-header h4{
+		margin: 0px;
+	}
+	.alert{
+		display: grid;
+		grid-template-columns: 5% auto 20% 5%;
+		background-color: white;
+		border-radius: 0px;
+		margin: 0px;
+		padding: 10px;
+		align-items: center;
+	}
+	.alert input{
+		width: 90%;
+		margin: 0 auto;
+		border: none;
+		color: #0091ff;
+	}
+	.alert input:focus{
+		outline: none;
+		border: none;
+		outline: none;
 	}
 </style>

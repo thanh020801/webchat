@@ -10,9 +10,18 @@
 <!-- {{item.message_content}} -->
 	<div class="message-send" :id="`num-${item.message_count}`" >
 		<div class="message-option">
-			 <i class="bi bi-three-dots-vertical" ></i>
+			<i class="bi bi-three-dots-vertical" 
+				@click='isOptionInMessage=!isOptionInMessage'></i>
+			<div class="alert alert-primary option-in-message-send" 
+				v-if='isOptionInMessage' 
+				role="alert" 
+				@click='recallMessage(item)'
+			>
+				Thu hồi
+			</div>
 		</div>
-		<div class="content-send-message">
+		<div class="content-send-message content-message" 
+				:id='"check-search" + (item.message_count * 1000)'>
 			<div class="name-send">Bạn</div>
 			
 
@@ -50,7 +59,7 @@
 	export default{
 		data(){
 			return{
-				// time: new Date(this.item.date)
+				isOptionInMessage: false,
 			}
 		},
 		props: ['item'],
@@ -58,11 +67,43 @@
 			fomatTime(time){
 				var date = new Date(time)
 				return date.getHours()+':'+date.getMinutes() 
+			},
+			recallMessage(message){
+				this.isOptionInMessage = ! this.isOptionInMessage
+				console.log(message)
+
+				var chosen= this.$store.userChosen
+				// console.log(chosen)
+				if(chosen.room){
+					this.$socketInstant.emit('RECALL-MESSAGE',
+						{message,room_name: chosen.room.room_name,friend_name: ""})
+				}
+				else if(chosen.friend){
+					this.$socketInstant.emit('RECALL-MESSAGE',
+						{message,room_name: "",friend_name: chosen.friend.username})
+				}
+				// this.$socketInstant.emit('RECALL-MESSAGE', message)
 			}
+		},
+		mounted(){
 		}
 	}
 </script>
 <style type="text/css">
+
+.message-option{
+	position: relative;
+	
+}
+.option-in-message-send{
+	width: 80px;
+	position: absolute;
+	left: -70px;
+/*	padding: 0px;*/
+	display: block;
+	text-align: center;
+	cursor: pointer;
+}
 .message-option .bi{
 	color: black;
 }

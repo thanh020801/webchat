@@ -135,24 +135,17 @@ export default{
 			isChangeAdmin:false,
 			getUsernameChangeAdmin:"",
 			group:{
-				room_name: this.$store.userChosen.room.room_name,
+				room_name: "",
 				room_member: [],
 				room_admin: "",
 				room_avatar: "",
 			}
-			// remove :false,
-			// isAddFriendInGroup: false,
 		}
 	},
 	methods:{
 		updateGroup(){
+			this.group.room_name = this.$store.userChosen.room.room_name
 			var room_member = []
-			// var room_name_old = this.$store.userChosen.room.room_name
-			// console.log('room_member',this.group.room_member)
-     		// console.log('room_name',this.group.room_name)
-     		// console.log('room_name_old',room_name_old)
-			// console.log('member', this.group.room_member)
-			// console.log('chosen' , this.$store.userChosen.room.room_member)
 			for(var item1 of this.group.room_member){
 				// console.log('item',item1.username)
 				var flag = false
@@ -165,14 +158,6 @@ export default{
 				if(!flag){
 					// console.log('push',item1)
 					room_member.push(item1)
-					// var temp = this.$store.$state.rooms.find(obj =>{
-					// 	if(obj.room.room_name === this.groupName){
-					// 		obj.room.room_member.push(item1)
-					// 	}
-					// })
-	                                
-	         		
-    
 
 				}
 			}
@@ -240,16 +225,6 @@ export default{
 	},
 	mounted(){
 		this.addFriendInGroup('position-add-friend-in-group','add-friend-in-group');
-		// this.$socketInstant.on('UPDATE-MEMBER_IN_GROUP-STATUS', async data=>{
-		// 		console.log(data)
-		// 		var temp = this.$store.$state.rooms.find(obj =>
-	    //                             obj.room.room_name === data.R.room.room_name 
-	    //                         )
-		// 		if (!temp) {
-		// 	 		await this.$store.$state.rooms.push(data.R)
-		// 	 		console.log('create group',data)
-		// 	 	}
-		// 	});
 
 		this.$socketInstant.on('CHANGE-ADMIN-IN-GROUP-STATUS',
 			async (data)=>{
@@ -269,7 +244,8 @@ export default{
 		    	this.isChangeAdmin = false
 				this.getUsernameChangeAdmin = ""
 		});
-	}
+	},
+
 }
 </script>
 <style type="text/css">

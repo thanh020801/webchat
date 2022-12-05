@@ -13,6 +13,7 @@ export const store = defineStore('store', {
 			messages: {
 				id_message: "",
 				contents: [],
+				searchMS: []
 			},
 			rooms: [],
 			userProfile: {},

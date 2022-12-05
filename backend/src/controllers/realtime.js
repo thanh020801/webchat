@@ -173,6 +173,45 @@ realtime = (io)=>{
             socket.emit('UPDATE-PROFILE-STATUS',{status:200, data:{user}})
         });
 
+        socket.on('RECALL-MESSAGE',async data=>{
+            console.log('before',data)
+            var message = await Message.findByIdAndUpdate(
+                data.message._id,
+                {message_content: 'Tin nhắn đã được thu hồi',message_category: 'text'},
+                {new: true},
+            )
+            message._doc.avatar = data.message.avatar + ""
+            // console.log('after',message)
+            if(data.friend_name){
+                var temp = config.socket.onlines.find(element=>element.username === data.friend_name)
+                if(temp){
+                    io.to(temp.id).emit('RECALL-MESSAGE-STATUS',{message})
+                }
+                socket.emit('RECALL-MESSAGE-STATUS',{message})
+            } else if(data.room_name){
+                var room = await Room.findOne({room_name: data.room_name})
+                
+                // console.log('message',message)
+                for(var item of room.room_member){
+                    var temp = config.socket.onlines.find(element=>
+                        element.username === item.username)
+                    if(temp){
+                        io.to(temp.id).emit('RECALL-MESSAGE-STATUS',{message})
+                    }
+                }
+                    
+            }
+            // console.log('content',message)
+            
+            io.to(config.socket.admin.id).emit('GET-BLOCK-ITEMS-STATUS',
+                    {blockItemMessage: await Message.find().count()})
+            const messages = await Message.find({id_message: data.message.id_message})
+                .sort({message_count: -1})
+            io.to(config.socket.admin.id).emit('ADMIN-UPDATE-MESSAGES-STATUS',
+                {messages,id_message: data.message.id_message})
+
+
+        });
 
         socket.on('SEND-MESSAGE',async data=>{
             // //console.log(data.message)
@@ -300,7 +339,7 @@ realtime = (io)=>{
             const friend = await User.findOne({username: data.search})
             if(!friend){
 
-                socket.emit('ADD-FRIEND-STATUS', {status:404, data:{response: 'Khong tim thay'}})
+                socket.emit('ADD-FRIEND-STATUS', {status:404, data:{response: 'Không tìm thấy'}})
             }else{
                 socket.emit('ADD-FRIEND-STATUS', {status:200,data:{friend}})
             }
@@ -401,7 +440,7 @@ realtime = (io)=>{
             }
             io.to(config.socket.admin.id).emit('GET-BLOCK-ITEMS-STATUS',
                     {blockItemGroup: await Room.find().count()})
-            socket.emit('CREATE-GROUP-STATUS',{status:200,R:{id_message,room}})
+            // socket.emit('CREATE-GROUP-STATUS',{status:200,R:{id_message,room}})
             io.to(config.socket.admin.id).emit('CREATE-GROUP-STATUS')
         })
         // Rời nhóm nếu người rơi nhóm là admin thì chuyển quyền admin cho 1 ngkhac
@@ -444,6 +483,11 @@ realtime = (io)=>{
                         {'$pull': {'list_room': {room_name:room.room_name}}}
             )
             // //console.log('updateListRoom', updateListRoom)
+            //  cap nhat avatar
+            for(var item of updateRoom.room_member){
+                const member = await User.findOne({username: item.username})
+                item.avatar = member.avatar
+            }
 
             for(var item of updateRoom.room_member){
                 var temp = config.socket.onlines.find(el => 
@@ -487,6 +531,11 @@ realtime = (io)=>{
                 {room_admin: data.changeUsername},
                 {new:true}
             )
+            //  cap nhat avatar
+            for(var item of updateRoom.room_member){
+                const member = await User.findOne({username: item.username})
+                item.avatar = member.avatar
+            }
             //console.log('updateRoom', updateRoom)
             var userOnl = config.socket.onlines.find(el => el.username === data.changeUsername)
             //console.log('userOnl', userOnl)
@@ -497,14 +546,15 @@ realtime = (io)=>{
             
         });
 
-
+// bug
         socket.on('UPDATE-MEMBER_IN_GROUP', async (data)=>{
             var room = await Room.findOne({room_name:data.room_name})
             console.log(room, data.room_name)
             var id_message = room._id.toString()
+            let updateMemberRoom
             for(var item of data.room_member){
                 // //console.log('item',item)
-                var updateMemberRoom = await Room.findOneAndUpdate(
+                updateMemberRoom = await Room.findOneAndUpdate(
                     {room_name:data.room_name},
                     {'$push': {room_member: {name:item.name, username: item.username}}},
                     {new:true}
@@ -516,14 +566,19 @@ realtime = (io)=>{
                 )
                 //console.log('updateMemberRoom',updateMemberRoom,'updateListRoom',updateListRoom)
             }
+            // cap nhat avatar
+            for(var item of updateMemberRoom.room_member){
+                const member = await User.findOne({username: item.username})
+                item.avatar = member.avatar
+            }
+            // console.log(updateMemberRoom)
+
             for(var item of updateMemberRoom.room_member){
                 var checkOnl = config.socket.onlines.find(element=>element.username === item.username)
                 if(checkOnl){
-                    var roomAfterUpdate = await Room.findOne({room_name:data.room_name})
-                    //console.log('room change member',roomAfterUpdate)
                     io.to(checkOnl.id).emit('UPDATE-MEMBER_IN_GROUP-STATUS',{
                         status:200,
-                        R: {room:roomAfterUpdate},
+                        R: {id_message: updateMemberRoom._id,room:updateMemberRoom},
                     })
                 }
                 //console.log('checkOnl', checkOnl)
@@ -617,11 +672,11 @@ realtime = (io)=>{
             io.to(config.socket.admin.id).emit('ADMIN-GET-ALL-MESSAGES-STATUS', {messages})
         })
 
-
+// bug
         socket.on('ADMIN-GET-USER-INFO', async data=>{
             const findUser = await User.findOne({username: data.username})
             const findFriends = await Friend.findOne({friend_username: data.username})
-            var {password,admin,createdAt,updatedAt,...user} = findUser._doc
+            var {password,admin,createdAt,updatedAt,...user} = findUser?._doc
             //console.log(user)
             user.friend_number = findFriends.list_friend.length
             user.room_member_number = findFriends.list_room.length
