@@ -10,8 +10,11 @@
   "dependencies": {
     "@esbuild-plugins/node-globals-polyfill": "^0.1.1",
     "@esbuild-plugins/node-modules-polyfill": "^0.1.4",
+    "@pdftron/webviewer": "^8.10.0",
+    "@vue/cli-service": "^5.0.8",
     "bootstrap": "^5.2.1",
     "bootstrap-icons": "^1.9.1",
+    "core-js": "^3.26.1",
     "pinia": "^2.0.21",
     "socket.io-client": "^4.5.2",
     "socket.io-stream": "^0.9.1",

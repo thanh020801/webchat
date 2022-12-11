@@ -1,24 +1,35 @@
 <template>
-<!-- 	<div class="message-send" :id="`num-${item.message_count}`" >
-		<div class="content-send-message">
-			<div class="name-send">Bạn</div>
-			<div class="message-send-content">{{item.message_content}}</div>
-			<div class="time-send">{{fomatTime(item.message_date)}}</div>
-
-		</div>
-	</div> -->
-<!-- {{item.message_content}} -->
+	
 	<div class="message-send" :id="`num-${item.message_count}`" >
+<!-- 		<div v-if='$store.isWebViewer'>
+			<WebViewer :initialDoc='item.message_content'/> 
+		</div> -->
+
+
+
 		<div class="message-option">
 			<i class="bi bi-three-dots-vertical" 
 				@click='isOptionInMessage=!isOptionInMessage'></i>
 			<div class="alert alert-primary option-in-message-send" 
 				v-if='isOptionInMessage' 
 				role="alert" 
-				@click='recallMessage(item)'
 			>
-				Thu hồi
+				<div @click='recallMessage(item)'>
+					Thu hồi
+				</div>
+				<div v-if='item.message_category !== "text" &&
+							item.message_category !== "image/png" &&
+							item.message_category !== "image/jpeg"' 
+					@click='$store.isWebViewer = true; isOptionInMessage = false'>
+					<router-link 
+						:to="path='/viewer/'+ item.message_content.split('/')[item.message_content.split('/').length-1] ">
+						Mở file
+					</router-link>
+				</div>
+				
 			</div>
+
+
 		</div>
 		<div class="content-send-message content-message" 
 				:id='"check-search" + (item.message_count * 1000)'>
@@ -56,10 +67,14 @@
 </template>
 <script>
 // import {fomatTime} from '@/services/untils.js'
+	import WebViewer from "@/components/Viewer/WebViewer.cpn.vue";
+
 	export default{
+		components: {WebViewer},
 		data(){
 			return{
 				isOptionInMessage: false,
+				// isWebViewer: false,
 			}
 		},
 		props: ['item'],

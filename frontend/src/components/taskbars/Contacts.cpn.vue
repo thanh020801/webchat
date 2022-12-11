@@ -1,4 +1,7 @@
 <template>
+
+<!-- <WebViewer initialDoc='http://localhost:5000/uploads/911256d63cb92820cf7dc659db1601e9.docx'/> -->
+<!-- {{$route}} -->
 	<div class="title">
 		<div><h2 class="title-name" >LIÊN HỆ</h2></div>
 		<div v-on:click="alertDisplay"><i class="bi bi-person-plus-fill"></i></div>
@@ -43,7 +46,9 @@
 </template>
 <script>
 	import {scrollIntoViewBottom} from '@/services/untils.js'
+	// import WebViewer from "@/components/Viewer/WebViewer.cpn.vue";
 	export default{
+		// components: {WebViewer},
 		data(){
 			return {
 				searchFriend: "",
@@ -153,6 +158,7 @@
 			this.$socketInstant.emit('GET-ALL-FRIENDS',
       							{username:this.$store.userProfile.username})
 		},
+
 
 		mounted(){
 			// this.render()

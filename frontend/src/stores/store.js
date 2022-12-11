@@ -17,6 +17,7 @@ export const store = defineStore('store', {
 			},
 			rooms: [],
 			userProfile: {},
+			isWebViewer: false,
 			admin: {
 				chosen: "Trang chủ",
 			},

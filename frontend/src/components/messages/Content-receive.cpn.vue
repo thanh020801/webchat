@@ -1,21 +1,5 @@
 <template>
-<!-- 	<div class="message-send">
-		<div class="avarta-message" >
-			<img class="avartar-messase-img" src="../assets/images/spider3.jpg">
-		</div>
-		<div class="content-send-message">
-			<div class="name-send">thanh</div>
-			<div class="message-send-content">{{item.message_content}}</div>
-			<div class="time-send">{{item.message_date}}</div>
-		</div>
-	</div> -->
 	<div class="message-receive">
-	<!-- 	<div class="avarta-message" >
-			<img v-if='$store.userChosen.friend.avatar' 
-				class="avartar-messase-img" 
-				:src="$store.userChosen.friend.avatar">
-			<img v-else class="avartar-messase-img" src="../../assets/images/spider3.jpg">
-		</div> -->
 		<div class="avarta-message" >
 			<img v-if='item.avatar' 
 				class="avartar-messase-img" 
@@ -39,9 +23,9 @@
 				<div class="message-receive-content-file" v-else>
 					<i class="bi bi-file-earmark-text"></i> 
 					<span>
-						<a :href="item.message_content" target="_blank">
+						<router-link :to="path='/viewer/'+ item.message_content.split('/')[item.message_content.split('/').length-1] ">
 							{{item.message_content.split('/')[item.message_content.split('/').length-1]}}
-						</a>
+						</router-link>
 					</span>
 					
 				</div>
@@ -63,6 +47,7 @@
 					>
 						Thu hồi
 					</div>
+
 				</div>
 			</div>
 		</div>
